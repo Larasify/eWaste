@@ -1,6 +1,9 @@
 from flask import Flask, send_from_directory, request
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/", defaults={'path':''})
 def serve(path):
