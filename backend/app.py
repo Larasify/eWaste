@@ -1,11 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, send_from_directory, request
 
 app = Flask(__name__)
 
-@app.route('/')
-@app.route('/index')
-def index():
-    return render_template('index.html')
+@app.route("/", defaults={'path':''})
+def serve(path):
+    return send_from_directory(app.static_folder,'index.html')
 
 
 @app.route('/apigettest')
