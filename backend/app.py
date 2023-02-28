@@ -4,6 +4,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+print("server started")
 
 @app.route("/", defaults={'path':''})
 def serve(path):
