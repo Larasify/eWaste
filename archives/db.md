@@ -38,6 +38,8 @@
 - !ts_mod: timestampz (auto generated)
 
 
-#### Legend: 
+```sh
+Legend: 
 - !: NOT NULL
 - ?: NULL
+```
