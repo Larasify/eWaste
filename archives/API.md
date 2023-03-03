@@ -46,3 +46,5 @@
 - POST one
 - DELETE one (soft)
 - PATCH one
+
+### search API
