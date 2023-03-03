@@ -36,3 +36,8 @@
 - !metadata: json/text (if text, best to split each key into a column; ie, os, storages, colors, etc)
 - !ts: timestampz (auto generated)
 - !ts_mod: timestampz (auto generated)
+
+
+#### Legend: 
+- !: NOT NULL
+- ?: NULL
