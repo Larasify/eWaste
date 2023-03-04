@@ -21,3 +21,18 @@ def deleteUser():
 @user_api.route("/updateuser", methods=['POST'])
 def updateUser():
     return "updated user"
+
+
+account_api = Blueprint('account_api', __name__)
+
+@account_api.route("/getuserlistings", methods=['POST'])
+def getUserListings():
+    return "list of listings for a specific user"
+
+@account_api.route("/getuserpayments", methods=['POST'])
+def getUserPayments():
+    return "list of payments for a specific user"
+
+@account_api.route("/getuserdatalinks", methods=['POST'])
+def getUserDataLinks():
+    return "list of data links for a specific user"
