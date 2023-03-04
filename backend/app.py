@@ -1,10 +1,25 @@
 from flask import Flask, send_from_directory, request
 from flask_cors import CORS
+from user import user_api, account_api
+from device import device_api
+from payment import payment_api
+from auth import auth_api
+from datasources import datasources_api
+from datalinks import datalinks_api
 
 
 app = Flask(__name__)
-CORS(app)
-print("server started")
+app.register_blueprint(user_api, url_prefix='/user')
+app.register_blueprint(account_api, url_prefix='/account')
+app.register_blueprint(device_api, url_prefix='/device')
+app.register_blueprint(payment_api, url_prefix='/payment')
+app.register_blueprint(auth_api, url_prefix='/auth')
+app.register_blueprint(datasources_api, url_prefix='/datasources')
+app.register_blueprint(datalinks_api, url_prefix='/datalinks')
+
+
+CORS(app, resources={r"/*": {"origins": "*"}})
+
 
 @app.route("/", defaults={'path':''})
 def serve(path):
@@ -21,3 +36,4 @@ def apigettest():
 def apiposttest():
     print(request.json)
     return {"results": request.json}
+

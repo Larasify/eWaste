@@ -1,11 +1,11 @@
 # APIS
 
 ### user
-- GET one
-- GET all
-- POST one
-- DELETE one (soft)
-- PATCH one
+- GET one (/user/getuser)
+- GET all (/user/getuserlist)
+- POST one (/user/postuser)
+- DELETE one (soft) (/user/deleteuser)
+- PATCH one (/user/updateuser)
 
 ### device
 - GET one
@@ -32,7 +32,7 @@
 - GET user-payments
 - GET user-data-links
 
-### data-links
+### datalinks
 - GET one
 - GET all
 - POST one
