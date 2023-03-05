@@ -1,38 +1,82 @@
-from flask import Blueprint
+from flask import Blueprint, request
+from app import db
+from bson.objectid import ObjectId
+from bson.json_util import dumps
+from werkzeug.security import generate_password_hash, check_password_hash
+import datetime
+import uuid
 
 user_api = Blueprint('user_api', __name__)
 #url_prefix = /user
 @user_api.route("/getuser")
 def getUser():
-    return "specific user"
+    data = request.get_json()
+    userid = data.get("id")
+    user = db.Users.find_one({"_id":ObjectId(userid)})
+    if user is None:
+        return {"message":"user_not_found"}
+    return dumps(user)
 
 @user_api.route("/getuserlist")
 def getUserList():
-    return "list of users"
+    users = db.Users.find()
+    if len(users) == 0:
+        return {"message":"empty list"}
+    list_users = list(users)
+    json_users = dumps(list_users)
+    return json_users
 
 @user_api.route("/postuser", methods=['POST'])
 def postUser():
-    return "posted user"
+    data = request.get_json()
+    email = data.get("email")
+    password = generate_password_hash(data.get("password"))
+    first_name = data.get("first_name")
+    ts = datetime.utcnow()
+    ts_mod = datetime.utcnow()
+    if "last_name" in data:
+        last_name = data.get("last_name")
+        db.Users.insert_one({"email":email, "password":password, "first_name":first_name,"last_name":last_name,"ts":ts,"ts_mod":ts_mod})
+        return {"message":"success"}
+    db.Users.insert_one({"email":email, "password":password, "first_name":first_name,"ts":ts,"ts_mod":ts_mod})
+    return {"message":"success"}
 
 @user_api.route("/deleteuser", methods=['POST'])
 def deleteUser():
-    return "deleted user"
+    data = request.get_json()
+    userid = data.get("id")
+    query = {"_id":ObjectId(userid)}
+    db.Users.delete_one(query)
+    return {"message":"user deleted"}
 
 @user_api.route("/updateuser", methods=['POST'])
 def updateUser():
+    data = request.get_json()
+    userid = data.get("id")
+    query = {"_id":ObjectId(userid)}
+    newvalues = { "$set": { "ts_mod": datetime.utcnow() } }
+    db.Users.update_one(query, newvalues)
     return "updated user"
-
 
 account_api = Blueprint('account_api', __name__)
 
 @account_api.route("/getuserlistings", methods=['POST'])
 def getUserListings():
-    return "list of listings for a specific user"
+    data = request.get_json()
+    userid = data.get("id")
+    mylist = db.Devices.find({"user_id":ObjectId(userid)})
+    json_list = dumps(list(mylist))
+    return json_list
 
 @account_api.route("/getuserpayments", methods=['POST'])
 def getUserPayments():
-    return "list of payments for a specific user"
+    data = request.get_json()
+    userid = data.get("id")
+    mylist = db.Payments.find({"user_id":ObjectId(userid)})
+    json_list = dumps(list(mylist))
+    return json_list
 
 @account_api.route("/getuserdatalinks", methods=['POST'])
 def getUserDataLinks():
+    
     return "list of data links for a specific user"
