@@ -65,6 +65,8 @@ def getUserListings():
     data = request.get_json()
     userid = data.get("id")
     mylist = db.Devices.find({"user_id":ObjectId(userid)})
+    if len(mylist) == 0:
+        return {"message":"empty list"}
     json_list = dumps(list(mylist))
     return json_list
 
@@ -73,6 +75,8 @@ def getUserPayments():
     data = request.get_json()
     userid = data.get("id")
     mylist = db.Payments.find({"user_id":ObjectId(userid)})
+    if len(mylist) == 0:
+        return {"message":"empty list"}
     json_list = dumps(list(mylist))
     return json_list
 
