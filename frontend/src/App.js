@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+function App1() {
   return (
     <div className="App">
       <header className="App-header">
@@ -37,4 +37,12 @@ async function getBotResponse() {
 }
 getBotResponse();
 
-export default App;
+// export default App;
+
+export default function App() {
+  return (
+    <h1 className="text-3xl font-bold underline">
+      Hello world!
+    </h1>
+  )
+}
