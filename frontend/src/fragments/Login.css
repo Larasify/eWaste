@@ -1,0 +1,87 @@
+.modal-holder {
+    width: 100vw;
+    height: 100vh;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
+}
+
+.login-label {
+    font-size: 2.7rem;
+    justify-content: center;
+    display: flex;
+    width: 100%;
+    margin-top: 1rem;
+    color: #237759;
+    font-weight: 600;
+}
+
+.login-form-input {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.login-form-input > label {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.login-form-input > input {
+    width: calc(100% - 2rem);
+    height: 2rem;
+    padding-left: 2rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border: 2px solid #509E82;
+}
+
+.forgot {
+    text-align: right;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+
+.login-modal-btn {
+    display: flex;
+    margin-top: 1rem;
+    width: 18rem;
+    background-color: #509E82;
+    color: white;
+    height: 2.4rem;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.login-modal-g-btn {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+    width: 18rem;
+    border: 2px solid #509E82;
+    background-color: white;
+    height: 2.4rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    cursor: not-allowed;
+}
+
+.login-modal-g-btn > div{
+    margin-left: 1rem;
+    font-size: 1.4rem;
+}

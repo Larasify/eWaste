@@ -1,6 +1,6 @@
 .head-holder {
     background-image: linear-gradient(to right, #beebd0, 30%,#ecfff3);
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     height: 7rem;
@@ -10,7 +10,7 @@
 
 .head {
     display: flex;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     height: 7rem;
@@ -66,7 +66,7 @@
     align-items: center;
 }
 
-.recycle-btn > .btn {
+.recycle-btn > .re-btn {
     display: flex;
     background-color: #499177;
     color: white;
