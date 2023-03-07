@@ -1,0 +1,108 @@
+.head-holder {
+    background-image: linear-gradient(to right, #beebd0, 30%,#ecfff3);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 7rem;
+    width: 100%;
+    background-repeat: no-repeat;
+}
+
+.head {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 7rem;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: left 5rem top;
+}
+
+.nav-search {
+    display: flex;
+    width: 50%;
+    height: 100%;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.search-box {
+    display: flex;
+    flex-direction: row;
+    border-radius: 2rem;
+    height: 2rem;
+    width: 20rem;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 255, 255, 0.8);
+}
+
+.search-box > input {
+    border: none;
+    height: 2rem;
+    width: 20rem;
+    background-color: transparent;
+    padding-left: 2rem;
+    font-size: 1.1rem;
+    color: #499177;
+}
+
+.search-box > input::placeholder {
+    font-size: 1.1rem;
+    color: #499177;
+}
+
+.search-box > span {
+    margin-right: 1rem;    
+    color: #499177;
+    cursor: pointer;
+}
+
+.recycle-btn {
+    width: 20%;
+    margin-left: 5rem;
+    display: flex;
+    align-items: center;
+}
+
+.recycle-btn > .btn {
+    display: flex;
+    background-color: #499177;
+    color: white;
+    width: 6rem;
+    align-items: center;
+    justify-content: center;
+    height: 1.4rem;
+    border-radius: 2rem;
+    cursor: pointer; 
+    font-size: 0.8rem;
+}
+
+.right-section {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    justify-content: flex-end;
+    margin-right: 4rem;
+    width: 20%;
+    align-items: center;
+}
+
+.right-section > div {
+    margin-left: 2rem;
+    font-size: 1.4rem;
+    color: #499177;
+    cursor: pointer;
+}
+
+.right-section > .account {
+    background-color: #499177;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 2rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    color: white;
+}
