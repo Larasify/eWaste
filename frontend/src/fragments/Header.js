@@ -9,7 +9,7 @@ export default function Header() {
   return (
     <div class="head-holder">
       <div class="head" style={{
-        backgroundImage: `url('/header.png')`
+        backgroundImage: `url('images/header.png')`
       }}>
           <div class="nav-search">
             <div class="search-box">
