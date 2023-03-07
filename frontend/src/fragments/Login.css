@@ -1,27 +1,17 @@
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #dcece6;
-    height: calc(100vh - 7rem);
-    width: 100%;
-    margin-top: 7rem;
+.modal-holder {
+    width: 100vw;
+    height: 100vh;
 }
 
-.reg-form {
-    align-items: center;
+.login {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 10rem);
-    border-radius: 1.4rem;
-    width: 50%;
-    background-color: #f3f9f7;
+    margin-top: 1rem;
     padding-left: 5rem;
     padding-right: 5rem;
-    margin-top: 1rem;
 }
 
-.reg-form > span {
+.login-label {
     font-size: 2.7rem;
     justify-content: center;
     display: flex;
@@ -31,48 +21,20 @@
     font-weight: 600;
 }
 
-.name {
-    margin-top: 2rem;
-    display: flex;
-    width: 100%;
-    gap: 10rem;
-}
-
-.name > div {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
-.name > div > label {
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
-    font-weight: 400;
-}
-
-.name > div > input {
-    height: 2rem;
-    padding-left: 2rem;
-    font-size: 1rem;
-    border-radius: 0.5rem;
-    border: 2px solid #509E82;
-    width: calc(100% - 2rem);
-}
-
-.form-input {
+.login-form-input {
     display: flex;
     flex-direction: column;
     margin-top: 1rem;
     width: 100%;
 }
 
-.form-input > label {
+.login-form-input > label {
     margin-bottom: 1rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 400;
 }
 
-.form-input > input {
+.login-form-input > input {
     width: calc(100% - 2rem);
     height: 2rem;
     padding-left: 2rem;
@@ -81,9 +43,19 @@
     border: 2px solid #509E82;
 }
 
-.btn {
+.forgot {
+    text-align: right;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+
+.login-modal-btn {
     display: flex;
-    margin-top: 2rem;
+    margin-top: 1rem;
     width: 18rem;
     background-color: #509E82;
     color: white;
@@ -95,10 +67,10 @@
     cursor: pointer;
 }
 
-.g-btn {
+.login-modal-g-btn {
     display: flex;
     flex-direction: row;
-    margin-top: 2rem;
+    margin-top: 1rem;
     width: 18rem;
     border: 2px solid #509E82;
     background-color: white;
@@ -109,7 +81,7 @@
     cursor: not-allowed;
 }
 
-.g-btn > div{
+.login-modal-g-btn > div{
     margin-left: 1rem;
     font-size: 1.4rem;
 }

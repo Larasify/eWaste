@@ -20,11 +20,11 @@ export default function Register() {
             </div>
             <div class="form-input">
                 <label>* Password</label>
-                <input type="text"></input>
+                <input type="password"></input>
             </div>
             <div class="form-input">
                 <label>* Confirm Password</label>
-                <input type="text"></input>
+                <input type="password"></input>
             </div>
             <div class="form-input">
                 <label>* Email</label>

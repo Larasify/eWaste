@@ -1,5 +1,6 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
+import Login from './fragments/Login.js';
 import Layout from './fragments/Layout.js';
 import Register from './pages/Register.js';
 import Home from './pages/Home.js';
@@ -11,6 +12,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Layout/>}>
           <Route index element={<Home/>}/>
+          <Route path="login" element={<Login/>}/>
           <Route path="register" element={<Register/>}/>
         </Route>
       </Routes>
