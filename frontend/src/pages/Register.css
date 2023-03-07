@@ -1,0 +1,115 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #dcece6;
+    height: calc(100vh - 7rem);
+    width: 100%;
+    margin-top: 7rem;
+}
+
+.reg-form {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 10rem);
+    border-radius: 1.4rem;
+    width: 50%;
+    background-color: #f3f9f7;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    margin-top: 1rem;
+}
+
+.reg-form > span {
+    font-size: 2.7rem;
+    justify-content: center;
+    display: flex;
+    width: 100%;
+    margin-top: 1rem;
+    color: #237759;
+    font-weight: 600;
+}
+
+.name {
+    margin-top: 2rem;
+    display: flex;
+    width: 100%;
+    gap: 10rem;
+}
+
+.name > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.name > div > label {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.name > div > input {
+    height: 2rem;
+    padding-left: 2rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #509E82;
+    width: calc(100% - 2rem);
+}
+
+.form-input {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.form-input > label {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.form-input > input {
+    width: calc(100% - 2rem);
+    height: 2rem;
+    padding-left: 2rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #509E82;
+}
+
+.btn {
+    display: flex;
+    margin-top: 2rem;
+    width: 18rem;
+    background-color: #509E82;
+    color: white;
+    height: 2.4rem;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.g-btn {
+    display: flex;
+    flex-direction: row;
+    margin-top: 2rem;
+    width: 18rem;
+    border: 1px solid #509E82;
+    background-color: white;
+    height: 2.4rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    cursor: not-allowed;
+}
+
+.g-btn > div{
+    margin-left: 1rem;
+    font-size: 1.4rem;
+}
