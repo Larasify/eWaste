@@ -18,7 +18,7 @@ export default function Header() {
             </div>
           </div>
           <div class="recycle-btn">
-            <span class="btn">
+            <span class="re-btn">
               Recycle
             </span>
           </div>
