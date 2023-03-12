@@ -1,0 +1,172 @@
+.device-container {
+    margin-top: 8rem;
+    margin-left: 6rem;
+    margin-right: 6rem;
+    display: flex;
+    justify-content: center;
+    width: calc(100% - 12rem);
+    height: 100%;
+    flex-direction: column;
+}   
+
+
+
+.device-title-holder {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 3px solid #509E82;
+    margin-left: 1rem;
+}
+
+.device-back {
+    display: flex;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 2rem;
+    background-color: #509E82;
+    color: white;
+    font-size: 1.2rem;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.device-title-spans {
+    margin-left: 2rem;
+    display: flex;
+    color: #509E82;
+    flex-direction: column;
+    padding-bottom: 1rem;
+}
+
+.device-title-spans > span:nth-child(1) {
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+.device-title-spans > span:nth-child(2) {
+    font-size: 1.1rem;
+}
+
+.device-content-holder {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.device-left-panel {
+    width: 30%;
+    margin-left: 5rem;
+    margin-top: 1rem;
+    font-size: 2rem;
+    color: #509E82;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.device-image-preview {
+    margin-top: 1rem;
+    width: 15rem;
+    border: 2px solid #509E82;
+    height: 20rem;
+    border-radius: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.device-image-preview > img {
+    max-width: 13rem;
+}
+
+
+.device-right-form {
+    margin-top: 1rem;
+    width: 70%;
+    display: flex;
+    margin-left: 5rem;
+    margin-right: 5rem;
+    flex-direction: column;
+}
+
+.device-form-inputs {
+    margin-top: 1rem;
+    display: flex;
+    width: 100%;
+    gap: 2rem;
+}
+
+.device-form-inputs > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.device-form-inputs > div > label {
+    margin-bottom: 0.3rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.device-form-inputs > div > input {
+    height: 1.9rem;
+    padding-left: 2rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border: 2px solid #509E82;
+    width: calc(100% - 2rem);
+}
+
+.device-form-inputs > div > select {
+    height: 1.9rem;
+    padding-left: 2rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border: 2px solid #509E82;
+    width: calc(100% - 2rem);
+    background-color: white;
+}
+
+.device-form-inputs > div > textarea {
+    border-radius: 0.5rem;
+    border: 2px solid #509E82;    
+    width: calc(100% - 2rem);
+    padding: 0.5rem;
+    height: 7rem;
+}
+
+.device-services {
+    margin-top: 2rem;
+    display: flex;
+}
+
+.device-services > label {
+    margin-right: 3rem;
+    margin-left: 0.5rem;
+    font-weight: bold;
+}
+
+.device-btn-holder {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 7rem;
+}
+
+.device-submit-btn {
+    display: flex;
+    margin-top: 1rem;
+    width: 13rem;
+    background-color: #509E82;
+    color: white;
+    height: 2.4rem;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}

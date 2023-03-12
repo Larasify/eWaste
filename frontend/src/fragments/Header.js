@@ -17,14 +17,17 @@ export default function Header() {
               <span><BsSearch/></span>
             </div>
           </div>
-          <div class="recycle-btn">
+          {/* <div class="recycle-btn">
             <span class="re-btn">
               Recycle
             </span>
-          </div>
+          </div> */}
           <div class="right-section">
-            <div class="account">
-              <RiUser5Fill/>
+            <div class="account-holder">
+              <label>Samar</label>
+              <div class="account">
+                <RiUser5Fill/>
+              </div>
             </div>
             <div class="notifications">
               <RiNotification3Line/>
