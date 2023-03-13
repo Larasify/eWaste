@@ -12,7 +12,7 @@ user_api = Blueprint('user_api', __name__)
 def getUser():
     data = request.get_json()
     userid = data.get("id")
-    user = db.Users.find_one({"_id":ObjectId(userid)})
+    user = db.Users.find_one({"_id":uuid.UUID(userid)})
     if user is None:
         return {"message":"user_not_found"}
     return dumps(user)
@@ -28,6 +28,7 @@ def getUserList():
 
 @user_api.route("/postuser", methods=['POST'])
 def postUser():
+    userid = uuid.uuid4()
     data = request.get_json()
     email = data.get("email")
     password = generate_password_hash(data.get("password"))
@@ -36,27 +37,38 @@ def postUser():
     ts_mod = datetime.utcnow()
     if "last_name" in data:
         last_name = data.get("last_name")
-        db.Users.insert_one({"email":email, "password":password, "first_name":first_name,"last_name":last_name,"ts":ts,"ts_mod":ts_mod})
+        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"ts":ts,"ts_mod":ts_mod})
         return {"message":"success"}
-    db.Users.insert_one({"email":email, "password":password, "first_name":first_name,"ts":ts,"ts_mod":ts_mod})
+    db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"ts":ts,"ts_mod":ts_mod})
     return {"message":"success"}
 
 @user_api.route("/deleteuser", methods=['POST'])
 def deleteUser():
     data = request.get_json()
     userid = data.get("id")
-    query = {"_id":ObjectId(userid)}
-    db.Users.delete_one(query)
-    return {"message":"user deleted"}
+    query = {"_id":uuid.UUID(userid)}
+    newvalues = { "$set": { "ts_mod": datetime.utcnow(),"is_deleted":True}}
+    result = db.Users.update_one(query, newvalues)
+    if result.matched_count == 1:
+        return {"message": "user deleted successfully"}
+    else:
+        return {"message": "user does not exist"}
 
 @user_api.route("/updateuser", methods=['POST'])
 def updateUser():
     data = request.get_json()
     userid = data.get("id")
-    query = {"_id":ObjectId(userid)}
-    newvalues = { "$set": { "ts_mod": datetime.utcnow() } }
-    db.Users.update_one(query, newvalues)
-    return "updated user"
+    query = {"_id":uuid.UUID(userid)}
+    fields = data.get("fields")
+    values = data.get("values")
+    update_dict = {}
+    for i in range(len(fields)):
+        update_dict[fields[i]] = values[i]
+    result = db.Users.update_one(query, {"$set": update_dict})
+    if result.matched_count == 1:
+        return {"message": "user updated successfully"}
+    else:
+        return {"message": "user does not exist"}
 
 account_api = Blueprint('account_api', __name__)
 
@@ -64,7 +76,7 @@ account_api = Blueprint('account_api', __name__)
 def getUserListings():
     data = request.get_json()
     userid = data.get("id")
-    mylist = db.Devices.find({"user_id":ObjectId(userid)})
+    mylist = db.Devices.find({"user_id":uuid.UUID(userid)})
     if len(mylist) == 0:
         return {"message":"empty list"}
     json_list = dumps(list(mylist))
@@ -74,7 +86,7 @@ def getUserListings():
 def getUserPayments():
     data = request.get_json()
     userid = data.get("id")
-    mylist = db.Payments.find({"user_id":ObjectId(userid)})
+    mylist = db.Payments.find({"user_id":uuid.UUID(userid)})
     if len(mylist) == 0:
         return {"message":"empty list"}
     json_list = dumps(list(mylist))
@@ -82,5 +94,10 @@ def getUserPayments():
 
 @account_api.route("/getuserdatalinks", methods=['POST'])
 def getUserDataLinks():
-    
-    return "list of data links for a specific user"
+    data = request.get_json()
+    userid = data.get("id")
+    mylist = db.Devices.find({"user_id":uuid.UUID(userid)},{"data_retrieval_link":1, "_id":0})
+    if len(mylist) == 0:
+        return {"message":"empty list"}
+    json_list = dumps(list(mylist))
+    return json_list
