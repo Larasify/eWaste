@@ -1,4 +1,8 @@
-from flask import Blueprint
+from flask import Blueprint, request
+from app import db
+from bson.json_util import dumps
+import datetime
+import uuid
 
 datasources_api = Blueprint('datasources_api', __name__)
 #path = /datasources
@@ -10,12 +14,22 @@ def getVendors():
 #getvendor
 @datasources_api.route("/getvendor")
 def getVendor():
-    return "specific vendor"
+    data = request.get_json()
+    vendor_id = data.get("id")
+    vendor = db.Vendors.find_one({"_id":uuid.UUID(vendor_id)})
+    if vendor is None:
+        return {"message":"vendor_not_found"}
+    return dumps(vendor)
 
 #getall
 @datasources_api.route("/getall")
 def getAll():
-    return "all data??"
+    vendors = db.Vendors.find()
+    if len(vendors) == 0:
+        return {"message":"empty list"}
+    list_vendors = list(vendors)
+    json_vendors = dumps(list_vendors)
+    return json_vendors
 
 #postvendor
 @datasources_api.route("/postvendor", methods=['POST'])
