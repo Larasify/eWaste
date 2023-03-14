@@ -1,0 +1,138 @@
+.suc-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    position: relative;
+}
+
+.success{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 0 auto;
+    font-size: 2em;
+    font-weight: 600;
+    float:left;
+    color: #509E82;
+    z-index: 2;
+}
+
+/*.pay-container {*/
+/*    */
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    position: relative;*/
+/*    height: calc(100vh - 11rem);*/
+/*    width: 70%;*/
+/*    margin-top: 9rem;*/
+/*    margin-left: 15rem;*/
+/*    margin-right: 15rem;*/
+/*    background: #EDF5F3;*/
+/*    border-radius: 40px;*/
+/*    flex-direction: column;*/
+
+/*}*/
+
+
+/*.pay-mask {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    position: relative;*/
+/*    background: rgba(0, 0, 0, 0.4);*/
+/*}*/
+
+/*.pay-title {*/
+/*    position:relative;*/
+/*    display:flex;*/
+/*    justify-content: center;*/
+/*    width: 100%;*/
+/*    height: 15%;*/
+
+
+/*    font-style: normal;*/
+/*    font-weight: 600;*/
+/*    font-size: 3em;*/
+
+/*    color: #509E82;*/
+
+/*}*/
+
+/*.pay-text{*/
+/*    display: flex;*/
+/*    justify-content: left;*/
+/*    position: relative;*/
+/*    flex-direction: column;*/
+/*    font-size: 1.5em;*/
+/*    width: 70%;*/
+
+/*}*/
+
+/*.pay-text p > span {*/
+/*    position: relative;*/
+/*    margin-top:2rem;*/
+/*    text-align:center;*/
+
+/*    font-style: normal;*/
+/*    font-weight: 600;*/
+/*    font-size: 1.2em;*/
+/*    line-height: 70px;*/
+
+/*}*/
+
+
+/*.fee p{*/
+/*    display:inline;*/
+/*    color:#509E82;*/
+/*    font-weight: 600;*/
+/*    font-size: 1.4em;*/
+/*}*/
+
+/*.round-btn {*/
+/*    display: flex;*/
+/*    margin-top: 2rem;*/
+/*    width: 18rem;*/
+/*    background-color: #509E82;*/
+/*    color: white;*/
+/*    height: 3rem;*/
+/*    font-size: 1.5em;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    font-weight: 600;*/
+/*    border-radius: 4rem;*/
+/*    border-width: 0px;*/
+/*    cursor: pointer;*/
+
+/*}*/
+
+/*.round-btn:hover {*/
+/*    display: flex;*/
+/*    margin-top: 2rem;*/
+/*    width: 18rem;*/
+/*    background-color: white;*/
+/*    color: black;*/
+/*    height: 3rem;*/
+/*    font-size: 1.5em;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    font-weight: 600;*/
+/*    border-radius: 4rem;*/
+/*    border-width: 0px;*/
+/*    cursor: pointer;*/
+
+/*}*/
+
+/*.trans-btn{*/
+/*    background-color: transparent;*/
+/*    border-width: 0px;*/
+/*    margin-left: 1em;*/
+/*    margin-right: 1em;*/
+/*    width: 4em;*/
+
+/*}*/
