@@ -26,7 +26,7 @@ def getDatalinkList():
         return {"message":"empty list"}
     list_links = list(links)
     json_links = dumps(list_links)
-    return json_users
+    return json_links
 
 
 #post datalink
