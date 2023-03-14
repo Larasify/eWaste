@@ -9,6 +9,7 @@ from payment import payment_api
 from auth import auth_api
 from datasources import datasources_api
 from datalinks import datalinks_api
+from dbscript import rebuilddb
 
 app = Flask(__name__)
 app.register_blueprint(user_api, url_prefix='/user')
@@ -38,3 +39,4 @@ def apiposttest():
     print(request.json)
     return {"results": request.json}
 
+rebuilddb()

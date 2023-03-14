@@ -23,7 +23,16 @@ def login():
 #post register
 @auth_api.route("/register", methods=['POST'])
 def register():
-    # data validation
+    # data validation TODO:TEMPORARY
+    userid = uuid.uuid4()
+    data = request.get_json()
+    email = data.get("email")
+    password = generate_password_hash(data.get("password"))
+    first_name = data.get("first_name")
+    ts = datetime.utcnow()
+    ts_mod = datetime.utcnow()
+    if "last_name" in data:
+        last_name = data.get("last_name")
     if db.Users.find_one({"email":email}) is not None:
         return {"message":"email already been registered"}
     userid = uuid.uuid4()
