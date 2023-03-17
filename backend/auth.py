@@ -24,7 +24,7 @@ def login():
 @auth_api.route("/register", methods=['POST'])
 def register():
     # data validation TODO:TEMPORARY
-    userid = uuid.uuid4()
+    userid = str(uuid.uuid4())
     data = request.get_json()
     email = data.get("email")
     password = generate_password_hash(data.get("password"))

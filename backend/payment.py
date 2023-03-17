@@ -13,7 +13,7 @@ payment_api = Blueprint('payment_api', __name__)
 def getPayment():
     data = request.get_json()
     payment_id = data.get("id")
-    payment = db.Payments.find_one({"_id":uuid.UUID(payment_id)})
+    payment = db.Payments.find_one({"_id":payment_id})
     if payment is None:
         return {"message":"payment_not_found"}
     return dumps(payment)
@@ -31,7 +31,7 @@ def getPaymentList():
 # Post a payment
 @payment_api.route("/postpayment", methods=['POST'])
 def postPayment():
-    payment_id = uuid.uuid4()
+    payment_id = str(uuid.uuid4())
     data = request.get_json()
     user_id = data.get("user_id")
     device_id = data.get("device_id")
@@ -48,7 +48,7 @@ def postPayment():
 def deletePayment():
     data = request.get_json()
     payment_id = data.get("id")
-    query = {"_id":uuid.UUID(payment_id)}
+    query = {"_id":payment_id}
     newvalues = { "$set": { "ts_mod": datetime.utcnow(),"is_deleted":True}}
     result = db.Payments.update_one(query, newvalues)
     if result.matched_count == 1:
@@ -61,12 +61,13 @@ def deletePayment():
 def updatePayment():
     data = request.get_json()
     payment_id = data.get("id")
-    query = {"_id": uuid.UUID(payment_id)}
+    query = {"_id": payment_id}
     fields = data.get("fields")
     values = data.get("values")
     update_dict = {}
     for i in range(len(fields)):
         update_dict[fields[i]] = values[i]
+    update_dict["ts_mod"] = datetime.utcnow()
     result = db.Payments.update_one(query, {"$set": update_dict})
     if result.matched_count == 1:
         return {"message": "payment updated successfully"}

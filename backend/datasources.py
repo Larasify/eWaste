@@ -16,7 +16,7 @@ def getVendors():
 def getVendor():
     data = request.get_json()
     vendor_id = data.get("id")
-    vendor = db.Vendors.find_one({"_id":uuid.UUID(vendor_id)})
+    vendor = db.Vendors.find_one({"_id":vendor_id})
     if vendor is None:
         return {"message":"vendor_not_found"}
     return dumps(vendor)

@@ -13,7 +13,7 @@ datalinks_api = Blueprint('datalinks_api', __name__)
 def getDatalink():
     data = request.get_json()
     deviceid = data.get("id")
-    datalink = db.Devices.find_one({"_id":uuid.UUID(deviceid)},{"data_retrieval_link":1, "_id":0})
+    datalink = db.Devices.find_one({"_id":deviceid},{"data_retrieval_link":1, "_id":0})
     if datalink is None:
         return {"message":"datalink_not_found"}
     return dumps(datalink)
@@ -34,9 +34,9 @@ def getDatalinkList():
 def postDatalink():
     data = request.get_json()
     device_id = data.get("id")
-    query = {"_id": uuid.UUID(device_id)}
+    query = {"_id": device_id}
     link = data.get("link")
-    newvalue = {"data_retrieval_link":link}
+    newvalue = {"data_retrieval_link":link, "ts_mod": datetime.utcnow()}
     result = db.Devices.update_one(query, {"$set": newvalue})
     if result.matched_count == 1:
         return {"message": "datalink posted successfully"}
@@ -48,7 +48,8 @@ def postDatalink():
 def deleteDatalink():
     data = request.get_json()
     device_id = data.get("id")
-    query = {"_id": uuid.UUID(device_id)}
+    query = {"_id": device_id}
+    db.Devices.update_one(query,{"$set":{"ts_mod": datetime.utcnow()}})
     result = db.Devices.update_one(query, {"$unset": {"data_retrieval_link":""}})
     if result.matched_count == 1:
         return {"message": "datalink deleted successfully"}
@@ -60,9 +61,9 @@ def deleteDatalink():
 def updateDatalink():
     data = request.get_json()
     device_id = data.get("id")
-    query = {"_id": uuid.UUID(device_id)}
+    query = {"_id": device_id}
     link = data.get("link")
-    newvalue = {"data_retrieval_link":link}
+    newvalue = {"data_retrieval_link":link,"ts_mod": datetime.utcnow()}
     result = db.Devices.update_one(query, {"$set": newvalue})
     if result.matched_count == 1:
         return {"message": "datalink updated successfully"}
