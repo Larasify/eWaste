@@ -1,40 +1,27 @@
-import logo from './logo.svg';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+
+import Login from './fragments/Login.js';
+import Layout from './fragments/Layout.js';
+import Register from './pages/Register.js';
+import Device from './pages/Device.js';
+import Home from './pages/Home.js';
+import EditUserForm from "./pages/editUserForm.js";
 import './App.css';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout/>}>
+          <Route index element={<Home/>}/>
+          <Route path="login" element={<Login/>}/>
+          <Route path="register" element={<Register/>}/>
+          <Route path="device" element={<Device/>}/>
+          <Route path="editUserForm" element={<EditUserForm/>}/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
 }
-async function getBotResponse() {
-  const jsondata = {"message": "hello"};
-  const options = {
-      method: 'POST',
-      credentials: "same-origin",
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(jsondata)
-  };
-  const response = await fetch('http://127.0.0.1:5000/apiposttest', options);
-  const responsedata = await response.json();
-  console.log(responsedata);
-}
-getBotResponse();
 
 export default App;
