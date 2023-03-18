@@ -11,7 +11,7 @@ def rebuilddb():
     db.Vendors.drop()   
     #insert random 50 users with random uuid email password firstname lastname ts ts_mod
     for i in range(50):
-        userid = uuid.uuid4()
+        userid = str(uuid.uuid4())
         email = "jack"+str(i)+"@gmail.com"
         password = generate_password_hash("password")
         first_name = "jack"
@@ -22,8 +22,8 @@ def rebuilddb():
 
     #insert random 50 vendors with random uuid email password firstname lastname ts ts_mod
     for i in range(50):
-        device_id = uuid.uuid4()
-        user_id = uuid.uuid4()
+        device_id = str(uuid.uuid4())
+        user_id = str(uuid.uuid4())
         cost = 100
         dtype = "type"
         ts = datetime.datetime.utcnow()
