@@ -1,0 +1,15 @@
+.user-recycle-container {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    position: relative;
+    height: calc(100vh - 11rem);
+    width: 70%;
+    margin-top: 9rem;
+    margin-left: 15rem;
+    margin-right: 15rem;
+    border: #E3F0EB 1px solid;
+    border-radius: 40px;
+    flex-direction: row;
+
+}
