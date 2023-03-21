@@ -78,7 +78,7 @@ def getUserListings():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
         mylist = db.Listings.find({"user_id":userid})
-        if len(mylist) == 0:
+        if mylist.count() == 0:
             return {"message":"empty list"}
         json_list = dumps(list(mylist))
         return json_list
@@ -90,7 +90,7 @@ def getUserPayments():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
         mylist = db.Payments.find({"user_id":userid})
-        if len(mylist) == 0:
+        if mylist.count() == 0:
             return {"message":"empty list"}
         json_list = dumps(list(mylist))
         return json_list
@@ -102,7 +102,7 @@ def getUserDataLinks():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
         mylist = db.Devices.find({"user_id":userid},{"data_retrieval_link":1, "_id":0})
-        if len(mylist) == 0:
+        if mylist.count() == 0:
             return {"message":"empty list"}
         json_list = dumps(list(mylist))
         return json_list

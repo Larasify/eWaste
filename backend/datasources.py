@@ -9,7 +9,12 @@ datasources_api = Blueprint('datasources_api', __name__)
 #getvendors
 @datasources_api.route("/getvendors")
 def getVendors():
-    return "list of vendors"
+    vendors = db.Vendors.find()
+    if vendors.count() == 0:
+        return {"message":"empty list", "response":"error"}
+    list_vendors = list(vendors)
+    json_vendors = dumps(list_vendors)
+    return json_vendors
 
 #getvendor
 @datasources_api.route("/getvendor")
@@ -25,8 +30,8 @@ def getVendor():
 @datasources_api.route("/getall")
 def getAll():
     vendors = db.Vendors.find()
-    if len(vendors) == 0:
-        return {"message":"empty list"}
+    if vendors.count() == 0:
+        return {"message":"empty list", "response":"error"}
     list_vendors = list(vendors)
     json_vendors = dumps(list_vendors)
     return json_vendors
@@ -34,14 +39,37 @@ def getAll():
 #postvendor
 @datasources_api.route("/postvendor", methods=['POST'])
 def postVendor():
-    return "posted vendor"
+    id = str(uuid.uuid4())
+    #todo
+    return {"response":"success"}
 
 #deletevendor
 @datasources_api.route("/deletevendor", methods=['POST'])
 def deleteVendor():
-    return "deleted vendor"
+    data = request.get_json()
+    vendor_id = data.get("id")
+    query = {"_id":vendor_id}
+    newvalues = { "$set": { "ts_mod": datetime.utcnow(),"is_deleted":True}}
+    result = db.Vendors.update_one(query, newvalues)
+    if result.matched_count == 1:
+        return {"response":"success"}
+    else:
+        return {"message": "vendor does not exist", "response":"error"}
 
 #updatevendor
 @datasources_api.route("/updatevendor", methods=['POST'])
 def updateVendor():
-    return "updated vendor"
+    data = request.get_json()
+    vendor_id = data.get("id")
+    query = {"_id":vendor_id}
+    fields = data.get("fields")
+    values = data.get("values")
+    update_dict = {}
+    for i in range(len(fields)):
+        update_dict[fields[i]] = values[i]
+    update_dict["ts_mod"] = datetime.utcnow()
+    result = db.Vendors.update_one(query, {"$set": update_dict})
+    if result.matched_count == 1:
+        return {"response":"success"}
+    else:
+        return {"message": "vendor does not exist", "response":"error"}
