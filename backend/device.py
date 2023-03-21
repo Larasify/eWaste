@@ -23,7 +23,7 @@ def getDevice():
 @device_api.route("/getdevicelist")
 def getDeviceList():
     devices = db.Devices.find()
-    if len(devices) == 0:
+    if devices.count() == 0:
         return {"message":"empty list"}
     list_devices = list(devices)
     json_devices = dumps(list_devices)

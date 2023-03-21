@@ -22,7 +22,7 @@ def getDatalink():
 @datalinks_api.route("/getdatalinklist")
 def getDatalinkList():
     links = db.Devices.find({},{"data_retrieval_link":1, "_id":0})
-    if len(links) == 0:
+    if links.count() == 0:
         return {"message":"empty list"}
     list_links = list(links)
     json_links = dumps(list_links)
