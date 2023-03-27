@@ -81,7 +81,7 @@ export default function UserTable() {
                 <div class="justify-right mg-r-2" style={{marginLeft:"7rem"}}>
                     <div class="user-search-box">
                         <input type="text" placeholder='Search'></input>
-                        <span><BsSearch/></span>
+                        <button><BsSearch/></button>
                     </div>
                     {/*<div class="user-top-control">*/}
                     {/*    <Tooltip title="Add User">*/}
@@ -98,7 +98,7 @@ export default function UserTable() {
                     columns={columns}
                     pageSize={5}
                     rowsPerPageOptions={[10]}
-                    checkboxSelection={true}
+                    // checkboxSelection={true}
                     rowSpacingType=''
                     showCellVerticalBorder={false}
                 />
