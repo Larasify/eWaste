@@ -4,10 +4,10 @@ from bson.json_util import dumps
 import datetime
 import uuid
 
-datasources_api = Blueprint('datasources_api', __name__)
+vendors_api = Blueprint('vendors_api', __name__)
 #path = /datasources
 #getvendors
-@datasources_api.route("/getvendors")
+@vendors_api.route("/getvendors")
 def getVendors():
     vendors = db.Vendors.find()
     if vendors.count() == 0:
@@ -17,7 +17,7 @@ def getVendors():
     return json_vendors
 
 #getvendor
-@datasources_api.route("/getvendor")
+@vendors_api.route("/getvendor")
 def getVendor():
     data = request.get_json()
     vendor_id = data.get("id")
@@ -27,7 +27,7 @@ def getVendor():
     return dumps(vendor)
 
 #getall
-@datasources_api.route("/getall")
+@vendors_api.route("/getall")
 def getAll():
     vendors = db.Vendors.find()
     if vendors.count() == 0:
@@ -37,7 +37,7 @@ def getAll():
     return json_vendors
 
 #postvendor
-@datasources_api.route("/postvendor", methods=['POST'])
+@vendors_api.route("/postvendor", methods=['POST'])
 def postVendor():
     vendor_id = str(uuid.uuid4())
     data = request.get_json()
@@ -53,7 +53,7 @@ def postVendor():
     return {"response":"success"}
 
 #deletevendor
-@datasources_api.route("/deletevendor", methods=['POST'])
+@vendors_api.route("/deletevendor", methods=['POST'])
 def deleteVendor():
     data = request.get_json()
     vendor_id = data.get("id")
@@ -66,7 +66,7 @@ def deleteVendor():
         return {"message": "vendor does not exist", "response":"error"}
 
 #updatevendor
-@datasources_api.route("/updatevendor", methods=['POST'])
+@vendors_api.route("/updatevendor", methods=['POST'])
 def updateVendor():
     data = request.get_json()
     vendor_id = data.get("id")
