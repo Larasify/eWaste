@@ -12,7 +12,7 @@ user_api = Blueprint('user_api', __name__)
 def getUser():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
-        mylist = db.Users.find_one({"user_id":userid})
+        mylist = db.Users.find_one({"_id":userid})
         if mylist is None:
             return {"message":"empty_list", "response":"error"}
         return mylist
