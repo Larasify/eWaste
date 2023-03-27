@@ -89,7 +89,7 @@ account_api = Blueprint('account_api', __name__)
 def getUserListings():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
-        mylist = db.Listings.find({"user_id":userid})
+        mylist = db.Devices.find({"user_id":userid})
         if mylist.count() == 0:
             return {"message":"empty list"}
         json_list = dumps(list(mylist))
