@@ -7,7 +7,7 @@ import uuid
 vendors_api = Blueprint('vendors_api', __name__)
 #path = /datasources
 #getvendors
-@vendors_api.route("/getvendors")
+@vendors_api.route("/getvendorlist")
 def getVendors():
     vendors = db.Vendors.find()
     if vendors.count() == 0:
@@ -17,7 +17,7 @@ def getVendors():
     return json_vendors
 
 #getvendor
-@vendors_api.route("/getvendor")
+@vendors_api.route("/getvendor", methods=['POST'])
 def getVendor():
     data = request.get_json()
     vendor_id = data.get("id")
@@ -45,11 +45,11 @@ def postVendor():
     model_name = data.get("model_name")
     size = data.get("size")
     storage = data.get("storage")
-    sell_price = data.get("sell_price")
-    ts = datetime.utcnow()
-    ts_mod = datetime.utcnow()
+    sale_price = data.get("sale_price")
+    ts = datetime.datetime.utcnow()
+    ts_mod = datetime.datetime.utcnow()
     db.Vendors.insert_one({"_id":vendor_id,"brand":brand,"model_name":model_name,"size":size,"storage":storage,\
-                           "sell_price":sell_price,"ts":ts,"ts_mod":ts_mod,"is_deleted":False})
+                           "sale_price":sale_price,"ts":ts,"ts_mod":ts_mod,"is_deleted":False})
     return {"response":"success"}
 
 #deletevendor
@@ -58,7 +58,7 @@ def deleteVendor():
     data = request.get_json()
     vendor_id = data.get("id")
     query = {"_id":vendor_id}
-    newvalues = { "$set": { "ts_mod": datetime.utcnow(),"is_deleted":True}}
+    newvalues = { "$set": { "ts_mod": datetime.datetime.utcnow(),"is_deleted":True}}
     result = db.Vendors.update_one(query, newvalues)
     if result.matched_count == 1:
         return {"response":"success"}
