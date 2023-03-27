@@ -10,7 +10,7 @@ device_api = Blueprint('device_api', __name__)
 #url_prefix = /device
 
 # Get a specific device
-@device_api.route("/getdevice")
+@device_api.route("/getdevice", methods=['POST'])
 def getDevice():
     data = request.get_json()
     deviceid = data.get("id")
@@ -39,24 +39,24 @@ def postDevice():
     status = data.get("status")
     color = data.get("color")
     dtype = data.get("type")
-    ts = datetime.utcnow()
-    ts_mod = datetime.utcnow()
+    ts = datetime.datetime.utcnow()
+    ts_mod = datetime.datetime.utcnow()
     db.Devices.insert_one({"_id":device_id,"user_id":user_id,"vendor_id":vendor_id,"status":status,"color":color,\
                            "dtype":dtype,"ts":ts,"ts_mod":ts_mod,"is_deleted":False})
     return {"response":"success"}
 
 # Delete a device
-@device_api.route("/deletedevice")
+@device_api.route("/deletedevice", methods=['POST'])
 def deleteDevice():
     data = request.get_json()
-    device_id = data.get("id")
-    query = {"_id":device_id}
-    newvalues = { "$set": { "ts_mod": datetime.utcnow(),"is_deleted":True}}
+    deviceid = data.get("id")
+    query = {"_id":deviceid}
+    newvalues = { "$set": { "ts_mod": datetime.datetime.utcnow(),"is_deleted":True}}
     result = db.Devices.update_one(query, newvalues)
     if result.matched_count == 1:
-        return {"response": "success"}
+        return {"response":"success"}
     else:
-        return {"message": "Device does not exist", "response":"error"}
+        return {"message": "device does not exist", "response":"error"}
 
 # Update a device
 @device_api.route("/updatedevice")
