@@ -36,26 +36,30 @@ def getUserList():
 
 @user_api.route("/postuser", methods=['POST'])
 def postUser():
+    # data validation TODO:TEMPORARY
     userid = str(uuid.uuid4())
     data = request.get_json()
-    email = data.get("email") #TODO: What is the difference between this and register
+    email = data.get("email")
     password = generate_password_hash(data.get("password"))
     first_name = data.get("first_name")
-    ts = datetime.utcnow()
-    ts_mod = datetime.utcnow()
+    ts = datetime.datetime.utcnow()
+    ts_mod = datetime.datetime.utcnow()
+    if db.Users.find_one({"email":email}) is not None:
+        return {"response":"error", "message":"email_has_been_used"}
     if "last_name" in data:
         last_name = data.get("last_name")
         db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"ts":ts,"ts_mod":ts_mod})
-        return {"response":"success"}
-    db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"ts":ts,"ts_mod":ts_mod})
+    else:
+        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"ts":ts,"ts_mod":ts_mod})
     return {"response":"success"}
+
 
 @user_api.route("/deleteuser", methods=['POST'])
 def deleteUser():
     data = request.get_json()
     userid = data.get("id")
     query = {"_id":userid}
-    newvalues = { "$set": { "ts_mod": datetime.utcnow(),"is_deleted":True}}
+    newvalues = { "$set": { "ts_mod": datetime.datetime.utcnow(),"is_deleted":True}}
     result = db.Users.update_one(query, newvalues)
     if result.matched_count == 1:
         return {"response":"success"}
