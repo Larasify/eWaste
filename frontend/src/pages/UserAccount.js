@@ -73,7 +73,7 @@ export default function UserAccount(){
                                 <label className='trans-btn'><FaCcStripe size={30}/></label>
                             </label>
                     </div>
-                    <button className={"account-btn"} style={{fontSize:16,width:"7em",marginLeft:"5em"}}>
+                    <button className={"account-btn"} style={{fontSize:16,width:"5em"}}>
                         Edit
                     </button>
                 </div>
