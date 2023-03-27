@@ -10,6 +10,7 @@ import PaySuc from "./pages/PaySuc";
 import UserAccount from './pages/UserAccount.js';
 import UserRecycle from './pages/UserRecycle.js';
 import './App.css';
+import EditUserForm from "./pages/editUserForm";
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="paysuc" element={<PaySuc/>}/>
           <Route path="useraccount" element={<UserAccount/>}/>
           <Route path="userrecycle" element={<UserRecycle/>}/>
+          <Route path="editUserForm" element={<EditUserForm/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
