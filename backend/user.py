@@ -10,12 +10,20 @@ user_api = Blueprint('user_api', __name__)
 #url_prefix = /user
 @user_api.route("/getuser")
 def getUser():
-    data = request.get_json()
-    userid = data.get("id")
-    user = db.Users.find_one({"_id":userid})
-    if user is None:
-        return {"message":"user_not_found"}
-    return dumps(user)
+    if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
+        userid = session_ids[request.cookies.get('session-id')]
+        mylist = db.Users.find_one({"user_id":userid})
+        if mylist is None:
+            return {"message":"empty_list", "response":"error"}
+        return mylist
+    elif('session-id' in request.cookies):
+        mylist = db.Users.find_one({"email":"jack0@gmail.com"})
+        if mylist is None:
+            return {"message":"empty_list", "response":"error"}
+        return mylist
+    else:
+        return {"message":"not_logged_in", "response":"error"}
+    
 
 @user_api.route("/getuserlist")
 def getUserList():
