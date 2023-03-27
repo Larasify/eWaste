@@ -10,27 +10,44 @@ export default function EditUserForm() {
                     <IoChevronBackCircle className={"mx-2"}/>
                     <h1>Details</h1>
                 </div>
-                <img src="../images/avatar.PNG" alt=""
+                <img src="../images/phone-generic.jpg" alt=""
                      className={"w-1/2 m-auto rounded-2xl border-[#3fb78c] border-2"}/>
             </div>
-            <form action="#" className={"w-2/3 h-full flex flex-row"}>
-                <div className={"w-1/2 h-full flex flex-col"}>
-                    <label htmlFor="givenNameInput">Given name:</label>
-                    <input type="text" id={"givenNameInput"}/>
-                    <label htmlFor="surnameInput">Surname: </label>
-                    <input type="text" id={"surnameInput"}/>
-                    <label htmlFor="emailInput">Email: </label>
-                    <input type="text" id={"emailInput"}/>
-                    <label htmlFor="passwordInput">Password: </label>
-                    <input type="password" id={"passwordInput"}/>
+            <form action="#" className={"w-2/3 h-full flex flex-col p-5"}>
+                {/*<div className={"w-1/2 h-full flex flex-col p-5"}>*/}
+                {/*    <label htmlFor="givenNameInput">Given name:</label>*/}
+                {/*    <input type="text" id={"givenNameInput"}/>*/}
+                {/*    <label htmlFor="surnameInput">Surname: </label>*/}
+                {/*    <input type="text" id={"surnameInput"}/>*/}
+                {/*    <label htmlFor="emailInput">Email: </label>*/}
+                {/*    <input type="text" id={"emailInput"}/>*/}
+                {/*    <label htmlFor="passwordInput">Password: </label>*/}
+                {/*    <input type="password" id={"passwordInput"}/>*/}
+                {/*</div>*/}
+                {/*<div className={"w-1/2 h-full"}>*/}
+                {/*    /!*<input type="radio" id={"staffRadio"} name={"role"} value={"staff"}/>*!/*/}
+                {/*    /!*<label htmlFor={"staffRadio"}>Staff</label>*!/*/}
+                {/*    /!*<input type="radio" id={"userRadio"} name={"role"} value={"user"}/>*!/*/}
+                {/*    /!*<label htmlFor="userRadio">User</label>*!/*/}
+                {/*    <input type="submit"/>*/}
+                {/*</div>*/}
+                <label htmlFor="givenNameInput">Given Name:</label>
+                <input type="text" id={"givenNameInput"}/>
+                <label htmlFor="lastNameInput">Last Name:</label>
+                <input type="text" id={"lastNameInput"}/>
+                <label htmlFor="emailInput">Email:</label>
+                <input type="text" id={"emailInput"}/>
+                <label htmlFor="phoneInput">Phone:</label>
+                <input type="text" id={"phoneInput"}/>
+                <label htmlFor="passwordInput">Password:</label>
+                <input type="password" id={"passwordInput"}/>
+                <div>
+                    <input type="checkbox" value={"staff"} name={"role"} id={"staffCheckbox"}/>
+                    <label htmlFor="staffCheckbox">Staff</label>
+                    <input type="checkbox" value={"user"} name={"role"} id={"userCheckbox"}/>
+                    <label htmlFor="userCheckbox">User</label>
                 </div>
-                <div className={"w-1/2 h-full"}>
-                    <input type="radio" id={"staffRadio"} name={"role"} value={"staff"}/>
-                    <label htmlFor={"staffRadio"}>Staff</label>
-                    <input type="radio" id={"userRadio"} name={"role"} value={"user"}/>
-                    <label htmlFor="userRadio">User</label>
-                    <input type="submit"/>
-                </div>
+                <input type="submit"/>
             </form>
         </div>
 
