@@ -22,9 +22,9 @@ def getPayment():
 @payment_api.route("/getpaymentlist")
 def getPaymentList():
     payments = db.Payments.find()
-    list_payments = list(payments)
-    if len(list_payments) == 0:
+    if payments.count() == 0:
         return {"message":"empty list"}
+    list_payments = list(payments)
     json_payments = dumps(list_payments)
     return json_payments
 
