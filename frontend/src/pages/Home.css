@@ -1,38 +1,3 @@
-.home-container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: calc(100vh - 8rem);
-    margin-top: 7rem;
-}
-
-.left-panel {
-    width: 70%;
-    height: 100%;
-    margin-top: 1rem;
-    margin-left: 2rem;
-}
-
-.suggested {
-    display: flex;
-    flex-direction: column;
-}
-
-.suggested > label {
-    color: #509E82;
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-}
-
-.devices {
-    display: flex;
-    /* flex-wrap: wrap; */
-    gap: 3rem;
-    overflow-y: scroll;
-    overflow-y: hidden;
-    padding-bottom: 1rem;
-}
 
 .comments {
     margin-top: 2rem;
@@ -58,6 +23,7 @@
 }
 
 .rating {
+    display: flex;
     margin-left: 1rem;
     color: #ffe14e;
 }
@@ -89,40 +55,7 @@
     font-size: 0.8rem;
 }
 
-.right-panel {
-    padding: 1rem;
-    margin-top: 1rem;
-    width: 30%;
-    height: 100%;
-}
 
-.device-form {
-    margin-top: 2rem;
-    padding: 1rem;
-    margin-left: 3rem;
-    margin-right: 3rem;
-    border: 2px solid #509E82;
-    border-radius: 0.6rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.device-label > span {
-    color: #509E82;
-    font-size: 1.1rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-}
-
-
-.device-form-input {
-    display: flex;
-    flex-direction: column;
-    margin-top: 1rem;
-    width: 100%;
-}
 
 .device-form-input select {
     margin-bottom: 0.2rem;    
@@ -157,19 +90,6 @@
 }
 
 
-.device-form-btn {
-    display: flex;
-    margin-top: 1rem;
-    width: 18rem;
-    background-color: #509E82;
-    color: white;
-    height: 2.4rem;
-    justify-content: center;
-    align-items: center;
-    font-weight: 600;
-    border-radius: 0.5rem;
-    cursor: pointer;
-}
 
 /* 
 .left-panel {
@@ -191,6 +111,33 @@
 } */
 
 /* overrides */
+
+.home-tabs .MuiTabs-flexContainer button {
+    color: #A1A1A1;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-transform: none;
+    font-family: 'pf';
+    border-bottom: 4px solid #A1A1A1;
+    margin-right: 2rem;
+    text-align: left;
+}
+
+@media (max-width: 800px){
+    .home-tabs .MuiTabs-flexContainer button {
+        margin-right: 0.5rem;
+    }
+}
+
+.home-tabs .MuiTabs-flexContainer button.Mui-selected {
+    color: #509E82;
+    border-bottom: 4px solid #509E82;
+}
+
+.home-tabs span.MuiTabs-indicator {
+    background: none;
+}
 .nav-tabs {
     border: none;
     gap: 3rem;
