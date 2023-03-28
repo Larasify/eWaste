@@ -1,3 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'pf';
+    src: local('pf'), url(./fonts/webfonts/pfsc-r.woff) format('woff');
+}
+
 body {
     margin: 0;
 }
