@@ -10,9 +10,9 @@ vendors_api = Blueprint('vendors_api', __name__)
 @vendors_api.route("/getvendorlist")
 def getVendors():
     vendors = db.Vendors.find()
-    if vendors.count() == 0:
-        return {"message":"empty list", "response":"error"}
     list_vendors = list(vendors)
+    if len(list_vendors) == 0:
+        return {"message":"empty list", "response":"error"}
     json_vendors = dumps(list_vendors)
     return json_vendors
 
@@ -30,9 +30,9 @@ def getVendor():
 @vendors_api.route("/getall")
 def getAll():
     vendors = db.Vendors.find()
-    if vendors.count() == 0:
-        return {"message":"empty list", "response":"error"}
     list_vendors = list(vendors)
+    if len(list_vendors) == 0:
+        return {"message":"empty list", "response":"error"}
     json_vendors = dumps(list_vendors)
     return json_vendors
 
