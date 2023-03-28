@@ -1,0 +1,131 @@
+.user-holder {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 7rem);
+}
+
+.user-holder > ul {
+    display: block;
+}
+
+
+
+.user-main{
+    display: flex;
+    flex-direction: column;
+    width: 96%;
+    height: calc(100% - 4rem);
+    margin: 2rem;
+}
+
+.user-main-topbar {
+    margin-top: 1rem;
+    display: flex;
+    width: 100%;
+}
+
+.user-main-title {
+    margin-left: 3rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-main-title  > span:nth-child(2) {
+    font-size: 0.8rem;
+    color: rgb(0, 0 ,0, 0.4);
+}
+
+.user-top-control {
+    display: flex;
+    font-size: 1.5rem;
+    color: #509E82;
+    align-items: center;
+    cursor: pointer;
+    height: 2.2rem;
+}
+
+.user-search-box {
+    border: 2px solid #509E82;
+    border-radius: 2rem;
+    padding-left: 1rem;
+    width: 15rem;
+    color: #509E82;
+    height: 2.2rem;
+    margin-right: 2rem;
+}
+
+.user-search-box > input{
+    color: #509E82;
+    border: none;
+    height: 2rem;
+}
+
+.user-search-box > input::placeholder {
+    color: #509E82;
+}
+
+.user-search-box > span {
+    cursor: pointer;
+}
+
+.user-main-content {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+/* overrides */
+.user-main .MuiDataGrid-withBorderColor {
+    border: none !important;
+}
+
+.user-top-control .MuiButtonBase-root {
+    color: #509E82;
+}
+
+
+.user-controls .MuiButtonBase-root {
+    color: rgb(0, 0 ,0, 0.4);
+}
+
+.userl-logout .MuiButtonBase-root {
+    color: rgb(0, 0 ,0, 0.4);
+}
+
+.user-controls Button {
+    font-size: 1.5rem;
+}
+
+.user-left-panel .MuiTabs-root {
+    width: 100%;
+}
+
+.user-controls .MuiTabs-flexContainer {
+    display: flex;
+    align-items: center;
+}
+
+.user-controls .Mui-selected {
+    border-right: none;
+}
+
+.user-controls .Mui-selected  .userl-control{
+    color: #509E82;
+}
+
+/* .user-main .MuiDataGrid-columnHeadersInner{
+    width: 100% !important;
+}
+
+.user-main .MuiDataGrid-columnHeadersInner > div {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.user-main .MuiDataGrid-row {
+    display: flex;
+    justify-content: space-between;
+} */
