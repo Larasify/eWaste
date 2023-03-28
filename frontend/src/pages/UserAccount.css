@@ -1,0 +1,93 @@
+.user-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: calc(100vh - 11rem);
+    width: 70%;
+    margin-top: 3rem;
+    margin-left: 15rem;
+    margin-right: 15rem;
+    border: #E3F0EB 1px solid;
+    border-radius: 40px;
+    flex-direction: row;
+
+}
+
+.user-info-col{
+    display: flex;
+    justify-content: start;
+    align-items: stretch;
+    background-color: #E3F0EB;
+    border-top-left-radius:40px;
+    border-bottom-left-radius:40px;
+    width:30%;
+    height: 100%;
+    flex-direction: column;
+}
+
+.user-edit-col{
+    display: flex;
+    border:none;
+    border-top-right-radius:40px;
+    border-bottom-right-radius:40px;
+    width:70%;
+    height:100%;
+    overflow-x:auto;
+    overflow-y:auto;
+
+}
+
+.account-edit-form{
+    width:60%;
+    margin-left: 10em;
+}
+
+.return-btn{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    color:#509E82;
+    margin-left: 1.5em;
+    margin-top: 1em;
+    background-color: transparent;
+    border-width: 0;
+    max-height: 4em;
+}
+
+.user-avatar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    margin: 2em auto;
+    /*border-width: 0;*/
+    border-radius:100px;
+    /*border:3px green solid;*/
+    position: relative;
+    width:100%;
+    height:0px;
+}
+
+.user-avatar > img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.account-btn {
+    display: flex;
+    width: 18rem;
+    background-color: #509E82;
+    color: white;
+    height: 2.4rem;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    border:none;
+}

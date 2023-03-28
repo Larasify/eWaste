@@ -9,7 +9,7 @@ from user import user_api, account_api
 from device import device_api
 from payment import payment_api
 from auth import auth_api
-from datasources import datasources_api
+from vendors import vendors_api
 from datalinks import datalinks_api
 from dbscript import rebuilddb
 
@@ -19,7 +19,7 @@ app.register_blueprint(account_api, url_prefix='/account')
 app.register_blueprint(device_api, url_prefix='/device')
 app.register_blueprint(payment_api, url_prefix='/payment')
 app.register_blueprint(auth_api, url_prefix='/auth')
-app.register_blueprint(datasources_api, url_prefix='/datasources')
+app.register_blueprint(vendors_api, url_prefix='/vendor')
 app.register_blueprint(datalinks_api, url_prefix='/datalinks')
 
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -41,8 +41,8 @@ def apigettest():
         generated_session_id = str(uuid.uuid4())
         response = app.make_response({"response":"success", "message":"cookie generated"})
         response.set_cookie('session-id', generated_session_id)
-        session_ids[generated_session_id] = str(uuid.uuid4())
-        print(session_ids)
+        ##session_ids[generated_session_id] = str(uuid.uuid4())
+        ##print(session_ids)
         return response
 
 
@@ -51,4 +51,4 @@ def apiposttest():
     print(request.json)
     return {"results": request.json}
 
-#rebuilddb()
+rebuilddb()
