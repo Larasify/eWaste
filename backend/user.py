@@ -28,9 +28,9 @@ def getUser():
 @user_api.route("/getuserlist")
 def getUserList():
     users = db.Users.find()
-    if users.count() == 0:
-        return {"message":"list_empty", "response":"error"}
     list_users = list(users)
+    if len(list_users) == 0:
+        return {"message":"list_empty", "response":"error"}
     json_users = dumps(list_users)
     return json_users
 
@@ -90,9 +90,10 @@ def getUserListings():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
         mylist = db.Devices.find({"user_id":userid})
-        if mylist.count() == 0:
+        tolist = list(mylist)
+        if len(tolist) == 0:
             return {"message":"empty list"}
-        json_list = dumps(list(mylist))
+        json_list = dumps(tolist)
         return json_list
     else:
         return {"message":"not_logged_in", "response":"error"}
@@ -102,9 +103,10 @@ def getUserPayments():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
         mylist = db.Payments.find({"user_id":userid})
-        if mylist.count() == 0:
+        tolist = list(mylist)
+        if len(tolist) == 0:
             return {"message":"empty list"}
-        json_list = dumps(list(mylist))
+        json_list = dumps(tolist)
         return json_list
     else:
         return {"message":"not_logged_in", "response":"error"}
@@ -114,9 +116,10 @@ def getUserDataLinks():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
         mylist = db.Devices.find({"user_id":userid},{"data_retrieval_link":1, "_id":0})
-        if mylist.count() == 0:
+        tolist = list(mylist)
+        if len(tolist) == 0:
             return {"message":"empty list"}
-        json_list = dumps(list(mylist))
+        json_list = dumps(tolist)
         return json_list
     else:
         return {"message":"not_logged_in", "response":"error"}
