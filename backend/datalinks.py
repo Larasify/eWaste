@@ -9,11 +9,12 @@ datalinks_api = Blueprint('datalinks_api', __name__)
 #url_prefix = /datalinks
 
 #get datalink
-@datalinks_api.route("/getdatalink")
+@datalinks_api.route("/getdatalink", methods=['POST'])
 def getDatalink():
     data = request.get_json()
     deviceid = data.get("id")
-    datalink = db.Devices.find_one({"_id":deviceid},{"data_retrieval_link":1, "_id":0})
+    device = db.Devices.find_one({"_id":deviceid})
+    datalink = device.get("data_retrieval_link")
     if datalink is None:
         return {"message":"datalink_not_found"}
     return dumps(datalink)
@@ -24,7 +25,7 @@ def getDatalinkList():
     links = db.Devices.find({},{"data_retrieval_link":1, "_id":0})
     list_links = list(links)
     if len(list_links) == 0:
-        return {"message":"empty list"}
+        return {"message":"empty list", "response":"error"}
     json_links = dumps(list_links)
     return json_links
 
@@ -36,12 +37,12 @@ def postDatalink():
     device_id = data.get("id")
     query = {"_id": device_id}
     link = data.get("link")
-    newvalue = {"data_retrieval_link":link, "ts_mod": datetime.utcnow()}
+    newvalue = {"data_retrieval_link":link, "ts_mod": datetime.datetime.utcnow()}
     result = db.Devices.update_one(query, {"$set": newvalue})
     if result.matched_count == 1:
-        return {"message": "datalink posted successfully"}
+        return {"response": "success"}
     else:
-        return {"message": "Device does not exist"}
+        return {"message": "Device does not exist", "response":"error"}
 
 #delete datalink
 @datalinks_api.route("/deletedatalink", methods=['POST'])
@@ -49,12 +50,12 @@ def deleteDatalink():
     data = request.get_json()
     device_id = data.get("id")
     query = {"_id": device_id}
-    db.Devices.update_one(query,{"$set":{"ts_mod": datetime.utcnow()}})
+    db.Devices.update_one(query,{"$set":{"ts_mod": datetime.datetime.utcnow()}})
     result = db.Devices.update_one(query, {"$unset": {"data_retrieval_link":""}})
     if result.matched_count == 1:
-        return {"message": "datalink deleted successfully"}
+        return {"response": "success"}
     else:
-        return {"message": "Device does not exist"}
+        return {"message": "Device does not exist", "response": "error"}
 
 #update datalink
 @datalinks_api.route("/updatedatalink", methods=['POST'])
@@ -63,9 +64,9 @@ def updateDatalink():
     device_id = data.get("id")
     query = {"_id": device_id}
     link = data.get("link")
-    newvalue = {"data_retrieval_link":link,"ts_mod": datetime.utcnow()}
+    newvalue = {"data_retrieval_link":link, "ts_mod": datetime.datetime.utcnow()}
     result = db.Devices.update_one(query, {"$set": newvalue})
     if result.matched_count == 1:
-        return {"message": "datalink updated successfully"}
+        return {"response": "success"}
     else:
-        return {"message": "Device does not exist"}
+        return {"message": "Device does not exist", "response":"error"}
