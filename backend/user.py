@@ -76,7 +76,7 @@ def updateUser():
     update_dict = {}
     for i in range(len(fields)):
         update_dict[fields[i]] = values[i]
-    update_dict["ts_mod"] = datetime.utcnow()
+    update_dict["ts_mod"] = datetime.datetime.utcnow()
     result = db.Users.update_one(query, {"$set": update_dict})
     if result.matched_count == 1:
         return {"response":"success"}
