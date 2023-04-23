@@ -59,7 +59,7 @@ def deleteDevice():
         return {"message": "device does not exist", "response":"error"}
 
 # Update a device
-@device_api.route("/updatedevice")
+@device_api.route("/updatedevice", methods=['POST'])
 def updateDevice():
     data = request.get_json()
     device_id = data.get("id")
@@ -69,7 +69,7 @@ def updateDevice():
     update_dict = {}
     for i in range(len(fields)):
         update_dict[fields[i]] = values[i]
-    update_dict["ts_mod"] = datetime.utcnow()
+    update_dict["ts_mod"] = datetime.datetime.utcnow()
     result = db.Devices.update_one(query, {"$set": update_dict})
     if result.matched_count == 1:
         return {"response": "success"}
