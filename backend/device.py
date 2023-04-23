@@ -17,7 +17,7 @@ def getDevice():
     device = db.Devices.find_one({"_id":deviceid})
     if device is None:
         return {"message":"device_not_found"}
-    return dumps(device)
+    return {"response":"success", "device_info":dumps(device)}
 
 # Get a list of devices
 @device_api.route("/getdevicelist")
@@ -27,7 +27,7 @@ def getDeviceList():
     if len(list_devices) == 0:
         return {"message":"empty list", "response":"error"}
     json_devices = dumps(list_devices)
-    return json_devices
+    return {"response":"success", "device_list":json_devices}
 
 # Post a device
 @device_api.route("/postdevice", methods=['POST'])
