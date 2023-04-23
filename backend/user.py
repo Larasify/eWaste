@@ -107,7 +107,7 @@ def getUserPayments():
         if len(tolist) == 0:
             return {"message":"empty list", "response":"error"}
         json_list = dumps(tolist)
-        return return {"response":"success", "user_list":json_list}
+        return {"response":"success", "user_list":json_list}
     else:
         return {"message":"not_logged_in", "response":"error"}
 
@@ -120,7 +120,7 @@ def getUserDataLinks():
         if len(tolist) == 0:
             return {"message":"empty list","response":"error"}
         json_list = dumps(tolist)
-        return return {"response":"success", "user_list":json_list}
+        return {"response":"success", "user_list":json_list}
     else:
         return {"message":"not_logged_in", "response":"error"}
 
