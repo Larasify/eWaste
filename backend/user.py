@@ -12,15 +12,15 @@ user_api = Blueprint('user_api', __name__)
 def getUser():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
-        mylist = db.Users.find_one({"_id":userid})
-        if mylist is None:
+        user_info = db.Users.find_one({"_id":userid})
+        if user_info is None:
             return {"message":"empty_list", "response":"error"}
-        return mylist
+        return {"message":"success", "user_info":user_info}
     elif('session-id' in request.cookies):
-        mylist = db.Users.find_one({"email":"jack0@gmail.com"})
-        if mylist is None:
+        user_info = db.Users.find_one({"email":"jack0@gmail.com"})
+        if user_info is None:
             return {"message":"empty_list", "response":"error"}
-        return mylist
+        return {"message":"success", "user_info":user_info}
     else:
         return {"message":"not_logged_in", "response":"error"}
     
