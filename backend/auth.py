@@ -4,6 +4,7 @@ from bson.json_util import dumps
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 import uuid
+import re
 
 auth_api = Blueprint('auth_api', __name__)
 #url_prefix = /auth
@@ -36,6 +37,8 @@ def register():
     userid = str(uuid.uuid4())
     data = request.get_json()
     email = data.get("email")
+    if not validate_email(email):
+        return {"response":"error", "message":"invalid_email"}
     password = generate_password_hash(data.get("password"))
     first_name = data.get("first_name")
     ts = datetime.datetime.utcnow()
@@ -61,9 +64,20 @@ def logout():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         del session_ids[request.cookies.get('session-id')]
     #clear cookie from response
-    response = current_app.make_response({"results": "success"})
+    response = current_app.make_response({"response": "success"})
     response.set_cookie('session-id', '', expires=0)
     return response
 
 def generate_random_session_id():
     return str(uuid.uuid4())
+
+def validate_email(email):
+    # check if email is a valid format
+    pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+    return bool(re.match(pattern, email))
+
+def validate_password(password):
+    # check if password meets minimum requirements
+    min_length = 6
+    return len(password) >= min_length
+

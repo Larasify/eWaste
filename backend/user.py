@@ -15,12 +15,12 @@ def getUser():
         user_info = db.Users.find_one({"_id":userid})
         if user_info is None:
             return {"message":"empty_list", "response":"error"}
-        return {"message":"success", "user_info":user_info}
+        return {"response":"success", "user_info":user_info}
     elif('session-id' in request.cookies):
         user_info = db.Users.find_one({"email":"jack0@gmail.com"})
         if user_info is None:
             return {"message":"empty_list", "response":"error"}
-        return {"message":"success", "user_info":user_info}
+        return {"response":"success", "user_info":user_info}
     else:
         return {"message":"not_logged_in", "response":"error"}
     
@@ -32,7 +32,7 @@ def getUserList():
     if len(list_users) == 0:
         return {"message":"list_empty", "response":"error"}
     json_users = dumps(list_users)
-    return json_users
+    return {"response":"success", "user_list":json_users}
 
 @user_api.route("/postuser", methods=['POST'])
 def postUser():
@@ -92,9 +92,9 @@ def getUserListings():
         mylist = db.Devices.find({"user_id":userid})
         tolist = list(mylist)
         if len(tolist) == 0:
-            return {"message":"empty list"}
+            return {"message":"empty list","response":"error"}
         json_list = dumps(tolist)
-        return json_list
+        return {"response":"success", "user_list":json_list}
     else:
         return {"message":"not_logged_in", "response":"error"}
 
@@ -105,9 +105,9 @@ def getUserPayments():
         mylist = db.Payments.find({"user_id":userid})
         tolist = list(mylist)
         if len(tolist) == 0:
-            return {"message":"empty list"}
+            return {"message":"empty list", "response":"error"}
         json_list = dumps(tolist)
-        return json_list
+        return return {"response":"success", "user_list":json_list}
     else:
         return {"message":"not_logged_in", "response":"error"}
 
@@ -118,9 +118,9 @@ def getUserDataLinks():
         mylist = db.Devices.find({"user_id":userid},{"data_retrieval_link":1, "_id":0})
         tolist = list(mylist)
         if len(tolist) == 0:
-            return {"message":"empty list"}
+            return {"message":"empty list","response":"error"}
         json_list = dumps(tolist)
-        return json_list
+        return return {"response":"success", "user_list":json_list}
     else:
         return {"message":"not_logged_in", "response":"error"}
 
