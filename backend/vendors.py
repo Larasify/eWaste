@@ -5,7 +5,7 @@ import datetime
 import uuid
 
 vendors_api = Blueprint('vendors_api', __name__)
-#path = /datasources
+#path = /vendor
 #getvendors
 @vendors_api.route("/getvendorlist")
 def getVendors():
@@ -76,7 +76,7 @@ def updateVendor():
     update_dict = {}
     for i in range(len(fields)):
         update_dict[fields[i]] = values[i]
-    update_dict["ts_mod"] = datetime.utcnow()
+    update_dict["ts_mod"] = datetime.datetime.utcnow()
     result = db.Vendors.update_one(query, {"$set": update_dict})
     if result.matched_count == 1:
         return {"response":"success"}

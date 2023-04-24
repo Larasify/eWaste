@@ -17,7 +17,7 @@ def getDevice():
     device = db.Devices.find_one({"_id":deviceid})
     if device is None:
         return {"message":"device_not_found"}
-    return dumps(device)
+    return {"response":"success", "device_info":dumps(device)}
 
 # Get a list of devices
 @device_api.route("/getdevicelist")
@@ -27,7 +27,7 @@ def getDeviceList():
     if len(list_devices) == 0:
         return {"message":"empty list", "response":"error"}
     json_devices = dumps(list_devices)
-    return json_devices
+    return {"response":"success", "device_list":json_devices}
 
 # Post a device
 @device_api.route("/postdevice", methods=['POST'])
@@ -59,7 +59,7 @@ def deleteDevice():
         return {"message": "device does not exist", "response":"error"}
 
 # Update a device
-@device_api.route("/updatedevice")
+@device_api.route("/updatedevice", methods=['POST'])
 def updateDevice():
     data = request.get_json()
     device_id = data.get("id")
@@ -69,7 +69,7 @@ def updateDevice():
     update_dict = {}
     for i in range(len(fields)):
         update_dict[fields[i]] = values[i]
-    update_dict["ts_mod"] = datetime.utcnow()
+    update_dict["ts_mod"] = datetime.datetime.utcnow()
     result = db.Devices.update_one(query, {"$set": update_dict})
     if result.matched_count == 1:
         return {"response": "success"}
