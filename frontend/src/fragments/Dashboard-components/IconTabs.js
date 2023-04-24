@@ -10,11 +10,11 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-// import TabPanel from '@mui/lab/TabPanel';
                                               
 
 import './IconTabs.css';
 import UserTable from './UserTable';
+import TabPanel from './TabPanel.js';
 
 export default function IconTabs() {
 
@@ -25,12 +25,12 @@ export default function IconTabs() {
     };
 
     return (
-        <div class='sdb-holder'>
-            <div class='sdb-left-panel'>
-                <div class='sdb-controls'>
+        <div className={'flex w-full h-full flex-row'} style={{height: "calc(100vh - 6rem)"}}>
+            <div className={"flex flex-col w-16 h-full items-center sdb-controls"} style={{backgroundColor: '#ebebeb'}}>
+                <div className='flex flex-col h-full'>
                     <Tabs value={value} onChange={handleChange} aria-label="staff-dashboard" orientation='vertical'>
                         <Tab icon={
-                            <div class="sdbl-control">
+                            <div className="text-2xl flex justify-center cursor-pointer mt-4 mb-8 sdb-tab">
                                 <Tooltip title="Users" placement='right' arrow> 
                                     <FiUser/>
                                 </Tooltip>
@@ -38,21 +38,21 @@ export default function IconTabs() {
                         } aria-label="users"/>
 
                         <Tab icon={
-                            <div class="sdbl-control">
+                            <div className="text-2xl flex justify-center cursor-pointer mb-8 sdb-tab">
                                 <Tooltip title="Devices" placement='right' arrow> 
                                     <HiOutlineDeviceTablet/>
                                 </Tooltip>
                             </div>  
                         } aria-label="users"/>
                         <Tab icon={
-                            <div class="sdbl-control">
+                            <div className="text-2xl flex justify-center cursor-pointer mb-8 sdb-tab">
                                 <Tooltip title="Transactions" placement='right' arrow> 
                                     <BsReceipt/>
                                 </Tooltip>
                             </div>  
                         } aria-label="users"/>
                         <Tab icon={
-                            <div class="sdbl-control">
+                            <div className="text-2xl flex justify-center cursor-pointer mb-8 sdb-tab">
                                 <Tooltip title="Update Vendors" placement='right' arrow> 
                                     <MdSystemUpdateAlt/>
                                 </Tooltip>
@@ -60,8 +60,8 @@ export default function IconTabs() {
                         } aria-label="users"/>
                     </Tabs>
                 </div>
-                <div class='sdbl-exit'>
-                    <div class="sdbl-logout">
+                <div className='flex flex-col h-1/6 items-end'>
+                    <div className="text-2xl mb-8 flex justify-self-end cursor-pointer">
                         <Tooltip title="Logout" placement='right' arrow>
                             <IconButton>      
                                 <RiLogoutBoxLine/>  
@@ -70,11 +70,11 @@ export default function IconTabs() {
                     </div>
                 </div>
             </div>
-            <div class='sdb-main'>
-                <div class="sdb-main-users h-100">
-                    {/* <TabPanel value={value} index={0}> */}
+            <div className='flex flex-col w-full h-full m-8'>
+                <div className="h-full">
+                    <TabPanel value={value} index={0}>
                         <UserTable/>
-                    {/* </TabPanel> */}
+                    </TabPanel>
                 </div>
             </div>
         </div>

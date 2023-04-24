@@ -6,7 +6,7 @@ import './StaffDashboard.css';
 
 export default function StaffDashboard() {
   return (
-    <div class='sdb-container'>
+    <div className='w-full h-full'>
         <IconTabs/>
     </div>
   )

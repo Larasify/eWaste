@@ -23,10 +23,10 @@ const App = () => {
           <Route path="register" element={<Register/>}/>
           <Route path="device" element={<Device/>}/>
           <Route path="payment" element={<Payment/>}/>
-          <Route path="paysuc" element={<PaySuc/>}/>
-          <Route path="useraccount" element={<UserAccount/>}/>
-          <Route path="userrecycle" element={<UserRecycle/>}/>
-          <Route path="editUserForm" element={<EditUserForm/>}/>
+          <Route path="payment-success" element={<PaySuc/>}/>
+          <Route path="user-account" element={<UserAccount/>}/>
+          <Route path="user-recycle" element={<UserRecycle/>}/>
+          <Route path="edit-user-form" element={<EditUserForm/>}/>
           <Route path="staff-dashboard" element={<StaffDashboard/>}/>
         </Route>
       </Routes>

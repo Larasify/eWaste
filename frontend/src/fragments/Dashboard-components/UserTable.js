@@ -8,7 +8,6 @@ import { BsSearch } from 'react-icons/bs';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
-import './UserTable.css';
 
 export default function UserTable() {
 
@@ -63,13 +62,13 @@ export default function UserTable() {
     ];
 
     return (
-        <>
-            <div class="sdb-main-topbar">
-                <div class="sdb-main-title">
-                    <span>User List</span>
-                    <span>1015 users</span>
+        <div className='flex w-full flex-col'>
+            <div className="flex w-full pt-4 justify-between	">
+                <div className="flex ml-12 w-5/6 font-medium flex-col">
+                    <span className={"text-lg"}>User List</span>
+                    <span className={"text-sm text-slate-400"}>1015 users</span>
                 </div>
-                <div class="justify-right mg-r-2" style={{width: "calc(90% - 2rem)"}}>
+                <div className={"flex justify-end w-1/6 mr-8"}>
                     <div class="sdb-search-box">
                         <input type="text" placeholder='Search'></input>
                         <span><BsSearch/></span>
@@ -115,6 +114,6 @@ export default function UserTable() {
                     showCellVerticalBorder={false}
                 />
             </div>
-        </>
+        </div>
     )
 }
