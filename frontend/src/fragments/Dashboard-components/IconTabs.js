@@ -13,8 +13,8 @@ import Tab from '@mui/material/Tab';
                                               
 
 import './IconTabs.css';
-import UserTable from './UserTable';
 import TabPanel from './TabPanel.js';
+import DataTable from './DataTable';
 
 export default function IconTabs() {
 
@@ -23,6 +23,65 @@ export default function IconTabs() {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    const getUserTable = () => {
+        //fetch data for this table
+        const cols =  [
+            { field: 'name', headerName: 'Name', flex: 2},
+            { field: 'address', headerName: 'Address', flex: 2,},
+            {
+              field: 'email',
+              headerName: 'Email',
+              flex: 2,
+            },
+            {
+              field: 'orders',
+              headerName: 'Orders',
+              type: 'number',
+              flex: 1
+            },
+            {
+              field: 'status',
+              headerName: 'Account Status',
+              flex: 1
+            }
+        ];
+        const rows = [
+            { id: 1, name: 'Alakazam', address: '16 High Street', email: "aspdoas@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 2, name: 'Alakazam', address: '16 High Street', email: "fhfgs@gmail.com", orders: 2, status: 'Enabled'  },
+            { id: 3, name: 'Alakazam', address: '16 High Street', email: "xcvxcv@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 4, name: 'Alakazam', address: '16 High Street', email: "aspdoas@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 5, name: 'Alakazam', address: '16 High Street', email: "asd@gmail.com", orders: 10, status: 'Enabled' },
+            { id: 6, name: 'Alakazam', address: '16 High Street', email: "aspdoas@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 7, name: 'Alakazam', address: '16 High Street', email: "wew@gmail.com", orders: 4, status: 'Enabled' },
+            { id: 8, name: 'Alakazam', address: '16 High Street', email: "aspdoas@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 9, name: 'Alakazam', address: '16 High Street', email: "ere@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 21, name: 'Alakazam', address: '16 High Street', email: "aspdoas@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 22, name: 'Alakazam', address: '16 High Street', email: "fhfgs@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 23, name: 'Alakazam', address: '16 High Street', email: "xcvxcv@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 24, name: 'Alakazam', address: '16 High Street', email: "aspdoas@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 25, name: 'Alakazam', address: '16 High Street', email: "asd@gmail.com", orders: 10, status: 'Enabled' },
+            { id: 26, name: 'Alakazam', address: '16 High Street', email: "aspdoas@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 27, name: 'Alakazam', address: '16 High Street', email: "wew@gmail.com", orders: 4, status: 'Enabled' },
+            { id: 28, name: 'Alakazam', address: '16 High Street', email: "aspdoas@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 29, name: 'Alakazam', address: '16 High Street', email: "ere@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 11, name: 'Alakazam', address: '16 High Street', email: "aspdoas@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 12, name: 'Alakazam', address: '16 High Street', email: "fhfgs@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 13, name: 'Alakazam', address: '16 High Street', email: "xcvxcv@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 14, name: 'Alakazam', address: '16 High Street', email: "aspdoas@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 15, name: 'Alakazam', address: '16 High Street', email: "asd@gmail.com", orders: 10, status: 'Enabled' },
+            { id: 16, name: 'Alakazam', address: '16 High Street', email: "aspdoas@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 17, name: 'Alakazam', address: '16 High Street', email: "wew@gmail.com", orders: 4, status: 'Enabled' },
+            { id: 18, name: 'Alakazam', address: '16 High Street', email: "aspdoas@gmail.com", orders: 2, status: 'Enabled' },
+            { id: 19, name: 'Alakazam', address: '16 High Street', email: "ere@gmail.com", orders: 2, status: 'Enabled' },
+        ];
+        return {
+            cols,
+            rows
+        }
+    }
+
+    const userData = getUserTable();
 
     return (
         <div className={'flex w-full h-full flex-row'} style={{height: "calc(100vh - 6rem)"}}>
@@ -70,10 +129,43 @@ export default function IconTabs() {
                     </div>
                 </div>
             </div>
-            <div className='flex flex-col w-full h-full m-8'>
+            <div className='flex flex-col w-full h-full'>
                 <div className="h-full">
-                    <TabPanel value={value} index={0}>
-                        <UserTable/>
+                    <TabPanel className="h-full max-h-fit overflow-y-scroll" value={value} index={0}>
+                        <DataTable 
+                            rows={userData.rows}
+                            cols={userData.cols}
+                            fns={["Add User", "Delete User", "Edit User", "Freeze User Account"]}
+                            title="User"
+                            count={1024}
+                        />
+                    </TabPanel>
+                    <TabPanel className="h-full max-h-fit overflow-y-scroll" value={value} index={1}>
+                        <DataTable 
+                            rows={userData.rows}
+                            cols={userData.cols}
+                            fns={["Add Device", "Delete Device", "Edit Device", "Freeze Device Record"]}
+                            title="Device"
+                            count={220}
+                        />
+                    </TabPanel>
+                    <TabPanel className="h-full max-h-fit overflow-y-scroll" value={value} index={2}>
+                        <DataTable 
+                            rows={userData.rows}
+                            cols={userData.cols}
+                            fns={["Add Transaction", "Delete Transaction", "Edit Transaction", "Freeze Transaction Record"]}
+                            title="Transaction"
+                            count={4404}
+                        />
+                    </TabPanel>
+                    <TabPanel className="h-full max-h-fit overflow-y-scroll" value={value} index={3}>
+                        <DataTable 
+                            rows={userData.rows}
+                            cols={userData.cols}
+                            fns={["Add Datasource", "Delete Datasource", "Edit Datasource", "Freeze Datasource Entry"]}
+                            title="Datasource"
+                            count={55509}
+                        />
                     </TabPanel>
                 </div>
             </div>

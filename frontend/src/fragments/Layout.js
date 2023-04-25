@@ -6,7 +6,7 @@ import Header from './Header'
 export default function Layout() {
   return (
     <>
-        <div className="fixed z-20 w-100 top-0 h-auto">
+        <div className="fixed z-20 w-full top-0 h-auto">
             <Header/>
         </div>
         <div className="mt-16 lg:mt-24">
