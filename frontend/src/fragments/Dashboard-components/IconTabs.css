@@ -1,0 +1,109 @@
+
+.sdb-main-title {
+    margin-left: 3rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+}
+
+.sdb-main-title  > span:nth-child(2) {
+    font-size: 0.8rem;
+    color: rgb(0, 0 ,0, 0.4);
+}
+
+.sdb-top-control {
+    display: flex;
+    font-size: 1.5rem;
+    color: #509E82;
+    align-items: center;
+    cursor: pointer;
+    height: 2.2rem;
+}
+
+.sdb-search-box {
+    border: 2px solid #509E82;
+    border-radius: 2rem;
+    padding-left: 1rem;
+    width: 15rem;
+    color: #509E82;
+    height: 2.2rem;
+    margin-right: 2rem;
+}
+
+.sdb-search-box > input{
+    color: #509E82;
+    border: none;
+    height: 2rem;
+}
+
+.sdb-search-box > input::placeholder {
+    color: #509E82;
+}
+
+.sdb-search-box > span {
+    cursor: pointer;
+}
+
+.sdb-main-content {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+/* overrides */
+.sdb-main .MuiDataGrid-withBorderColor {
+    border: none !important;
+}
+
+.sdb-top-control .MuiButtonBase-root {
+    color: #509E82;
+}
+
+
+.sdb-controls .MuiButtonBase-root {
+    color: rgb(0, 0 ,0, 0.4);
+}
+
+.sdbl-logout .MuiButtonBase-root {
+    color: rgb(0, 0 ,0, 0.4);
+}
+
+.sdb-controls Button {
+    font-size: 1.5rem;
+}
+
+.sdb-left-panel .MuiTabs-root {
+    width: 100%;
+}
+
+.sdb-controls .MuiTabs-flexContainer {
+    display: flex;
+    align-items: center;
+}
+
+.sdb-controls .Mui-selected {
+    border-right: none;
+}
+
+.sdb-controls .Mui-selected .sdb-tab{
+    color: #509E82;
+}
+
+.sdb-controls span.MuiTabs-indicator {
+    display: none;
+}
+
+/* .sdb-main .MuiDataGrid-columnHeadersInner{
+    width: 100% !important;
+}
+
+.sdb-main .MuiDataGrid-columnHeadersInner > div {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.sdb-main .MuiDataGrid-row {
+    display: flex;
+    justify-content: space-between;
+} */

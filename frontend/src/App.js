@@ -3,6 +3,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Login from './fragments/Login.js';
 import Layout from './fragments/Layout.js';
 import Register from './pages/Register.js';
+import StaffDashboard from './pages/StaffDashboard.js';
 import Device from './pages/Device.js';
 import Home from './pages/Home.js';
 import Payment from "./pages/Payment";
@@ -22,10 +23,11 @@ const App = () => {
           <Route path="register" element={<Register/>}/>
           <Route path="device" element={<Device/>}/>
           <Route path="payment" element={<Payment/>}/>
-          <Route path="paysuc" element={<PaySuc/>}/>
-          <Route path="useraccount" element={<UserAccount/>}/>
-          <Route path="userrecycle" element={<UserRecycle/>}/>
-          <Route path="editUserForm" element={<EditUserForm/>}/>
+          <Route path="payment-success" element={<PaySuc/>}/>
+          <Route path="user-account" element={<UserAccount/>}/>
+          <Route path="user-recycle" element={<UserRecycle/>}/>
+          <Route path="edit-user-form" element={<EditUserForm/>}/>
+          <Route path="staff-dashboard" element={<StaffDashboard/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
