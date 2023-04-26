@@ -17,7 +17,7 @@ def getDatalink():
     datalink = device.get("data_retrieval_link")
     if datalink is None:
         return {"message":"datalink_not_found"}
-    return dumps(datalink)
+    return {"response":"success", "datalink_info":dumps(datalink)}
 
 #get datalink list
 @datalinks_api.route("/getdatalinklist")
@@ -27,7 +27,7 @@ def getDatalinkList():
     if len(list_links) == 0:
         return {"message":"empty list", "response":"error"}
     json_links = dumps(list_links)
-    return json_links
+    return {"response":"success", "link_list":json_links}
 
 
 #post datalink
