@@ -16,7 +16,7 @@ def getPayment():
     payment = db.Payments.find_one({"_id":payment_id})
     if payment is None:
         return {"message":"payment_not_found"}
-    return dumps(payment)
+    return {"response":"success", "payment_info":dumps(payment)}
 
 # Get a list of payments
 @payment_api.route("/getpaymentlist")
@@ -26,7 +26,7 @@ def getPaymentList():
     if len(list_payments) == 0:
         return {"message":"empty list", "response":"error"}
     json_payments = dumps(list_payments)
-    return json_payments
+    return {"response":"success", "payment_list":json_payments}
 
 # Post a payment
 @payment_api.route("/postpayment", methods=['POST'])
