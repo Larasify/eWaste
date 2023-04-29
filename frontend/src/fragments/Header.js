@@ -13,7 +13,9 @@ export default function Header() {
                 <span><RiSearchLine className={"md:w-6 md:h-6 mr-4 text-[#509E82]"}/></span>
             </div>
             <RiSearchLine className={"ml-auto w-8 h-8 md:hidden mr-2 text-[#499177]"} />
-        <div className={"w-auto h-8 md:w-auto md:h-10 md:ml-auto inline-flex text-white bg-[#499177] px-8 md:px-3 py-1 rounded-3xl hover:bg-[#3fb78c] mr-8"}>
+            <div className={"w-auto h-8 md:w-auto md:h-10 md:ml-auto inline-flex text-white bg-[#499177] px-8 md:px-3 py-1 rounded-3xl hover:bg-[#3fb78c] mr-8"} onClick={() =>{
+                window.location.href = "/login";
+            }}>
                 <label htmlFor="" className={"hidden sm:inline-flex w-full h-full text-l text-center justify-self-center items-center mr-1"}>Samar</label>
                 <RiUser5Fill className={"w-full h-full"}/>
             </div>
