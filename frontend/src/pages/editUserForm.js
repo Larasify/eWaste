@@ -13,7 +13,7 @@ export default function EditUserForm() {
                 <img src="../images/phone-generic.jpg" alt=""
                      className={"w-1/2 m-auto rounded-2xl border-[#3fb78c] border-2"}/>
             </div>
-            <form action="#" className={"w-2/3 h-full flex flex-col p-5"}>
+            <form action="#" className={"w-2/3 h-full flex flex-col p-5 justify-around"}>
                 {/*<div className={"w-1/2 h-full flex flex-col p-5"}>*/}
                 {/*    <label htmlFor="givenNameInput">Given name:</label>*/}
                 {/*    <input type="text" id={"givenNameInput"}/>*/}
@@ -31,23 +31,26 @@ export default function EditUserForm() {
                 {/*    /!*<label htmlFor="userRadio">User</label>*!/*/}
                 {/*    <input type="submit"/>*/}
                 {/*</div>*/}
-                <label htmlFor="givenNameInput">Given Name:</label>
-                <input type="text" id={"givenNameInput"}/>
-                <label htmlFor="lastNameInput">Last Name:</label>
-                <input type="text" id={"lastNameInput"}/>
-                <label htmlFor="emailInput">Email:</label>
-                <input type="text" id={"emailInput"}/>
-                <label htmlFor="phoneInput">Phone:</label>
-                <input type="text" id={"phoneInput"}/>
-                <label htmlFor="passwordInput">Password:</label>
-                <input type="password" id={"passwordInput"}/>
-                <div>
-                    <input type="checkbox" value={"staff"} name={"role"} id={"staffCheckbox"}/>
+                <label htmlFor="givenNameInput" className={"text-lg"}>Given Name:</label>
+                <input type="text" id={"givenNameInput"} className={"rounded-2xl border border-[#3fb78c] focus:outline-0 focus-visible:border-[#499177] focus-visible:border-2"}/>
+                <label htmlFor="lastNameInput" className={"text-lg"}>Last Name:</label>
+                <input type="text" id={"lastNameInput"} className={"rounded-2xl border-2 border-[#3fb78c] focus:outline-0 focus-visible:border-[#499177]"}/>
+                <label htmlFor="emailInput" className={"text-lg"}>Email:</label>
+                <input type="text" id={"emailInput"} className={"rounded-2xl border-2 border-[#3fb78c] focus:outline-0 focus-visible:border-[#499177]"}/>
+                <label htmlFor="phoneInput" className={"text-lg"}>Phone:</label>
+                <input type="text" id={"phoneInput"} className={"rounded-2xl border-2 border-[#3fb78c] focus:outline-0 focus-visible:border-[#499177]"}/>
+                <label htmlFor="passwordInput" className={"text-lg"}>Password:</label>
+                <input type="password" id={"passwordInput"} className={"rounded-2xl border-2 border-[#3fb78c] focus:outline-0 focus-visible:border-[#499177]"}/>
+                <div className={"text-xl"}>
+                    <input type="checkbox" value={"staff"} name={"role"} id={"staffCheckbox"} className={"text-2xl rounded-2xl border-2 border-[#3fb78c] checked:outline-0 focus-visible:border-[#499177]"}/>
+                    <span> </span>
                     <label htmlFor="staffCheckbox">Staff</label>
+                    <span> </span>
                     <input type="checkbox" value={"user"} name={"role"} id={"userCheckbox"}/>
+                    <span> </span>
                     <label htmlFor="userCheckbox">User</label>
                 </div>
-                <input type="submit"/>
+                <input className={"place-self-end"} type="submit"/>
             </form>
         </div>
 
