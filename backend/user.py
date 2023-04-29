@@ -12,15 +12,15 @@ user_api = Blueprint('user_api', __name__)
 def getUser():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
-        mylist = db.Users.find_one({"_id":userid})
-        if mylist is None:
+        user_info = db.Users.find_one({"_id":userid})
+        if user_info is None:
             return {"message":"empty_list", "response":"error"}
-        return mylist
+        return {"response":"success", "user_info":user_info}
     elif('session-id' in request.cookies):
-        mylist = db.Users.find_one({"email":"jack0@gmail.com"})
-        if mylist is None:
+        user_info = db.Users.find_one({"email":"jack0@gmail.com"})
+        if user_info is None:
             return {"message":"empty_list", "response":"error"}
-        return mylist
+        return {"response":"success", "user_info":user_info}
     else:
         return {"message":"not_logged_in", "response":"error"}
     
@@ -28,11 +28,11 @@ def getUser():
 @user_api.route("/getuserlist")
 def getUserList():
     users = db.Users.find()
-    if users.count() == 0:
-        return {"message":"list_empty", "response":"error"}
     list_users = list(users)
+    if len(list_users) == 0:
+        return {"message":"list_empty", "response":"error"}
     json_users = dumps(list_users)
-    return json_users
+    return {"response":"success", "user_list":json_users}
 
 @user_api.route("/postuser", methods=['POST'])
 def postUser():
@@ -76,7 +76,7 @@ def updateUser():
     update_dict = {}
     for i in range(len(fields)):
         update_dict[fields[i]] = values[i]
-    update_dict["ts_mod"] = datetime.utcnow()
+    update_dict["ts_mod"] = datetime.datetime.utcnow()
     result = db.Users.update_one(query, {"$set": update_dict})
     if result.matched_count == 1:
         return {"response":"success"}
@@ -90,10 +90,11 @@ def getUserListings():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
         mylist = db.Devices.find({"user_id":userid})
-        if mylist.count() == 0:
-            return {"message":"empty list"}
-        json_list = dumps(list(mylist))
-        return json_list
+        tolist = list(mylist)
+        if len(tolist) == 0:
+            return {"message":"empty list","response":"error"}
+        json_list = dumps(tolist)
+        return {"response":"success", "user_list":json_list}
     else:
         return {"message":"not_logged_in", "response":"error"}
 
@@ -102,10 +103,11 @@ def getUserPayments():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
         mylist = db.Payments.find({"user_id":userid})
-        if mylist.count() == 0:
-            return {"message":"empty list"}
-        json_list = dumps(list(mylist))
-        return json_list
+        tolist = list(mylist)
+        if len(tolist) == 0:
+            return {"message":"empty list", "response":"error"}
+        json_list = dumps(tolist)
+        return {"response":"success", "user_list":json_list}
     else:
         return {"message":"not_logged_in", "response":"error"}
 
@@ -114,10 +116,11 @@ def getUserDataLinks():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
         mylist = db.Devices.find({"user_id":userid},{"data_retrieval_link":1, "_id":0})
-        if mylist.count() == 0:
-            return {"message":"empty list"}
-        json_list = dumps(list(mylist))
-        return json_list
+        tolist = list(mylist)
+        if len(tolist) == 0:
+            return {"message":"empty list","response":"error"}
+        json_list = dumps(tolist)
+        return {"response":"success", "user_list":json_list}
     else:
         return {"message":"not_logged_in", "response":"error"}
 
