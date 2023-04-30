@@ -72,22 +72,23 @@ export default function UserAccount(){
                     <h1>Details</h1>
                 </div>
                 <img src="../images/phone-generic.jpg" alt=""
-                     className={"w-1/2 m-auto rounded-2xl border-[#3fb78c] border-2"}/>
-            </div>
-            <div className={"p-4"}>
-                <p className={"md:mt-10 mx-auto text-center md:text-left leading-loose"}>
+                     className={"w-1/2 m-auto md:mx-auto md:my-2 rounded-2xl border-[#3fb78c] border-2"}/>
+
+                <div className={"p-4 w-full"}>
+                    <p className={"md:m-4 mx-auto text-center md:text-left leading-loose"}>
                     <span
                         className={"text-base md:text-2xl lg:text-4xl text-black text-left font-bold lg:leading-10"}>{user.props.firstName + ' ' + user.props.lastName}</span>
-                    <br/>
-                    <span
-                        className={"text-base md:text-lg lg:text-xl text-[#494949] text-left "}>{'#' + user.props.id}</span>
-                    <br/>
-                    <span
-                        className={"text-base md:text-xl lg:text-2xl text-[#509E82] underline text-left lg:leading-loose "}>{user.props.email}</span>
-                </p>
+                        <br/>
+                        <span
+                            className={"text-base md:text-lg lg:text-xl text-[#494949] text-left "}>{'#' + user.props.id}</span>
+                        <br/>
+                        <span
+                            className={"text-base md:text-xl lg:text-2xl text-[#509E82] underline text-left lg:leading-loose "}>{user.props.email}</span>
+                    </p>
+                </div>
             </div>
             <div
-                className={"flex flex-col border-0 rounded-r-lg w-full md:w-4/5 h-full bg-white md:bg-auto overflow-auto p-4"}>
+                className={"flex flex-col border-0 md:rounded-r-lg w-full md:w-4/5 h-full bg-white md:bg-auto overflow-auto p-4 md:p-16"}>
                 <div className={"md:grid md:grid-cols-2 gap-x-4 mt-6 md:mb-6 "}>
                     <div>
                         <label className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
