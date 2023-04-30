@@ -66,7 +66,7 @@ export default function UserAccount(){
             {/*</div>*/}
 
             <div className={"w-full md:w-1/3 h-full rounded-l-2xl"}>
-                <div className={"inline-flex w-full text-2xl p-4 items-center text-black"}
+                <div className={"inline-flex w-full text-3xl md:text-4xl p-4 md:p-6 items-center text-black"}
                      onClick={askBackward}>
                     <IoChevronBackCircle className={"mx-2"}/>
                     <h1>Details</h1>
@@ -74,7 +74,7 @@ export default function UserAccount(){
                 <img src="../images/phone-generic.jpg" alt=""
                      className={"w-1/2 m-auto md:mx-auto md:my-2 rounded-2xl border-[#3fb78c] border-2"}/>
 
-                <div className={"p-4 w-full"}>
+                <div className={"p-4 w-max mx-auto"}>
                     <p className={"md:m-4 mx-auto text-center md:text-left leading-loose"}>
                     <span
                         className={"text-base md:text-2xl lg:text-4xl text-black text-left font-bold lg:leading-10"}>{user.props.firstName + ' ' + user.props.lastName}</span>
