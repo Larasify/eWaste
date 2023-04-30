@@ -6,10 +6,10 @@ import Header from './Header'
 export default function Layout() {
   return (
     <>
-        <div className="fixed z-20 w-full top-0 h-auto">
+        <div >
             <Header/>
         </div>
-        <div className="mt-16 lg:mt-24">
+        <div >
         <Outlet/>
 
         </div>
