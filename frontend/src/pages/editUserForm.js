@@ -17,7 +17,7 @@ export default function EditUserForm() {
                 <div className={"inline-flex w-full text-3xl md:text-4xl p-4 md:p-6 items-center text-black"}
                      onClick={askBackward}>
                     <IoChevronBackCircle className={"mx-2"}/>
-                    <h1>Details</h1>
+                    <h1>User Details</h1>
                 </div>
                 <img src="../images/phone-generic.jpg" alt=""
                      className={"w-2/3 m-auto md:mt-8 md:mx-auto  rounded-2xl border-[#3fb78c] border-2"}/>
