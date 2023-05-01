@@ -12,6 +12,7 @@ import UserAccount from './pages/UserAccount.js';
 import UserRecycle from './pages/UserRecycle.js';
 import './App.css';
 import EditUserForm from "./pages/editUserForm";
+import {createContext} from "react";
 
 const App = () => {
   return (
@@ -19,7 +20,6 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Layout/>}>
           <Route index element={<Home/>}/>
-          <Route path="login" element={<Login/>}/>
           <Route path="register" element={<Register/>}/>
           <Route path="device" element={<Device/>}/>
           <Route path="payment" element={<Payment/>}/>
@@ -33,5 +33,32 @@ const App = () => {
     </BrowserRouter>
   )
 }
+export const AuthContext = createContext()
+const contextValue = {
+  isLoggedIn: false,
+  firstName: "Ivan",
+  lastName: "Tse",
+  onLogin: null,
+  onLogout: null
+}
+export const AuthContextProvider = (props) => {
+  const onLogin = (firstName, lastName) => {
+    contextValue.firstName = firstName
+    contextValue.lastName = lastName
+    contextValue.isLoggedIn = true
+  }
+  const onLogout = () => {
+    contextValue.firstName = null;
+    contextValue.lastName = null;
+    contextValue.isLoggedIn = false
+  }
+  contextValue.onLogin = onLogin
+  contextValue.onLogout = onLogout
 
+  return (
+      <AuthContext.Provider value={contextValue}>
+        {props.children}
+      </AuthContext.Provider>
+  )
+}
 export default App;
