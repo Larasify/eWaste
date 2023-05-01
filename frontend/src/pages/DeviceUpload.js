@@ -126,7 +126,7 @@ export default function DeviceUpload(){
                           <Select
                             labelId="system-label"
                             id="system"
-                            value={device.select}
+                            value={device.system}
                             onChange={handleChange}
                             className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
 

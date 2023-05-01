@@ -10,7 +10,11 @@ import Payment from "./pages/Payment";
 import PaySuc from "./pages/PaySuc";
 import UserAccount from './pages/UserAccount.js';
 import UserRecycle from './pages/UserRecycle.js';
+
 import DeviceUpload from './pages/DeviceUpload.js';
+import EditDeviceForm from './pages/EditDeviceForm.js';
+import AddDeviceForm from './pages/AddDeviceForm.js';
+import ViewDeviceReport from './pages/ViewDeviceReport.js';
 import './App.css';
 import EditUserForm from "./pages/editUserForm";
 
@@ -29,6 +33,9 @@ const App = () => {
           <Route path="user-device-upload" element={<DeviceUpload/>}/>
           <Route path="user-recycle" element={<UserRecycle/>}/>
           <Route path="edit-user-form" element={<EditUserForm/>}/>
+          <Route path="add-device-form" element={<AddDeviceForm/>}/>
+          <Route path="edit-device-form" element={<EditDeviceForm/>}/>
+          <Route path="view-device-report" element={<ViewDeviceReport/>}/>
           <Route path="staff-dashboard" element={<StaffDashboard/>}/>
 
         </Route>
