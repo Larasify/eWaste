@@ -70,7 +70,7 @@ export default function EditDeviceForm(){
                             className={"text-base md:text-xl lg:text-3xl md:font-medium text-[#509E82] text-left lg:leading-loose "}>{"£"+"612"}</span>
                         <button className={"underline text-base md:text-lg inline text-[#509E82] border-0 mx-2"}>(show report)</button>
                         <br/>
-                        <span className={" w-3/4 md:w-full break-normal flex justify-center text-md md:font-medium text-gray-400 text-left lg:leading-loose "}>This is a really good new phone,with big size and big storage,please use it!!!</span>
+                        <span className={"w-full break-normal flex justify-center text-md md:font-medium text-gray-400 text-left lg:leading-loose "}>This is a really good new phone,with big size and big storage,please use it!!!</span>
                     </p>
                 </div>
             </div>
@@ -242,7 +242,7 @@ export default function EditDeviceForm(){
                 <label className={"flex text-lg text-[#509E82] underline justify-center md:justify-end mr-5 mt-2 md:mt-0"}>Draft has saved!</label>
                 <div className={"flex flex-col md:flex-row justify-end"}>
                     <button className={"w-full md:w-2/5 h-full mt-2 p-2 px-auto md:p-3 md:mr-10 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
-                    Send QR Code
+                    Send Link
                     </button>
                     <br className={"md:hidden"}/>
                     <button className={"w-full md:w-1/5 h-full md:mt-2 p-2 px-auto md:p-3 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>

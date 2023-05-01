@@ -42,8 +42,8 @@ export default function ViewDeviceReport(){
   console.log(device);
 
     return (
-        <div className={"flex flex-col md:flex-row relative my-4 w-5/6 mx-auto h-5/6 rounded-3xl bg-[#E3F0EB]"}>
-            <div className={"w-full md:w-1/3 h-full rounded-l-2xl"}>
+        <div className={"flex flex-col md:flex-row relative my-4 w-5/6 mx-auto h-5/6 rounded-3xl "}>
+            <div className={"w-full md:w-1/3 h-full rounded-l-2xl bg-[#E3F0EB]"}>
                 <div className={"inline-flex w-full text-3xl md:text-4xl p-4 md:p-6 items-center text-[#509E82]"}
                      onClick={askBackward}>
                     <IoChevronBackCircle className={"mx-2"}/>
@@ -52,7 +52,7 @@ export default function ViewDeviceReport(){
                 <img src="../images/phone-generic.jpg" alt=""
                      className={"w-1/2 m-auto rounded-2xl border-[#3fb78c] border-2"}/>
 
-                <div className={"flex p-4 md:pl-8  justify-center"}>
+                <div className={"flex p-4 md:pl-8  justify-center "}>
                     <p className={"md:m-4 mx-auto text-center md:text-left leading-loose"}>
                     <span
                         className={"text-base md:text-2xl lg:text-3xl text-black text-left font-bold lg:leading-10"}>iPhone 13</span>
@@ -63,158 +63,50 @@ export default function ViewDeviceReport(){
                         <span
                             className={"md:text-lg lg:text-xl text-white font-bold rounded-full text-left bg-[#509E82] p-3 lg:ml-40"}>Current</span>
                         <br/>
-                        <span
-                            className={"text-base md:text-xl lg:text-2xl md:font-medium text-black text-left lg:leading-loose "}>Expected Value:</span>
-                        <br/>
-                        <span
-                            className={"text-base md:text-xl lg:text-3xl md:font-medium text-[#509E82] text-left lg:leading-loose "}>{"£"+"612"}</span>
-                        <button className={"underline text-base md:text-lg inline text-[#509E82] border-0 mx-2"}>(show report)</button>
-                        <br/>
-                        <span className={" w-3/4 md:w-full break-normal flex justify-center text-md md:font-medium text-gray-400 text-left lg:leading-loose "}>This is a really good new phone,with big size and big storage,please use it!!!</span>
-                    </p>
+                        <span className={" text-base md:text-lg text-gray-400 text-left "}>Brand: Apple</span><br/>
+                        <span className={" text-base md:text-lg text-gray-400 text-left "}>Model: iPhone 13 Pro</span><br/>
+                        <span className={" text-base md:text-lg text-gray-400 text-left "}>Color: Black</span><br/>
+                        <span className={" text-base md:text-lg text-gray-400 text-left "}>Type: Phone</span><br/>
+                        <span className={" text-base md:text-lg text-gray-400 text-left"}>Memory Storage: 256G</span><br/>
+                        <span className={"md:w-full break-normal flex justify-center text-md md:font-medium text-gray-400 text-left lg:leading-loose "}>This is a really good new phone,with big size and big storage,please use it!!!</span>
+
+
+                         </p>
                 </div>
             </div>
-            <div
-                className={"flex flex-col border-0 md:rounded-r-lg w-full md:w-4/5 h-full bg-white md:bg-auto overflow-auto p-4 md:p-16"}>
-                <div className={"flex flex-col space-y-86 mt-6 md:mb-4 "}>
-                    <div>
-                        <label className={"text-left font-bold block mb-2 text-2xl text-gray-900 dark:text-white"}>Payment:</label>
+            <div className={"flex flex-col border-0 md:rounded-r-lg w-full md:w-4/5 h-full bg-white md:bg-auto overflow-auto p-4 md:p-16"}>
+                <div className={"flex flex-col space-y-5 mt-6 md:mb-4 w-2/3 h-full"}>
+                    <div className={"lg:grid lg:grid-cols-3"}>
+                        <label className={"text-left font-bold  mb-2 text-2xl text-gray-900 dark:text-white"}>Payment:</label>
                         <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] dark:text-white"}>£294</label>
                     </div>
-                    <div >
-                       <label className={"text-left font-bold block mb-2 text-2xl text-gray-900 dark:text-white"}>Referral:</label>
-                       <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] dark:text-white"}>£234</label>
+                    <div className={"lg:grid lg:grid-cols-3"}>
+                       <label className={"text-left font-bold mb-2 text-2xl text-gray-900 dark:text-white"}>Referral:</label>
+                       <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] dark:text-white"}>£13</label>
                     </div>
-
-                </div>
-                <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
-                    <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
-                            Color</label>
-                        <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="degree-label"
-                            id="degree"
-                            value={device.degree}
-                            onChange={handleChange}
-                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
-                          >
-                            <MenuItem value={"30%"}>30%</MenuItem>
-                            <MenuItem value={"70%"}>70%</MenuItem>
-                            <MenuItem value={"99%"}>99%</MenuItem>
-                          </Select>
-                        </FormControl>
+                    <div className={"lg:grid lg:grid-cols-3"}>
+                       <label className={"text-left font-bold mb-2 text-2xl text-gray-900 dark:text-white"}>Status:</label>
+                       <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] dark:text-white"}>Transferring</label>
                     </div>
-                    <br className={"block md:hidden"}/>
-                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
-                            Operating System</label>
-                        <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="system-label"
-                            id="system"
-                            value={device.system}
-                            onChange={handleChange}
-                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
-
-                          >
-                            <MenuItem value={"Andriod"}>Andriod</MenuItem>
-                            <MenuItem value={"Ios"}>IOS</MenuItem>
-                          </Select>
-                        </FormControl>
+                    <div className= {"lg:grid lg:grid-cols-3"}>
+                       <label className={"text-left font-bold mb-2 text-2xl text-gray-900 dark:text-white"}>Service:</label>
+                       <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] dark:text-white"}>Data Wiping</label>
                     </div>
-
-                </div>
-                <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
-                    <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
-                            Memory Storage</label>
-                        <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="storage-label"
-                            id="storage"
-                            value={device.storage}
-                            onChange={handleChange}
-                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
-
-                          >
-                            <MenuItem value={"256g"}>256g</MenuItem>
-                            <MenuItem value={"512g"}>512g</MenuItem>
-                          </Select>
-                        </FormControl>
+                    <div className= {"lg:grid lg:grid-cols-4"}>
+                       <label className={"text-left font-bold mb-2 text-2xl text-gray-900 dark:text-white"}>QR Code:</label>
+                       <img src="../images/phone-generic.jpg" alt=""
+                     className={"w-1/2 m-auto "}/>
                     </div>
-                    <br className={"block md:hidden"}/>
-                    <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} >*
-                            Color</label>
-                        <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="color-label"
-                            id="color"
-                            value={device.color}
-                            onChange={handleChange}
-                            className={"border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}>
-                            <MenuItem value={"olive"}>olive</MenuItem>
-                            <MenuItem value={"black"}>black</MenuItem>
-                          </Select>
-                        </FormControl>
-                    </div>
-                </div>
-
-                <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
-                    <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
-                            Identification</label>
-                        <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="identification-label"
-                            id="identification"
-                            value={device.identification}
-                            onChange={handleChange}
-                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
-
-                          >
-                            <MenuItem value={"Current"}>Current</MenuItem>
-                            <MenuItem value={"Recycle"}>Recycle</MenuItem>
-                            <MenuItem value={"Rare"}>Rare</MenuItem>
-                            <MenuItem value={"Unknown"}>Unknown</MenuItem>
-                          </Select>
-                        </FormControl>
-                    </div>
-                    <br className={"block md:hidden"}/>
-                    <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} >*
-                            Expected Value</label>
-                        <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="worth-label"
-                            id="worth"
-                            value={device.worth}
-                            onChange={handleChange}
-                            className={"border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}>
-                            <MenuItem value={"612"} className={"flex"}>
-                                <label>Cex</label>
-                                <label className={"absolute right-8 inline text-[#509E82] "}>£512</label>
-                            </MenuItem>
-                            <MenuItem value={"582"} className={"flex"}>
-                                <label>Cerweewwewqe</label>
-                                <label className={"absolute right-8 inline text-[#509E82] "}>£582</label>
-                            </MenuItem>
-                          </Select>
-                        </FormControl>
-                    </div>
-                </div>
-
-                <label className={"flex text-lg text-[#509E82] underline justify-center md:justify-end mr-5 mt-2 md:mt-0"}>Draft has saved!</label>
-                <div className={"flex flex-col md:flex-row justify-end"}>
-                    <button className={"w-full md:w-2/5 h-full mt-2 p-2 px-auto md:p-3 md:mr-10 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
-                    Send QR Code
+                    <div className={"flex flex-col md:flex-row justify-end"}>
+                    <button className={"w-full md:w-2/5 h-full mt-12 p-2 px-auto md:p-3 md:mr-10 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
+                    Send Link
                     </button>
-                    <br className={"md:hidden"}/>
-                    <button className={"w-full md:w-1/5 h-full md:mt-2 p-2 px-auto md:p-3 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
-                    Apply
-                    </button>
+
                 </div>
+
+                </div>
+
+
             </div>
         </div>
     );
