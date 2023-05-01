@@ -19,10 +19,12 @@ def login():
     user = db.Users.find_one({"email":email})
     if user is None:
         return {"response":"error", "message":"user_not_found"}
+    if user.get("is_deleted"):
+        return {"message":"record deleted", "response":"error"}
     password_hashed = user.get("password")
     if not check_password_hash(password_hashed, password_plaintext):
         return {"response":"error", "message":"wrong_password"}
-    
+
     # create session id
     session_id = generate_random_session_id()
     session_ids[session_id] = user.get("_id")
@@ -47,9 +49,9 @@ def register():
         return {"response":"error", "message":"email_has_been_used"}
     if "last_name" in data:
         last_name = data.get("last_name")
-        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"ts":ts,"ts_mod":ts_mod})
+        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"ts":ts,"ts_mod":ts_mod, "is_deleted":False})
     else:
-        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"ts":ts,"ts_mod":ts_mod})
+        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"ts":ts,"ts_mod":ts_mod, "is_deleted":False})
     return {"response":"success"}
 
 
