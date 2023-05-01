@@ -162,17 +162,40 @@ export default function DeviceUpload(){
                             New</label>
                         <FormControl fullWidth focused={false}>
                           <Select
-                            labelId="degree-label"
-                            id="degree"
-                            value={device.degree}
+                            labelId="identification-label"
+                            id="identification"
+                            value={device.identification}
                             onChange={handleChange}
                             className={"border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
                           >
                             <MenuItem value={"30%"}>30%</MenuItem>
                             <MenuItem value={"70%"}>70%</MenuItem>
+                            <MenuItem value={"90%"}>90%</MenuItem>
+                            <MenuItem value={"recycle"}>Recycle (With no bonus)</MenuItem>
                           </Select>
                         </FormControl>
                     </div>
+                </div>
+                <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
+                    <div >
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                            Type</label>
+                        <FormControl fullWidth focused={false}>
+                          <Select
+                            labelId="type-label"
+                            id="type"
+                            value={device.type}
+                            onChange={handleChange}
+                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+
+                          >
+                            <MenuItem value={"Phone"}>Phone</MenuItem>
+                            <MenuItem value={"Laptop"}>Laptop</MenuItem>
+                            <MenuItem value={"Tablet"}>Tablet</MenuItem>
+                          </Select>
+                        </FormControl>
+                    </div>
+
                 </div>
                 <label className={" text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} htmlFor={"descriptionInput"}>*
                             Description (No more than 500 words)</label>
