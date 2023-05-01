@@ -4,6 +4,7 @@ module.exports = {
       "./src/*.js",
       "./src/pages/*.js",
       "./src/fragments/*.js",
+      "./src/fragments/Dashboard-components/*.js",
   ],
   theme: {
     extend: {},

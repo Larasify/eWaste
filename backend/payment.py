@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request,redirect, url_for
 from app import db
 from bson.json_util import dumps
 import datetime
@@ -15,18 +15,20 @@ def getPayment():
     payment_id = data.get("id")
     payment = db.Payments.find_one({"_id":payment_id})
     if payment is None:
-        return {"message":"payment_not_found"}
-    return dumps(payment)
+        return {"response":"error","message":"payment_not_found"}
+    if payment.get("is_deleted"):
+        return {"message":"record deleted", "response":"error"}
+    return {"response":"success", "payment_info":dumps(payment)}
 
 # Get a list of payments
 @payment_api.route("/getpaymentlist")
 def getPaymentList():
-    payments = db.Payments.find()
+    payments = db.Payments.find({"is_deleted":False})
     list_payments = list(payments)
     if len(list_payments) == 0:
         return {"message":"empty list", "response":"error"}
     json_payments = dumps(list_payments)
-    return json_payments
+    return {"response":"success", "payment_list":json_payments}
 
 # Post a payment
 @payment_api.route("/postpayment", methods=['POST'])
@@ -39,7 +41,6 @@ def postPayment():
     amount = data.get("amount")
     ts = datetime.datetime.utcnow()
     ts_mod = datetime.datetime.utcnow()
-    
     db.Payments.insert_one({"_id":payment_id,"user_id":user_id,"device_id":device_id,"invoice_id":invoice_id,"amount":amount,\
                             "ts":ts,"ts_mod":ts_mod,"is_deleted":False})
     

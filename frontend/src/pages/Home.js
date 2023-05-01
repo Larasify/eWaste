@@ -11,8 +11,7 @@ import {
 import { BsSearch } from 'react-icons/bs';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import TabPanel from '../fragments/Dashboard-components/TabPanel.js';
 
 import './Home.css'
 import Comment from '../fragments/Comment';
@@ -32,27 +31,7 @@ export default function Home() {
         };
     }
 
-    function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-    
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-            >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                <Typography>{children}</Typography>
-                </Box>
-            )}
-            </div>
-        );
-        }
-        
-        TabPanel.propTypes = {
+    TabPanel.propTypes = {
         children: PropTypes.node,
         index: PropTypes.number.isRequired,
         value: PropTypes.number.isRequired,
@@ -60,17 +39,19 @@ export default function Home() {
 
     return (
         <div className={"flex flex-col w-full"} style={{height: 'calc(100vh - 6rem)', fontFamily: 'pf'}}>
-            <div className={"flex flex-col lg:flex-row w-full bg-color-red h-auto lg:h-full bg-gradient-to-r from-[#ebfff3] to-[#c7efd7]"}>
+            <div className={"flex flex-col-reverse lg:flex-row w-full bg-color-red h-auto lg:h-full bg-gradient-to-r from-[#ebfff3] to-[#c7efd7]"}>
                 <div className={"flex flex-col w-full lg:w-3/5 px-4 lg:px-16 mt-4 lg:my-16 gap-y-1 md:gap-y-4"}> 
-                    <span className={"text-2xl md:text-4xl"}>
-                    <b>Recycle</b> your old device to 
-                    </span>
-                    <span className={"text-2xl md:text-4xl"}>
-                    <b>Reuse</b> them and 
-                    </span>
-                    <span className={"text-2xl md:text-4xl"}>
-                    <b>Get</b> payments ！
-                    </span>
+                    <div className={"flex flex-col"}>
+                        <span className={"text-2xl md:text-4xl"}>
+                            <b>Recycle</b> your old device to 
+                        </span>
+                        <span className={"text-2xl md:text-4xl"}>
+                            <b>Reuse</b> them and 
+                        </span>
+                        <span className={"text-2xl md:text-4xl"}>
+                            <b>Get</b> payments ！
+                        </span>
+                    </div>
                     <div className={"flex flex-col"}>
                         <div className={"home-tabs"}>
                         <Tabs value={value} onChange={handleChange} aria-label="device-suggestions">
@@ -102,53 +83,53 @@ export default function Home() {
                         </TabPanel>
                     </div>
                 </div>
-                <div className={"flex flex-col w-full lg:w-2/5 px-12 pb-4 mr-8 my-2 lg:my-16 justify-center items-center"}>
-                <div className={'flex flex-col justify-center lg:max-w-md w-full mx-12 p-4 lg:px-16 lg:py-8 mt-8 items-center rounded-xl bg-[#ECF4F1] drop-shadow-lg'}>
-                     <div>
-                     <span className={"color-[#509E82] mb-4 font-bold text-lg"}>Enter your device details and get a quote as early as 2 hours!</span>
-                     </div>
-                     <div className={"flex flex-col mt-4 w-full device-form-input"}>
-                         <label>Brand</label>
-                         <input type="text"></input>
-                     </div>
-                     <div className={"flex flex-col mt-4 w-full device-form-input"}>
-                         <label>Model</label>
-                         <select>
-                             <option>Model 1</option>
-                             <option>Model 2</option>
-                             <option>Model X</option>
-                             <option>Model S</option>
-                             <option>Model M</option>
-                         </select>
-                     </div>
-                     <div className={"flex flex-col mt-4 w-full device-form-input"}>
-                         <label>Color</label>
-                         <select>
-                             <option>Pitch Black</option>
-                             <option>White Color</option>
-                             <option>Other Color</option>
-                             <option>Other Color</option>
-                             <option>Other Color</option>
-                         </select>
-                     </div>
-                     <div className={"flex flex-col mt-4 w-full device-form-input"}>
-                         <label>Storage</label>
-                         <select>
-                             <option>4 GB</option>
-                             <option>8 GB</option>
-                             <option>16 GB</option>
-                             <option>32 GB</option>
-                             <option>64 GB</option>
-                             <option>128 GB</option>
-                             <option>256 GB</option>
-                             <option>512 GB</option>
-                             <option>1 TB</option>
-                         </select>
-                     </div>
-                     <div className={"flex mt-8 w-auto px-8 w-max-lg bg-[#509E82] text-white h-8 justify-center items-center font-semibold rounded-2xl cursor-pointer mb-4"}>
-                         <span>Get Quote!</span>
-                     </div>
-                 </div>
+                <div className={"flex flex-col w-full lg:w-2/5 px-12 pb-4 mr-8 my-1/2 lg:my-16 justify-center items-center"}>
+                    <div className={'flex flex-col justify-center lg:max-w-md w-full mx-12 p-4 lg:px-16 lg:py-8 mt-8 items-center rounded-xl bg-[#ECF4F1] drop-shadow-lg'}>
+                        <div>
+                        <span className={"color-[#509E82] mb-4 font-bold text-lg"}>Enter your device details and get a quote as early as 2 hours!</span>
+                        </div>
+                        <div className={"flex flex-col mt-4 w-full device-form-input"}>
+                            <label>Brand</label>
+                            <input type="text"></input>
+                        </div>
+                        <div className={"flex flex-col mt-4 w-full device-form-input"}>
+                            <label>Model</label>
+                            <select>
+                                <option>Model 1</option>
+                                <option>Model 2</option>
+                                <option>Model X</option>
+                                <option>Model S</option>
+                                <option>Model M</option>
+                            </select>
+                        </div>
+                        <div className={"flex flex-col mt-4 w-full device-form-input"}>
+                            <label>Color</label>
+                            <select>
+                                <option>Pitch Black</option>
+                                <option>White Color</option>
+                                <option>Other Color</option>
+                                <option>Other Color</option>
+                                <option>Other Color</option>
+                            </select>
+                        </div>
+                        <div className={"flex flex-col mt-4 w-full device-form-input"}>
+                            <label>Storage</label>
+                            <select>
+                                <option>4 GB</option>
+                                <option>8 GB</option>
+                                <option>16 GB</option>
+                                <option>32 GB</option>
+                                <option>64 GB</option>
+                                <option>128 GB</option>
+                                <option>256 GB</option>
+                                <option>512 GB</option>
+                                <option>1 TB</option>
+                            </select>
+                        </div>
+                        <div className={"flex mt-8 w-auto px-8 w-max-lg bg-[#509E82] text-white h-8 justify-center items-center font-semibold rounded-2xl cursor-pointer mb-4"}>
+                            <span>Get Quote!</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div className={"flex w-full h-auto flex-col"}>
