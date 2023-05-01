@@ -15,6 +15,8 @@ def getUser():
         user_info = db.Users.find_one({"_id":userid})
         if user_info is None:
             return {"message":"empty_list", "response":"error"}
+        if user_info.get("is_deleted"):
+            return {"message":"record deleted", "response":"error"}
         return {"response":"success", "user_info":user_info}
     elif('session-id' in request.cookies):
         user_info = db.Users.find_one({"email":"jack0@gmail.com"})
@@ -27,7 +29,7 @@ def getUser():
 
 @user_api.route("/getuserlist")
 def getUserList():
-    users = db.Users.find()
+    users = db.Users.find({"is_deleted":False})
     list_users = list(users)
     if len(list_users) == 0:
         return {"message":"list_empty", "response":"error"}
@@ -48,9 +50,9 @@ def postUser():
         return {"response":"error", "message":"email_has_been_used"}
     if "last_name" in data:
         last_name = data.get("last_name")
-        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"ts":ts,"ts_mod":ts_mod})
+        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"ts":ts,"ts_mod":ts_mod, "is_deleted":False})
     else:
-        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"ts":ts,"ts_mod":ts_mod})
+        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"ts":ts,"ts_mod":ts_mod,"is_deleted":False})
     return {"response":"success"}
 
 
@@ -89,7 +91,7 @@ account_api = Blueprint('account_api', __name__)
 def getUserListings():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
-        mylist = db.Devices.find({"user_id":userid})
+        mylist = db.Devices.find({"user_id":userid,"is_deleted":False})
         tolist = list(mylist)
         if len(tolist) == 0:
             return {"message":"empty list","response":"error"}
@@ -102,7 +104,7 @@ def getUserListings():
 def getUserPayments():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
-        mylist = db.Payments.find({"user_id":userid})
+        mylist = db.Payments.find({"user_id":userid,"is_deleted":False})
         tolist = list(mylist)
         if len(tolist) == 0:
             return {"message":"empty list", "response":"error"}
@@ -115,7 +117,7 @@ def getUserPayments():
 def getUserDataLinks():
     if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
         userid = session_ids[request.cookies.get('session-id')]
-        mylist = db.Devices.find({"user_id":userid},{"data_retrieval_link":1, "_id":0})
+        mylist = db.Devices.find({"user_id":userid,"is_deleted":False},{"data_retrieval_link":1, "_id":0})
         tolist = list(mylist)
         if len(tolist) == 0:
             return {"message":"empty list","response":"error"}
