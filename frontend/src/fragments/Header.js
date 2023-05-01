@@ -8,7 +8,7 @@ export default function Header() {
     return (
         <nav className={"min-w-[324px] w-full h-16 md:h-24 bg-gradient-to-r from-[#ebfff3] to-[#c7efd7]"}>
             <div className={"pr-2 flex flex-row justify-center items-center w-full h-full bg-bottom pr-8"}>
-                <img src={logo} alt="" className={"h-full mr-auto"}/>
+                <a href='/'><img src={logo} alt="" className={"h-full mr-auto"}/></a>
                 <div className={"hidden bg-white items-center md:inline-flex rounded-3xl md:h-10 p-2 basis-1/3 opacity-75 focus-within:border-2 border-[#3fb78c] drop-shadow-md"}>
                     <input type="text" placeholder={'Search'} className={"focus:outline-0 w-full text-l text-[#509E82] placeholder:text-[#509E82] pl-4"}/>
                     <span><RiSearchLine className={"md:w-6 md:h-6 mr-4 text-[#509E82]"}/></span>
