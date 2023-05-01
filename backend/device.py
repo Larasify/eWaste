@@ -17,12 +17,14 @@ def getDevice():
     device = db.Devices.find_one({"_id":deviceid})
     if device is None:
         return {"message":"device_not_found"}
+    if device.get("is_deleted"):
+        return {"message":"record deleted", "response":"error"}
     return {"response":"success", "device_info":dumps(device)}
 
 # Get a list of devices
 @device_api.route("/getdevicelist")
 def getDeviceList():
-    devices = db.Devices.find()
+    devices = db.Devices.find({"is_deleted":False})
     list_devices = list(devices)
     if len(list_devices) == 0:
         return {"message":"empty list", "response":"error"}

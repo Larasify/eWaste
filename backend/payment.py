@@ -15,13 +15,15 @@ def getPayment():
     payment_id = data.get("id")
     payment = db.Payments.find_one({"_id":payment_id})
     if payment is None:
-        return {"message":"payment_not_found"}
+        return {"response":"error","message":"payment_not_found"}
+    if payment.get("is_deleted"):
+        return {"message":"record deleted", "response":"error"}
     return {"response":"success", "payment_info":dumps(payment)}
 
 # Get a list of payments
 @payment_api.route("/getpaymentlist")
 def getPaymentList():
-    payments = db.Payments.find()
+    payments = db.Payments.find({"is_deleted":False})
     list_payments = list(payments)
     if len(list_payments) == 0:
         return {"message":"empty list", "response":"error"}
@@ -39,7 +41,6 @@ def postPayment():
     amount = data.get("amount")
     ts = datetime.datetime.utcnow()
     ts_mod = datetime.datetime.utcnow()
-    
     db.Payments.insert_one({"_id":payment_id,"user_id":user_id,"device_id":device_id,"invoice_id":invoice_id,"amount":amount,\
                             "ts":ts,"ts_mod":ts_mod,"is_deleted":False})
     

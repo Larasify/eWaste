@@ -9,7 +9,7 @@ vendors_api = Blueprint('vendors_api', __name__)
 #getvendors
 @vendors_api.route("/getvendorlist")
 def getVendors():
-    vendors = db.Vendors.find()
+    vendors = db.Vendors.find({"is_deleted":False})
     list_vendors = list(vendors)
     if len(list_vendors) == 0:
         return {"message":"empty list", "response":"error"}
@@ -24,12 +24,14 @@ def getVendor():
     vendor = db.Vendors.find_one({"_id":vendor_id})
     if vendor is None:
         return {"message":"vendor_not_found"}
+    if vendor.get("is_deleted"):
+        return {"message":"record deleted", "response":"error"}
     return {"response":"success", "vendor_info":dumps(vendor)}
 
 #getall
 @vendors_api.route("/getall")
 def getAll():
-    vendors = db.Vendors.find()
+    vendors = db.Vendors.find({"is_deleted":False})
     list_vendors = list(vendors)
     if len(list_vendors) == 0:
         return {"message":"empty list", "response":"error"}
