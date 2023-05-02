@@ -37,7 +37,7 @@ export default function Login(props) {
         navigate(`/register`);
     };
     const loginOnclick = () => {
-        loginSubmit(document.getElementById("emailInput").value, document.getElementById("passwordInput").value).then((data) => {
+        loginSubmit(document.getElementById("loginPanelEmailInput").value, document.getElementById("loginPanelPasswordInput").value).then((data) => {
             if (data['response'] === "success") {
                 props.loginModalClose()
                 fetchUserData().then((userInfo) => {
@@ -61,22 +61,22 @@ export default function Login(props) {
                 <span>Login</span>
             </div>
             <div className={"flex flex-col w-full"}>
-                <label className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"} htmlFor={"emailInput"}>
+                <label className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"} htmlFor={"loginPanelEmailInput"}>
                     Email Address
                 </label>
                 <input
                     className={"block w-full p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500"}
                     type="text"
-                    id={"emailInput"}
+                    id={"loginPanelEmailInput"}
                 ></input>
             </div>
             <div className={"flex flex-col w-full mt-4 lg:mt-6"}>
-                <label className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"} htmlFor={"passwordInput"}>
+                <label className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"} htmlFor={"loginPanelPasswordInput"}>
                     Password
                 </label>
                 <input
                     className={"block w-full p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500"}
-                    type="password" id={"passwordInput"}></input>
+                    type="password" id={"loginPanelPasswordInput"}></input>
             </div>
             <span
                 className={"text-right my-2 text-sm md:text-md  cursor-pointer underline "}>Forgot your password?</span>
