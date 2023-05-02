@@ -6,10 +6,13 @@ import {loginSubmit} from "../fragments/Login";
 
 const registerOnclick = () => {
     //TODO not blank check here before submitting any forms
-
+    if (document.getElementById("firstNameInput").value === "") {
+        alert("First name can not be empty");
+        return;
+    }
     if (document.getElementById("passwordInput").value !== document.getElementById("confirmPasswordInput").value) {
-        alert("Passwords are not matched. ")
-        return
+        alert("Passwords are not matched. ");
+        return;
     }
     const myRequest = new Request("/auth/register", {
         credentials: "include",

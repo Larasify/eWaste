@@ -48,7 +48,7 @@ export default function Header(props) {
                 navigate("/user-recycle")
                 break;
             case "logout":
-                logoutSubmit();
+                logoutSubmit().then(_ => {});
                 authState.onLogout();
                 setUserInfo(null)
                 navigate("/")
@@ -77,7 +77,7 @@ export default function Header(props) {
                 }
             })
         }
-    }, {})
+    }, [])
     return (
         <nav className={"min-w-[324px] w-full h-16 md:h-24 bg-gradient-to-r from-[#ebfff3] to-[#c7efd7]"}>
             <div className={"pr-2 flex flex-row justify-center items-center w-full h-full bg-bottom md:pr-8"}>

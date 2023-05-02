@@ -5,6 +5,7 @@ import Header from './Header'
 import {AuthContextProvider} from "../App";
 import {Modal} from "@mui/material";
 import Login from "./Login";
+import Box from "@mui/material/Box";
 
 export default function Layout() {
     const [open, setOpen] = React.useState(false);
@@ -14,7 +15,9 @@ export default function Layout() {
     return (
         <AuthContextProvider>
             <Modal open={open} onClose={handleClose}>
-                <Login loginModalClose={handleClose}/>
+                <Box>
+                    <Login loginModalClose={handleClose}/>
+                </Box>
             </Modal>
             <div>
                 <Header openLoginWindow={handleOpen}/>
