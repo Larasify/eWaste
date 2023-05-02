@@ -127,7 +127,7 @@ export default function Home() {
                             </select>
                         </div>
                         <div className={"flex mt-8 w-auto px-8 w-max-lg bg-[#509E82] text-white h-8 justify-center items-center font-semibold rounded-2xl cursor-pointer mb-4"}>
-                            <span>Get Quote!</span>
+                            <a href="/device"><span>Get Quote!</span></a>
                         </div>
                     </div>
                 </div>

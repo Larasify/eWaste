@@ -81,7 +81,7 @@ export default function Header(props) {
     return (
         <nav className={"min-w-[324px] w-full h-16 md:h-24 bg-gradient-to-r from-[#ebfff3] to-[#c7efd7]"}>
             <div className={"pr-2 flex flex-row justify-center items-center w-full h-full bg-bottom md:pr-8"}>
-                <img src={logo} alt="" className={"h-full mr-auto"} onClick={() => navigate("/")}/>
+                <a href='/'><img src={logo} alt="" className={"h-full mr-auto"} onClick={() => navigate("/")}/></a>
                 <div
                     className={"hidden bg-white items-center md:inline-flex rounded-3xl md:h-10 p-2 basis-1/3 opacity-75 focus-within:border-2 border-[#3fb78c] drop-shadow-md"}>
                     <input type="text" placeholder={'Search'}
