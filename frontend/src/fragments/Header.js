@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect, useReducer, useState} from 'react'
 import './Header.css'
 import {RiSearchLine, RiUser5Fill} from 'react-icons/ri';
 import { RiNotification3Line } from 'react-icons/ri';
@@ -6,11 +6,37 @@ import logo from "../images/logo.png";
 import {Menu, MenuItem} from "@mui/material";
 import {AuthContext} from "../App";
 import {useNavigate} from "react-router-dom";
+import {logoutSubmit} from "./Login";
+
+export const fetchUserData = () => {
+    const myRequest = new Request("/user/getuser", {
+        headers: new Headers({'Content-Type': 'application/json'}),
+        method: "GET",
+        credentials: "include"
+    });
+    return fetch(myRequest)
+        .then((response) => {
+                if (response.status === 200) {
+                    return response.json()
+                } else {
+                    alert("error on fetching user data: " + response.statusText)
+                }
+            }
+        )
+        .then((data) => {
+            if (data.response === "success") {
+                return data['user_info']
+            } else {
+                return null
+            }
+        })
+}
 
 export default function Header(props) {
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate();
     const authState = useContext(AuthContext)
+    const [userInfo, setUserInfo] = useState(null);
     const open = Boolean(anchorEl);
     const handleLoginDropdownClose = (event) => {
         setAnchorEl(null);
@@ -22,20 +48,36 @@ export default function Header(props) {
                 navigate("/user-recycle")
                 break;
             case "logout":
+                logoutSubmit();
                 authState.onLogout();
+                setUserInfo(null)
                 navigate("/")
         }
     };
     const handleLoginClick = (event) => {
         if (authState.isLoggedIn) {
-            console.log("is logged in")
             setAnchorEl(event.currentTarget);
         } else {
-            console.log("not log in")
             props.openLoginWindow()
         }
     }
 
+
+    useEffect(() => {
+        if (!authState.isLoggedIn) {
+            fetchUserData().then((userInfo) => {
+                if (userInfo !== null) {
+                    authState.onLogin(userInfo["first_name"], userInfo["last_name"]);
+                    setUserInfo(authState)
+                } else {
+                    if (window.location.href.endsWith("/") || window.location.href.endsWith("/register")) {
+                        return
+                    }
+                    props.openLoginWindow()
+                }
+            })
+        }
+    }, {})
     return (
         <nav className={"min-w-[324px] w-full h-16 md:h-24 bg-gradient-to-r from-[#ebfff3] to-[#c7efd7]"}>
             <div className={"pr-2 flex flex-row justify-center items-center w-full h-full bg-bottom md:pr-8"}>
@@ -50,7 +92,7 @@ export default function Header(props) {
                 <div onClick={handleLoginClick}
                      className={"w-auto h-8 md:w-auto md:h-10 md:ml-auto inline-flex text-white bg-[#499177] px-4 md:px-3 py-1 rounded-3xl hover:bg-[#3fb78c] mr-1 md:mr-8"}>
                     <label className={"hidden sm:inline-flex w-full h-full text-l text-center justify-self-center items-center mr-1"}>
-                        {authState.isLoggedIn ? authState.lastName : "Login"}
+                        {userInfo !== null ? userInfo.firstName : "Login"}
                     </label>
                     <RiUser5Fill className={"w-full h-full"}/>
                 </div>

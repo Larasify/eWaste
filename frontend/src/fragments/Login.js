@@ -1,22 +1,15 @@
 import {FcGoogle} from "react-icons/fc";
-import React, {useContext, useState} from 'react'
+import React, {useContext, useReducer} from 'react'
 import { useNavigate } from "react-router-dom";
 
 
 import './Login.css'
 import {AuthContext} from "../App";
-const loginOnclick = ()=>{
-    loginSubmit(document.getElementById("emailInput").value, document.getElementById("passwordInput").value).then((data) => {
-        if (data['response'] === "success"){
-            //TODO jump back
-        } else {
-            alert(data['message'])
-        }
-    })
-}
+import {fetchUserData} from "./Header";
+
 
 export const loginSubmit = (email, password)=>{
-    const myRequest = new Request("http://127.0.0.1:8080/auth/login", {
+    const myRequest = new Request("/auth/login", {
         headers: new Headers({'Content-Type': 'application/json'}),
         method: "POST",
         body: JSON.stringify({
@@ -27,15 +20,39 @@ export const loginSubmit = (email, password)=>{
     });
     return fetch(myRequest).then((response) => response.json())
 }
+export const logoutSubmit = () => {
+    const myRequest = new Request("/auth/logout", {
+        headers: new Headers({'Content-Type': 'application/json'}),
+        method: "GET",
+        credentials: "include"
+    });
+    return fetch(myRequest)
+}
 
 export default function Login(props) {
     const authState = useContext(AuthContext)
     let navigate = useNavigate();
-    const register = () =>{
+    const register = () => {
         props.loginModalClose()
         navigate(`/register`);
-    }
-
+    };
+    const loginOnclick = () => {
+        loginSubmit(document.getElementById("emailInput").value, document.getElementById("passwordInput").value).then((data) => {
+            if (data['response'] === "success") {
+                props.loginModalClose()
+                fetchUserData().then((userInfo) => {
+                    if (userInfo !== null) {
+                        authState.onLogin(userInfo["first_name"], userInfo["last_name"]);
+                    } else {
+                        alert("error on fetching user info")
+                    }
+                })
+                window.location.reload()
+            } else {
+                alert("login failed: " + data['message'])
+            }
+        })
+    };
     return (
         <div
             className={"bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 outline-0 flex flex-col my-auto py-5 px-10 rounded-2xl"}>
