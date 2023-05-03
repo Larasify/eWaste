@@ -48,7 +48,7 @@ def postDevice():
     operating_system = data.get("operating_system")
     memory_storage = data.get("memory_storage")
     color = data.get("color")
-    type = data.get("type")
+    dtype = data.get("type")
     description = data.get("description")
     service = data.get("service")
     datalink = data.get("datalink")
@@ -70,7 +70,7 @@ def postDevice():
     db.Devices.insert_one({ "_id":device_id,"user_id":user_id,"vendor_id":vendor_id,
                             "brand":brand,"model":model,"identification":identification,
                             "status":status,"operating_system":operating_system,"memory_storage":memory_storage,
-                            "color":color,"type":type,"description":description,"service":service,"datalink":datalink,
+                            "color":color,"type":dtype,"description":description,"service":service,"datalink":datalink,
                             "qr_code":qr_code,"device_ts":device_ts,"device_ts_mod":device_ts_mod,"payment_id":payment_id,
                             "payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod,"is_deleted":False,"verified":verified})
 
@@ -91,7 +91,51 @@ def addPayment():
         return {"response":"success"}
     else:
         return {"message":"device does not exist", "response":"error"}
-    
+
+# Generate datalink for a device
+@device_api.route("/generatedatalink", methods=['POST'])
+def generateDatalink():
+    data = request.get_json()
+    device_id = data.get("id")
+    query = {"_id":deviceid}
+    ts_mod = datetime.datetime.utcnow()
+    datalink = str(uuid.uuid4())
+    update = { "$set": { "device_ts_mod": ts_mod,"datalink":datalink}}
+    result = db.Devices.update_one(query, update)
+    if result.matched_count == 1:
+        #TODO : notification
+        device = db.Devices.find_one({"_id":device_id})
+        user_id = device.get("user_id")
+        model_name = device.get("model")
+        query = {"_id":user_id}
+        new_notification = "New datalink for device " + model_name + " is available."
+        #TODO
+        
+        return {"response":"success"}
+    else:
+        return {"message":"device does not exist", "response":"error"}
+
+# Generate a random QR code
+@device_api.route("/generateqr", methods=['POST'])
+def generateQR():
+    data = request.get_json()
+    device_id = data.get("id")
+    query = {"_id":deviceid}
+    ts_mod = datetime.datetime.utcnow()
+    qr = str(uuid.uuid4())
+    update = { "$set": { "device_ts_mod": ts_mod,"qr_code":qr}}
+    result = db.Devices.update_one(query, update)
+    if result.matched_count == 1:
+        #notification temporary
+        device = db.Devices.find_one({"_id":device_id})
+        user_id = device.get("user_id")
+        model_name = device.get("model")
+        query = {"_id":user_id}
+        new_notification = "New QR code for device" + model_name + "is available."
+        #TODO
+        return {"response":"success"}
+    else:
+        return {"message":"device does not exist", "response":"error"}
     
 # Delete a device
 @device_api.route("/deletedevice", methods=['POST'])
