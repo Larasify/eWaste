@@ -73,14 +73,13 @@ def updateVendor():
     data = request.get_json()
     vendor_id = data.get("id")
     query = {"_id":vendor_id}
-    fields = data.get("fields")
-    values = data.get("values")
+    fields = data.get("fields")[0]
     update_dict = {}
-    for i in range(len(fields)):
-        update_dict[fields[i]] = values[i]
+    for key in fields:
+        update_dict[key] = fields[key]
     update_dict["ts_mod"] = datetime.datetime.utcnow()
     result = db.Vendors.update_one(query, {"$set": update_dict})
     if result.matched_count == 1:
-        return {"response":"success"}
+        return {"response": "success"}
     else:
-        return {"message": "vendor does not exist", "response":"error"}
+        return {"message": "Vendor does not exist", "response":"error"}
