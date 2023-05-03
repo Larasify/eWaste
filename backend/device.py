@@ -55,6 +55,7 @@ def postDevice():
     qr_code = data.get("qr_code")
     device_ts = datetime.datetime.now()
     device_ts_mod = datetime.datetime.now()
+    verified = data.get("verified")
     if "payment_id" in data:
         payment_id = data.get("payment_id")
         payment_amount = data.get("payment_amount")
@@ -71,7 +72,7 @@ def postDevice():
                             "status":status,"operating_system":operating_system,"memory_storage":memory_storage,
                             "color":color,"type":type,"description":description,"service":service,"datalink":datalink,
                             "qr_code":qr_code,"device_ts":device_ts,"device_ts_mod":device_ts_mod,"payment_id":payment_id,
-                            "payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod,"is_deleted":False})
+                            "payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod,"is_deleted":False,"verified":verified})
 
     return {"response":"success"}
 
