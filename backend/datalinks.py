@@ -14,7 +14,7 @@ def getDatalink():
     data = request.get_json()
     deviceid = data.get("id")
     device = db.Devices.find_one({"_id":deviceid})
-    datalink = device.get("data_retrieval_link")
+    datalink = device.get("datalink")
     if datalink is None:
         return {"message":"datalink_not_found"}
     return {"response":"success", "datalink_info":dumps(datalink)}
@@ -22,7 +22,7 @@ def getDatalink():
 #get datalink list
 @datalinks_api.route("/getdatalinklist")
 def getDatalinkList():
-    links = db.Devices.find({},{"data_retrieval_link":1, "_id":0})
+    links = db.Devices.find({"datalink": {"$ne": None}})
     list_links = list(links)
     if len(list_links) == 0:
         return {"message":"empty list", "response":"error"}
@@ -37,7 +37,7 @@ def postDatalink():
     device_id = data.get("id")
     query = {"_id": device_id}
     link = data.get("link")
-    newvalue = {"data_retrieval_link":link, "ts_mod": datetime.datetime.utcnow()}
+    newvalue = {"datalink":link, "ts_mod": datetime.datetime.utcnow()}
     result = db.Devices.update_one(query, {"$set": newvalue})
     if result.matched_count == 1:
         return {"response": "success"}
@@ -51,7 +51,7 @@ def deleteDatalink():
     device_id = data.get("id")
     query = {"_id": device_id}
     db.Devices.update_one(query,{"$set":{"ts_mod": datetime.datetime.utcnow()}})
-    result = db.Devices.update_one(query, {"$unset": {"data_retrieval_link":""}})
+    result = db.Devices.update_one(query, {"$unset": {"datalink":""}})
     if result.matched_count == 1:
         return {"response": "success"}
     else:
@@ -64,7 +64,7 @@ def updateDatalink():
     device_id = data.get("id")
     query = {"_id": device_id}
     link = data.get("link")
-    newvalue = {"data_retrieval_link":link, "ts_mod": datetime.datetime.utcnow()}
+    newvalue = {"datalink":link, "ts_mod": datetime.datetime.utcnow()}
     result = db.Devices.update_one(query, {"$set": newvalue})
     if result.matched_count == 1:
         return {"response": "success"}
