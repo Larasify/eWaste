@@ -109,8 +109,8 @@ def generateDatalink():
         model_name = device.get("model")
         query = {"_id":user_id}
         new_notification = "New datalink for device " + model_name + " is available."
-        update = {"$push": {"notifications": new_notification}}
-        db.Users.update_one(query, update)
+        #TODO
+        
         return {"response":"success"}
     else:
         return {"message":"device does not exist", "response":"error"}
@@ -132,8 +132,7 @@ def generateQR():
         model_name = device.get("model")
         query = {"_id":user_id}
         new_notification = "New QR code for device" + model_name + "is available."
-        update = {"$push": {"notifications": new_notification}}
-        db.Users.update_one(query, update)
+        #TODO
         return {"response":"success"}
     else:
         return {"message":"device does not exist", "response":"error"}
