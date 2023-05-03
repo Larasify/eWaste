@@ -91,6 +91,14 @@ def addPayment():
         return {"response":"success"}
     else:
         return {"message":"device does not exist", "response":"error"}
+
+# Generate datalink for a device
+@device_api.route("/generatedatalink", methods=['POST'])
+def generateDatalink():
+
+# Generate a random QR code
+@device_api.route("/generateqr", methods=['POST'])
+def generateQR():
     
     
 # Delete a device
