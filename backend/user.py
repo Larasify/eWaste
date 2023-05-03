@@ -73,17 +73,17 @@ def updateUser():
     data = request.get_json()
     userid = data.get("id")
     query = {"_id":userid}
-    fields = data.get("fields")
-    values = data.get("values")
+    fields = data.get("fields")[0]
     update_dict = {}
-    for i in range(len(fields)):
-        update_dict[fields[i]] = values[i]
+    for key in fields:
+        update_dict[key] = fields[key]
     update_dict["ts_mod"] = datetime.datetime.utcnow()
     result = db.Users.update_one(query, {"$set": update_dict})
     if result.matched_count == 1:
-        return {"response":"success"}
+        return {"response": "success"}
     else:
-        return {"message": "user does not exist", "response":"error"}
+        return {"message": "User does not exist", "response":"error"}
+
 
 account_api = Blueprint('account_api', __name__)
 
@@ -126,3 +126,32 @@ def getUserDataLinks():
     else:
         return {"message":"not_logged_in", "response":"error"}
 
+
+def addNotificationLocal(userid, title, message):
+    result = db.Users.update_one({ "_id": userid },{ "$push": { "notifications": {"id":str(uuid.uuid4()), "title":title,"message":message,"ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_seen":False} } })
+    if result.matched_count == 1:
+        return {"response": "success"}
+    else:
+        return {"message": "User does not exist", "response":"error"}
+    
+@user_api.route("/addnotification", methods=['POST'])
+def addNotification():
+    data = request.get_json()
+    userid = data.get("userid")
+    title = data.get("title")
+    message = data.get("message")
+    result = db.Users.update_one({ "_id": userid },{ "$push": { "notifications": {"id":str(uuid.uuid4()), "title":title,"message":message,"ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_seen":False} } })
+    if result.matched_count == 1:
+        return {"response": "success"}
+    else:
+        return {"message": "User does not exist", "response":"error"}
+    
+@user_api.route("/notificationisseen", methods=['POST'])
+def notificationIsSeen():
+    data = request.get_json()
+    notificationid = data.get("notificationid")
+    result = db.Users.update_one({ "notifications.id": notificationid },{ "$set": { "notifications.$.is_seen": True } })
+    if result.matched_count == 1:
+        return {"response": "success"}
+    else:
+        return {"message": "Notification does not exist", "response":"error"}

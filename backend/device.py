@@ -37,16 +37,62 @@ def postDevice():
     device_id = str(uuid.uuid4())
     data = request.get_json()
     user_id = data.get("user_id")
-    vendor_id = data.get("vendor_id")
+    if "vendor_id" in data:
+        vendor_id = data.get("vendor_id")
+    else:
+        vendor_id = None
+    brand = data.get("brand")
+    model = data.get("model")
+    identification = data.get("identification")
     status = data.get("status")
+    operating_system = data.get("operating_system")
+    memory_storage = data.get("memory_storage")
     color = data.get("color")
-    dtype = data.get("type")
-    ts = datetime.datetime.utcnow()
-    ts_mod = datetime.datetime.utcnow()
-    db.Devices.insert_one({"_id":device_id,"user_id":user_id,"vendor_id":vendor_id,"status":status,"color":color,\
-                           "dtype":dtype,"ts":ts,"ts_mod":ts_mod,"is_deleted":False})
+    type = data.get("type")
+    description = data.get("description")
+    service = data.get("service")
+    datalink = data.get("datalink")
+    qr_code = data.get("qr_code")
+    device_ts = datetime.datetime.now()
+    device_ts_mod = datetime.datetime.now()
+    verified = data.get("verified")
+    if "payment_id" in data:
+        payment_id = data.get("payment_id")
+        payment_amount = data.get("payment_amount")
+        payment_ts = datetime.datetime.now()
+        payment_ts_mod = datetime.datetime.now()
+    else:
+        payment_id = None
+        payment_amount = None
+        payment_ts = None
+        payment_ts_mod = None
+
+    db.Devices.insert_one({ "_id":device_id,"user_id":user_id,"vendor_id":vendor_id,
+                            "brand":brand,"model":model,"identification":identification,
+                            "status":status,"operating_system":operating_system,"memory_storage":memory_storage,
+                            "color":color,"type":type,"description":description,"service":service,"datalink":datalink,
+                            "qr_code":qr_code,"device_ts":device_ts,"device_ts_mod":device_ts_mod,"payment_id":payment_id,
+                            "payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod,"is_deleted":False,"verified":verified})
+
     return {"response":"success"}
 
+@device_api.route("/addpayment", methods=['POST'])
+def addPayment():
+    data = request.get_json()
+    device_id = data.get("id")
+    payment_id = data.get("payment_id")
+    payment_amount = data.get("payment_amount")
+    payment_ts = datetime.datetime.now()
+    payment_ts_mod = datetime.datetime.now()
+    query = {"_id":device_id}
+    update_dict = {"payment_id":payment_id,"payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod}
+    result = db.Devices.updateone(query, {"$set": update_dict})
+    if result.matched_count == 1:
+        return {"response":"success"}
+    else:
+        return {"message":"device does not exist", "response":"error"}
+    
+    
 # Delete a device
 @device_api.route("/deletedevice", methods=['POST'])
 def deleteDevice():
@@ -66,12 +112,11 @@ def updateDevice():
     data = request.get_json()
     device_id = data.get("id")
     query = {"_id":device_id}
-    fields = data.get("fields")
-    values = data.get("values")
+    fields = data.get("fields")[0]
     update_dict = {}
-    for i in range(len(fields)):
-        update_dict[fields[i]] = values[i]
-    update_dict["ts_mod"] = datetime.datetime.utcnow()
+    for key in fields:
+        update_dict[key] = fields[key]
+    update_dict["device_ts_mod"] = datetime.datetime.utcnow()
     result = db.Devices.update_one(query, {"$set": update_dict})
     if result.matched_count == 1:
         return {"response": "success"}
