@@ -52,9 +52,9 @@ def register():
         return {"response":"error", "message":"email_has_been_used"}
     if "last_name" in data:
         last_name = data.get("last_name")
-        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"ts":ts,"ts_mod":ts_mod, "is_deleted":False})
+        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"priviledge":"user","ts":ts,"ts_mod":ts_mod, "is_deleted":False})
     else:
-        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"ts":ts,"ts_mod":ts_mod, "is_deleted":False})
+        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"priviledge":"user","ts":ts,"ts_mod":ts_mod, "is_deleted":False})
     return {"response":"success"}
 
 
@@ -86,3 +86,10 @@ def validate_password(password):
     min_length = 6
     return len(password) >= min_length
 
+def userisadminorstaff(userid):
+    user = db.Users.find_one({"_id":userid})
+    if user is None:
+        return False
+    if user.get("priviledge") == "admin" or user.get("priviledge") == "staff":
+        return True
+    return False
