@@ -97,7 +97,7 @@ def addPayment():
 def generateDatalink():
     data = request.get_json()
     device_id = data.get("id")
-    query = {"_id":deviceid}
+    query = {"_id":device_id}
     ts_mod = datetime.datetime.utcnow()
     datalink = str(uuid.uuid4())
     update = { "$set": { "device_ts_mod": ts_mod,"datalink":datalink}}
@@ -120,7 +120,7 @@ def generateDatalink():
 def generateQR():
     data = request.get_json()
     device_id = data.get("id")
-    query = {"_id":deviceid}
+    query = {"_id":device_id}
     ts_mod = datetime.datetime.utcnow()
     qr = str(uuid.uuid4())
     update = { "$set": { "device_ts_mod": ts_mod,"qr_code":qr}}
