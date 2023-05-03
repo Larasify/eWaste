@@ -76,6 +76,23 @@ def postDevice():
 
     return {"response":"success"}
 
+@device_api.route("/addpayment", methods=['POST'])
+def addPayment():
+    data = request.get_json()
+    device_id = data.get("id")
+    payment_id = data.get("payment_id")
+    payment_amount = data.get("payment_amount")
+    payment_ts = datetime.datetime.now()
+    payment_ts_mod = datetime.datetime.now()
+    query = {"_id":device_id}
+    update_dict = {"payment_id":payment_id,"payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod}
+    result = db.Devices.updateone(query, {"$set": update_dict})
+    if result.matched_count == 1:
+        return {"response":"success"}
+    else:
+        return {"message":"device does not exist", "response":"error"}
+    
+    
 # Delete a device
 @device_api.route("/deletedevice", methods=['POST'])
 def deleteDevice():
