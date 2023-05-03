@@ -11,6 +11,7 @@ from device import device_api
 from auth import auth_api
 from vendors import vendors_api
 from datalinks import datalinks_api
+from transaction import transaction_api
 from dbscript import rebuilddb
 
 app = Flask(__name__)
