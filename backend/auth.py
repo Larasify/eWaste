@@ -1,4 +1,6 @@
 from flask import Blueprint, request, current_app
+from flask_cors import cross_origin
+
 from app import db, session_ids
 from bson.json_util import dumps
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -11,6 +13,7 @@ auth_api = Blueprint('auth_api', __name__)
 
 #post login
 @auth_api.route("/login", methods=['POST'])
+@cross_origin(methods=['POST'], supports_credentials=True, headers=['Content-Type', 'Authorization'], origin='*')
 def login():
     # data validation
     data = request.get_json()
@@ -29,7 +32,7 @@ def login():
     session_id = generate_random_session_id()
     session_ids[session_id] = user.get("_id")
     response = current_app.make_response({"response":"success"})
-    response.set_cookie('session-id', session_id)
+    response.set_cookie('session-id', session_id, max_age=60*60*24*365*2, httponly=True)
     return response
 
 #post register

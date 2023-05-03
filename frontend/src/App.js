@@ -43,11 +43,17 @@ const App = () => {
     </BrowserRouter>
   )
 }
-export const AuthContext = createContext()
+export const AuthContext = createContext({
+  isLoggedIn: false,
+  firstName: null,
+  lastName: null,
+  onLogin: null,
+  onLogout: null
+})
 const contextValue = {
   isLoggedIn: false,
-  firstName: "Ivan",
-  lastName: "Tse",
+  firstName: null,
+  lastName: null,
   onLogin: null,
   onLogout: null
 }
