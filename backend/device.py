@@ -101,7 +101,7 @@ def generateDatalink():
     ts_mod = datetime.datetime.utcnow()
     datalink = str(uuid.uuid4())
     update = { "$set": { "device_ts_mod": ts_mod,"datalink":datalink}}
-    result = db.Devices.update_one(query, newvalues)
+    result = db.Devices.update_one(query, update)
     if result.matched_count == 1:
         #TODO : notification
         device = db.Devices.find_one({"_id":device_id})
@@ -124,7 +124,7 @@ def generateQR():
     ts_mod = datetime.datetime.utcnow()
     qr = str(uuid.uuid4())
     update = { "$set": { "device_ts_mod": ts_mod,"qr_code":qr}}
-    result = db.Devices.update_one(query, newvalues)
+    result = db.Devices.update_one(query, update)
     if result.matched_count == 1:
         #notification temporary
         device = db.Devices.find_one({"_id":device_id})
