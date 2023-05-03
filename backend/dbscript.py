@@ -20,10 +20,11 @@ def rebuilddb():
         password = generate_password_hash("password")
         first_name = "jack"
         last_name = "smith"
+        phone_no = "+449013169"
         ts = datetime.datetime.utcnow()
         ts_mod = datetime.datetime.utcnow()
         priviledge = "user"
-        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"priviledge":priviledge, "ts":ts,"ts_mod":ts_mod, "is_deleted":False})
+        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"phone_no":phone_no,"priviledge":priviledge, "ts":ts,"ts_mod":ts_mod, "is_deleted":False})
 
     vendor_id_list = []
     for i in range(50):
