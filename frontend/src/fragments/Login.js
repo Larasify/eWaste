@@ -1,5 +1,5 @@
 import {FcGoogle} from "react-icons/fc";
-import React, {useContext, useReducer} from 'react'
+import React, {useContext} from 'react'
 import { useNavigate } from "react-router-dom";
 
 
@@ -42,7 +42,7 @@ export default function Login(props) {
                 props.loginModalClose()
                 fetchUserData().then((userInfo) => {
                     if (userInfo !== null) {
-                        authState.onLogin(userInfo["first_name"], userInfo["last_name"]);
+                        authState.onLogin(userInfo["first_name"], userInfo["last_name"], userInfo["_id"]);
                     } else {
                         alert("error on fetching user info")
                     }
