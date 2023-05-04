@@ -31,6 +31,12 @@ Error: {"message": "not_logged_in", "response": "error"}(if session cookie is in
 - DELETE one (soft)
 - PATCH one
 
+### transaction
+- GET all (/transaction/gettransactionlist) working
+- POST getuserpayments (/transaction/getuserpayments) working
+- POST getuserpaymentsbyid (/transaction/getuserpaymentsbyid) working post:{userid}
+
+
 ### auth
 - POST login (/auth/login) working post:{email, password}
 - POST register working post:{email,password,first_name,last_name(optional)}
