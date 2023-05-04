@@ -4,6 +4,7 @@ from bson.objectid import ObjectId
 from bson.json_util import dumps
 import datetime
 import uuid
+from user import addNotificationLocal
 
 device_api = Blueprint('device_api', __name__)
 
@@ -61,6 +62,7 @@ def postDevice():
         payment_amount = data.get("payment_amount")
         payment_ts = datetime.datetime.now()
         payment_ts_mod = datetime.datetime.now()
+        addNotificationLocal(user_id,"Successful Payment", "Your payment for device " + model + " has been successful.")
     else:
         payment_id = None
         payment_amount = None
@@ -86,8 +88,11 @@ def addPayment():
     payment_ts_mod = datetime.datetime.now()
     query = {"_id":device_id}
     update_dict = {"payment_id":payment_id,"payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod}
-    result = db.Devices.updateone(query, {"$set": update_dict})
+    result = db.Devices.update_one(query, {"$set": update_dict})
     if result.matched_count == 1:
+        #find device with that device id
+        device = db.Devices.find_one({"_id":device_id})
+        addNotificationLocal(device.get("user_id"),"Successful Payment", "Your payment for device " + device.get("model") + " has been successful.")
         return {"response":"success"}
     else:
         return {"message":"device does not exist", "response":"error"}

@@ -26,6 +26,17 @@ def getUser():
     else:
         return {"message":"not_logged_in", "response":"error"}
     
+@user_api.route("/getuserbyid", methods=['POST'])
+def getUserById():
+    data = request.get_json()
+    userid = data.get("userid")
+    user_info = db.Users.find_one({"_id":userid})
+    if user_info is None:
+        return {"message":"empty_list", "response":"error"}
+    if user_info.get("is_deleted"):
+        return {"message":"record deleted", "response":"error"}
+    return {"response":"success", "user_info":user_info}
+    
 
 @user_api.route("/getuserlist")
 def getUserList():

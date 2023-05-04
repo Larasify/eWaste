@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 import uuid
 import re
+from user import addNotificationLocal
 
 auth_api = Blueprint('auth_api', __name__)
 #url_prefix = /auth
@@ -26,6 +27,7 @@ def login():
         return {"message":"record deleted", "response":"error"}
     password_hashed = user.get("password")
     if not check_password_hash(password_hashed, password_plaintext):
+        addNotificationLocal(user.get("_id"), "Failed Login Attempt", "Failed login attempt at " + str(datetime.datetime.utcnow()))
         return {"response":"error", "message":"wrong_password"}
 
     # create session id
@@ -33,6 +35,7 @@ def login():
     session_ids[session_id] = user.get("_id")
     response = current_app.make_response({"response":"success"})
     response.set_cookie('session-id', session_id, max_age=60*60*24*365*2, httponly=True)
+    addNotificationLocal(user.get("_id"), "Last Successful Login", "Last successful login at " + str(datetime.datetime.utcnow()))
     return response
 
 #post register
