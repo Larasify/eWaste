@@ -162,6 +162,12 @@ def updateDevice():
     update_dict["device_ts_mod"] = datetime.datetime.utcnow()
     result = db.Devices.update_one(query, {"$set": update_dict})
     if result.matched_count == 1:
+        #if update_dict has a key called status send a notification
+        if "status" in update_dict:
+            device = db.Devices.find_one({"_id":device_id})
+            user_id = device.get("user_id")
+            model_name = device.get("model")
+            addNotificationLocal(user_id,"Device Status Changed", "The status of your device " + model_name + " has been changed.")
         return {"response": "success"}
     else:
         return {"message": "Device does not exist", "response":"error"}
