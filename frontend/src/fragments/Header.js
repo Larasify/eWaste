@@ -67,7 +67,7 @@ export default function Header(props) {
         if (!authState.isLoggedIn) {
             fetchUserData().then((userInfo) => {
                 if (userInfo !== null) {
-                    authState.onLogin(userInfo["first_name"], userInfo["last_name"]);
+                    authState.onLogin(userInfo["first_name"], userInfo["last_name"], userInfo._id);
                     setUserInfo(authState)
                 } else {
                     if (window.location.href.endsWith("/") || window.location.href.endsWith("/register")) {

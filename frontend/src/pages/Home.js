@@ -12,13 +12,64 @@ import { BsSearch } from 'react-icons/bs';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import TabPanel from '../fragments/Dashboard-components/TabPanel.js';
+import CircularProgress from '@mui/material/CircularProgress';
 
+import {AuthContext} from "../App";
 import './Home.css'
 import Comment from '../fragments/Comment';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
+    const [loading, setLoading] = React.useState(true)
+    const [data, setData] = React.useState([])
+    const [brands, setBrands] = React.useState([])
+    const [models, setModels] = React.useState([])
+    const [storage, setStorage] = React.useState([])
+    const authState = React.useContext(AuthContext)
     const iterator = Array.from(Array(4).keys())
+    let navigate = useNavigate();
     
+    React.useEffect(() => {
+        fetchData();
+    }, [loading])
+
+    const fetchData = () => {
+        fetch('/vendor/getvendorlist')
+            .then(vendorRequest => (vendorRequest).json())
+            .then(vendors => {
+                setData(JSON.parse(vendors.vendor_list));
+                setBrands([... new Set(data.map(v => v.brand))])
+                setLoading(false);
+            });
+    }
+
+    const fetchOptions = (column) => {
+        if(column === 'model') {
+            const filteredData = data.filter(v => {
+                return v.brand === document.getElementById('h-brand-id').value
+            }) 
+            setModels([... new Set(filteredData.map(d => d.model_name))])
+        } else if (column === 'storage') {
+            const filteredData = data.filter(v => {
+                return v.brand === document.getElementById('h-brand-id').value && 
+                        v.model_name === document.getElementById('h-model-id').value
+            }) 
+            setStorage([... new Set(filteredData.map(d => d.storage))])
+        }
+    }
+
+    const submitDevice = () => {
+        navigate('/device', {
+            state: {
+                brand: document.getElementById('h-brand-id').value,
+                model: document.getElementById('h-model-id').value,
+                color: document.getElementById('h-color-id').value,
+                storage: document.getElementById('h-device-storage').value,
+                data: data
+            }
+        })
+    }
+
     const [value, setValue] = React.useState(0);
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -36,6 +87,63 @@ export default function Home() {
         index: PropTypes.number.isRequired,
         value: PropTypes.number.isRequired,
     };
+
+    const renderForm = () => {
+        if (loading) {
+            return  <div className='w-full h-full justify-center items-center flex flex-col mt-8'>
+                <CircularProgress sx={{
+                    color: '#509E82'
+                }} />
+                <label className='mt-4 lg:mt-8 text-grey'>Fetching Vendor Details. Please wait</label>
+            </div>
+        } else {
+            return <>
+                <div>
+                <span className={"color-[#509E82] mb-4 font-bold text-lg"}>Enter your device details and get a quote as early as 2 hours!</span>
+                </div>
+                <div className={"flex flex-col mt-4 w-full device-form-input"}>
+                    <label>Brand</label>
+                    <select 
+                            onClick={e => fetchOptions('model')}
+                            onChange={e => fetchOptions('model')}
+                            required id='h-brand-id' className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full bg-white'>
+                            <option selected disabled>Please Select a Brand</option>
+                            {brands.map((brand) => (
+                                <option key={brand} value={brand} name={brand}>{brand}</option>
+                            ))}
+                    </select>
+                </div>
+                <div className={"flex flex-col mt-4 w-full device-form-input"}>
+                    <label>Model</label>
+                    <select 
+                        onClick={e => fetchOptions('storage')}
+                        onChange={e => fetchOptions('storage')}
+                        required id='h-model-id' className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full bg-white'>
+                        <option selected disabled>Please Select a Brand First</option>
+                        {models.map((model) => (
+                            <option key={model} value={model} name={model}>{model}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className={"flex flex-col mt-4 w-full device-form-input"}>
+                    <label>Storage</label>
+                    <select required id="h-device-storage" className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full bg-white'>
+                        <option selected disabled>Please Select a Model First</option>
+                        {storage.map((str) => (
+                            <option key={str} value={str} name={str}>{str}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className={"flex flex-col mt-4 w-full device-form-input"}>
+                    <label>Color</label>
+                    <input id='h-color-id' type="text"></input>
+                </div>
+                <div className={"flex mt-8 w-auto px-8 w-max-lg bg-[#509E82] text-white h-8 justify-center items-center font-semibold rounded-2xl cursor-pointer mb-4"} onClick={submitDevice}>
+                    <span>Get Quote!</span>
+                </div>
+            </>
+        }
+    }
 
     return (
         <div className={"flex flex-col w-full"} style={{height: 'calc(100vh - 6rem)', fontFamily: 'pf'}}>
@@ -85,50 +193,7 @@ export default function Home() {
                 </div>
                 <div className={"flex flex-col w-full lg:w-2/5 px-12 pb-4 mr-8 my-1/2 lg:my-16 justify-center items-center"}>
                     <div className={'flex flex-col justify-center lg:max-w-md w-full mx-12 p-4 lg:px-16 lg:py-8 mt-8 items-center rounded-xl bg-[#ECF4F1] drop-shadow-lg'}>
-                        <div>
-                        <span className={"color-[#509E82] mb-4 font-bold text-lg"}>Enter your device details and get a quote as early as 2 hours!</span>
-                        </div>
-                        <div className={"flex flex-col mt-4 w-full device-form-input"}>
-                            <label>Brand</label>
-                            <input type="text"></input>
-                        </div>
-                        <div className={"flex flex-col mt-4 w-full device-form-input"}>
-                            <label>Model</label>
-                            <select>
-                                <option>Model 1</option>
-                                <option>Model 2</option>
-                                <option>Model X</option>
-                                <option>Model S</option>
-                                <option>Model M</option>
-                            </select>
-                        </div>
-                        <div className={"flex flex-col mt-4 w-full device-form-input"}>
-                            <label>Color</label>
-                            <select>
-                                <option>Pitch Black</option>
-                                <option>White Color</option>
-                                <option>Other Color</option>
-                                <option>Other Color</option>
-                                <option>Other Color</option>
-                            </select>
-                        </div>
-                        <div className={"flex flex-col mt-4 w-full device-form-input"}>
-                            <label>Storage</label>
-                            <select>
-                                <option>4 GB</option>
-                                <option>8 GB</option>
-                                <option>16 GB</option>
-                                <option>32 GB</option>
-                                <option>64 GB</option>
-                                <option>128 GB</option>
-                                <option>256 GB</option>
-                                <option>512 GB</option>
-                                <option>1 TB</option>
-                            </select>
-                        </div>
-                        <div className={"flex mt-8 w-auto px-8 w-max-lg bg-[#509E82] text-white h-8 justify-center items-center font-semibold rounded-2xl cursor-pointer mb-4"}>
-                            <a href="/device"><span>Get Quote!</span></a>
-                        </div>
+                        {renderForm()}
                     </div>
                 </div>
             </div>
