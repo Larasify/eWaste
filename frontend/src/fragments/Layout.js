@@ -22,7 +22,7 @@ export default function Layout() {
             <div>
                 <Header openLoginWindow={handleOpen}/>
             </div>
-            <div>
+            <div className={"pt-16 lg:pt-24"}>
                 <Outlet/>
             </div>
         </AuthContextProvider>
