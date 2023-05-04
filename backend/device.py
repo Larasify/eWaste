@@ -108,14 +108,10 @@ def generateDatalink():
     update = { "$set": { "device_ts_mod": ts_mod,"datalink":datalink}}
     result = db.Devices.update_one(query, update)
     if result.matched_count == 1:
-        #TODO : notification
         device = db.Devices.find_one({"_id":device_id})
         user_id = device.get("user_id")
         model_name = device.get("model")
-        query = {"_id":user_id}
-        new_notification = "New datalink for device " + model_name + " is available."
-        #TODO
-        
+        addNotificationLocal(user_id,"Download Available", "Your download for device " + model_name + " is available.")
         return {"response":"success"}
     else:
         return {"message":"device does not exist", "response":"error"}
@@ -135,9 +131,7 @@ def generateQR():
         device = db.Devices.find_one({"_id":device_id})
         user_id = device.get("user_id")
         model_name = device.get("model")
-        query = {"_id":user_id}
-        new_notification = "New QR code for device" + model_name + "is available."
-        #TODO
+        addNotificationLocal(user_id,"Coupon Available", "You have a new coupon for  " + model_name + " available.")
         return {"response":"success"}
     else:
         return {"message":"device does not exist", "response":"error"}
