@@ -11,13 +11,14 @@ from device import device_api
 from auth import auth_api
 from vendors import vendors_api
 from datalinks import datalinks_api
+from transaction import transaction_api
 from dbscript import rebuilddb
 
 app = Flask(__name__)
 app.register_blueprint(user_api, url_prefix='/user')
 app.register_blueprint(account_api, url_prefix='/account')
 app.register_blueprint(device_api, url_prefix='/device')
-#app.register_blueprint(payment_api, url_prefix='/payment')
+app.register_blueprint(transaction_api, url_prefix='/transaction')
 app.register_blueprint(auth_api, url_prefix='/auth')
 app.register_blueprint(vendors_api, url_prefix='/vendor')
 app.register_blueprint(datalinks_api, url_prefix='/datalinks')

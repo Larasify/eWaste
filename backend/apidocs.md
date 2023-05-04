@@ -7,6 +7,16 @@
 - DELETE one (soft) (/user/deleteuser) working post:{id}
 - PATCH one (/user/updateuser) working post {"id":"xx","fields":[],"values":[]}
 
+### user
+- Get User Information
+URL: /user/getuser
+Method: GET
+Description: Retrieves information about the currently logged-in user.
+Response:
+Success：{"response": "success","user_info": {id,email,first_name,last_name,ts,ts_mod,"is_deleted": false}}(if user is logged in and session cookie is valid)
+Error: {"message": "not_logged_in", "response": "error"}(if session cookie is invalid or user is not logged in)
+
+
 ### device
 - GET one (/device/getdevice) working post:{id}
 - GET all (/device/getdevicelist) working

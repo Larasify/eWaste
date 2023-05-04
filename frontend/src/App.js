@@ -1,6 +1,5 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
-import Login from './fragments/Login.js';
 import Layout from './fragments/Layout.js';
 import Register from './pages/Register.js';
 import StaffDashboard from './pages/StaffDashboard.js';
@@ -47,6 +46,7 @@ export const AuthContext = createContext({
   isLoggedIn: false,
   firstName: null,
   lastName: null,
+  userId: null,
   onLogin: null,
   onLogout: null
 })
@@ -54,18 +54,21 @@ const contextValue = {
   isLoggedIn: false,
   firstName: null,
   lastName: null,
+  userId: null,
   onLogin: null,
   onLogout: null
 }
 export const AuthContextProvider = (props) => {
-  const onLogin = (firstName, lastName) => {
+  const onLogin = (firstName, lastName, userId) => {
     contextValue.firstName = firstName
     contextValue.lastName = lastName
+    contextValue.userId = userId
     contextValue.isLoggedIn = true
   }
   const onLogout = () => {
     contextValue.firstName = null;
     contextValue.lastName = null;
+    contextValue.userId = null;
     contextValue.isLoggedIn = false
   }
   contextValue.onLogin = onLogin
