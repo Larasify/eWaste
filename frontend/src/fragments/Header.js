@@ -67,7 +67,7 @@ export default function Header(props) {
         if (!authState.isLoggedIn) {
             fetchUserData().then((userInfo) => {
                 if (userInfo !== null) {
-                    authState.onLogin(userInfo["first_name"], userInfo["last_name"]);
+                    authState.onLogin(userInfo["first_name"], userInfo["last_name"], userInfo._id);
                     setUserInfo(authState)
                 } else {
                     if (window.location.href.endsWith("/") || window.location.href.endsWith("/register")) {
@@ -79,7 +79,7 @@ export default function Header(props) {
         }
     }, [])
     return (
-        <nav className={"min-w-[324px] w-full h-16 md:h-24 bg-gradient-to-r from-[#ebfff3] to-[#c7efd7]"}>
+        <nav className={"fixed z-50 min-w-[324px] w-full h-16 md:h-24 bg-gradient-to-r from-[#ebfff3] to-[#c7efd7]"}>
             <div className={"pr-2 flex flex-row justify-center items-center w-full h-full bg-bottom md:pr-8"}>
                 <a href='/'><img src={logo} alt="" className={"h-full mr-auto"} onClick={() => navigate("/")}/></a>
                 <div
