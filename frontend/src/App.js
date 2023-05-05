@@ -1,6 +1,7 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 import Layout from './fragments/Layout.js';
+import StaffLayout from './fragments/StaffLayout.js';
 import Register from './pages/Register.js';
 import StaffDashboard from './pages/StaffDashboard.js';
 import Device from './pages/Device.js';
@@ -35,8 +36,9 @@ const App = () => {
           <Route path="add-device-form" element={<AddDeviceForm/>}/>
           <Route path="edit-device-form" element={<EditDeviceForm/>}/>
           <Route path="view-device-report" element={<ViewDeviceReport/>}/>
-          <Route path="staff-dashboard" element={<StaffDashboard/>}/>
-
+        </Route>
+        <Route path="/staff" element={<StaffLayout/>}>
+          <Route path="dashboard" element={<StaffDashboard/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
