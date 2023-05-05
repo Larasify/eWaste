@@ -53,7 +53,7 @@ export default function AddDeviceForm(){
 
             </div>
             <div
-                className={"flex flex-col border-0 md:rounded-r-lg w-full md:w-4/5 h-full bg-white md:bg-auto overflow-auto p-4 md:p-16"}>
+                className={"flex flex-col border-0 md:rounded-r-lg w-full md:w-4/5 h-full bg-white md:bg-auto overflow-auto p-4 md:px-16"}>
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-6 md:mb-4 "}>
 
                     <div >
@@ -67,23 +67,9 @@ export default function AddDeviceForm(){
                     <div >
                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Model Name</label>
-                        {/*<FormControl fullWidth focused={false} size={"small"}>*/}
-                        {/*  <Select*/}
-                        {/*    labelId="model-label"*/}
-                        {/*    id="model"*/}
-                        {/*    value={device.model}*/}
-                        {/*    onChange={handleChange}*/}
-                        {/*    className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}*/}
-
-                        {/*  >*/}
-                        {/*    <MenuItem value={"Apple12Pro"}>Apple12Pro</MenuItem>*/}
-                        {/*    <MenuItem value={"Apple13Pro"}>Apple13Pro</MenuItem>*/}
-                        {/*    <MenuItem value={"AppleX"}>AppleX</MenuItem>*/}
-                        {/*  </Select>*/}
-                        {/*</FormControl>*/
                         <input
                             className={"block w-full p-2  text-gray-900 border border-[#509E82] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
-                            type="text" id={"modelInput"}></input>}
+                            type="text" id={"modelInput"}></input>
                     </div>
 
                 </div>
@@ -114,26 +100,17 @@ export default function AddDeviceForm(){
                             type="text" id={"storageInput"}></input>
                     </div>
                     <br className={"block md:hidden"}/>
-                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
-                            Type</label>
-                        <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="type-label"
-                            id="type"
-                            value={device.type}
-                            onChange={handleChange}
-                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
 
-                          >
-                            <MenuItem value={"Laptop"}>Laptop</MenuItem>
-                            <MenuItem value={"Phone"}>Phone</MenuItem>
-                            <MenuItem value={"Tablet"}>Tablet</MenuItem>
-                          </Select>
-                        </FormControl>
+                    {/*value*/}
+                    <div >
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} >*
+                            Expected Value</label>
+                        <input
+                            className={"block w-full p-2  text-gray-900 border border-[#509E82] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                            type="text" id={"valueInput"}></input>
                     </div>
-
                 </div>
+
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     <div >
                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
@@ -153,6 +130,93 @@ export default function AddDeviceForm(){
                             <MenuItem value={"Unknown"}>Unknown</MenuItem>
                           </Select>
                         </FormControl>
+                    </div>
+
+
+                    <div >
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                            Type</label>
+                        <FormControl fullWidth focused={false} size={"small"}>
+                          <Select
+                            labelId="type-label"
+                            id="type"
+                            value={device.type}
+                            onChange={handleChange}
+                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+
+                          >
+                            <MenuItem value={"Laptop"}>Laptop</MenuItem>
+                            <MenuItem value={"Phone"}>Phone</MenuItem>
+                            <MenuItem value={"Tablet"}>Tablet</MenuItem>
+                          </Select>
+                        </FormControl>
+                    </div>
+
+                </div>
+
+                <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
+                     {/*status*/}
+                     <div >
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                            Status</label>
+                        <FormControl fullWidth focused={false} size={"small"}>
+                          <Select
+                            labelId="status-label"
+                            id="status"
+                            value={device.status}
+                            onChange={handleChange}
+                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+
+                          >
+                            <MenuItem value={"Confirmed"}>Confirmed</MenuItem>
+                            <MenuItem value={"Shipped"}>Shipped</MenuItem>
+                            <MenuItem value={"Received"}>Received</MenuItem>
+                            <MenuItem value={"Wiped"}>Wiped</MenuItem>
+                            <MenuItem value={"Approved"}>Approved</MenuItem>
+                            <MenuItem value={"Rejected"}>Rejected</MenuItem>
+                            <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
+
+                          </Select>
+                        </FormControl>
+                    </div>
+                    <br className={"block md:hidden"}/>
+
+                    {/*verified*/}
+                     <div >
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} >*
+                            Verified</label>
+                        <FormControl fullWidth focused={false} size={"small"}>
+                          <Select
+                            labelId="verified-label"
+                            id="verified"
+                            value={device.verified}
+                            onChange={handleChange}
+                            className={"border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}>
+                            <MenuItem value={"true"} className={"flex"}>True</MenuItem>
+                            <MenuItem value={"false"} className={"flex"}>False</MenuItem>
+                          </Select>
+                        </FormControl>
+                    </div>
+                </div>
+
+                {/*description*/}
+                 <label className={" text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} htmlFor={"descriptionInput"}>*
+                            Description (No more than 500 words)</label>
+
+                <textarea rows={"3"} className={" block w-full p-2 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                              type="text" id={"descriptionInput"}></textarea>
+
+                {/*service*/}
+                <div className="inline mt-4 md:grid md:grid-cols-2">
+                    <div className={"flex items-center "}>
+                        <input type="radio" id="wiping" name="service" value="wiping" className="h-4 w-4 md:h-5 md:w-5  "  required/>
+                        <label htmlFor="wiping" className={"ml-2 text-left block text-xl font-medium text-gray-900 dark:text-white"}>Wipe Data from Device</label>
+                    </div>
+                    <br className={"md:hidden"}/>
+                    <div className={"flex items-center "}>
+                        <input type="radio" id="retrieval" name="service" value="retrieval" className="h-4 w-4 md:h-5 md:w-5 " required/>
+                        <label  htmlFor="retrieval" className={"ml-2 text-left block text-xl font-medium text-gray-900 dark:text-white"}>Wipe & Retrieve Data from
+                        Device</label>
                     </div>
                 </div>
 

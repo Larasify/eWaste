@@ -111,18 +111,6 @@ def getUserListings():
     else:
         return {"message":"not_logged_in", "response":"error"}
 
-@account_api.route("/getuserpayments", methods=['POST'])
-def getUserPayments():
-    if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
-        userid = session_ids[request.cookies.get('session-id')]
-        mylist = db.Payments.find({"user_id":userid,"is_deleted":False})
-        tolist = list(mylist)
-        if len(tolist) == 0:
-            return {"message":"empty list", "response":"error"}
-        json_list = dumps(tolist)
-        return {"response":"success", "user_list":json_list}
-    else:
-        return {"message":"not_logged_in", "response":"error"}
 
 @account_api.route("/getuserdatalinks", methods=['POST'])
 def getUserDataLinks():
@@ -136,7 +124,6 @@ def getUserDataLinks():
         return {"response":"success", "user_list":json_list}
     else:
         return {"message":"not_logged_in", "response":"error"}
-
 
 
 
@@ -168,3 +155,24 @@ def notificationIsSeen():
         return {"response": "success"}
     else:
         return {"message": "Notification does not exist", "response":"error"}
+
+
+@user_api.route("/makeuserstaff", methods=['POST'])
+def makeUserStaff():
+    data = request.get_json()
+    userid = data.get("userid")
+    result = db.Users.update_one({ "_id": userid },{ "$set": { "privilege": "staff" } })
+    if result.matched_count == 1:
+        return {"response": "success"}
+    else:
+        return {"message": "User does not exist", "response":"error"}
+    
+@user_api.route("/makeuseradmin", methods=['POST'])
+def makeUserAdmin():
+    data = request.get_json()
+    userid = data.get("userid")
+    result = db.Users.update_one({ "_id": userid },{ "$set": { "privilege": "admin" } })
+    if result.matched_count == 1:
+        return {"response": "success"}
+    else:
+        return {"message": "User does not exist", "response":"error"}
