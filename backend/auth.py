@@ -58,7 +58,7 @@ def register():
         last_name = data.get("last_name")
         db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"phone_no":phone_no,"privilege":"user","ts":ts,"ts_mod":ts_mod, "is_deleted":False})
     else:
-        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,phone_no:"phone_no","privilege":"user","ts":ts,"ts_mod":ts_mod, "is_deleted":False})
+        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"phone_no":phone_no,"privilege":"user","ts":ts,"ts_mod":ts_mod, "is_deleted":False})
     return {"response":"success"}
 
 
