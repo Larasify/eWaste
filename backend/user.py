@@ -87,7 +87,10 @@ def updateUser():
     fields = data.get("fields")[0]
     update_dict = {}
     for key in fields:
-        update_dict[key] = fields[key]
+        if key == "password":
+            update_dict[key] = generate_password_hash(fields[key])
+        else:
+            update_dict[key] = fields[key]
     update_dict["ts_mod"] = datetime.datetime.utcnow()
     result = db.Users.update_one(query, {"$set": update_dict})
     if result.matched_count == 1:
