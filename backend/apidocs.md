@@ -5,7 +5,7 @@
 - GET all (/user/getuserlist) working
 - POST one (/user/postuser) working post:{email,password,first_name,last_name(optional)}
 - DELETE one (soft) (/user/deleteuser) working post:{id}
-- PATCH one (/user/updateuser) working post {"id":"xx","fields":[],"values":[]}
+- PATCH one (/user/updateuser) working post {"id":"xx","fields":[{"password":"new","email":"new@gmail.com"}]}
 
 ### user
 - Get User Information
@@ -22,7 +22,7 @@ Error: {"message": "not_logged_in", "response": "error"}(if session cookie is in
 - GET all (/device/getdevicelist) working
 - POST one (/device/postdevice) working post:{"user_id":"a","vendor_id":"b","status":"c","color":"d","type":"e"}
 - DELETE one (soft) (device/deletedevice) working post:{id}
-- PATCH one (/device/updatedevice) working post {"id":"xx","fields":[],"values":[]}
+- PATCH one (/device/updatedevice) working post {"id":"xx","fields":[{"status":"newstatus","color":"newcolor"}]}
 
 ### payment
 - GET one
@@ -61,4 +61,4 @@ Error: {"message": "not_logged_in", "response": "error"}(if session cookie is in
 - GET all working
 - POST one working post:{"brand":"a","model_name":"b","size":"c","storage":"d","sale_price":"123"}
 - DELETE one (soft) working
-- PATCH one (/vendor/updatevendor) working post {"id":"xx","fields":[],"values":[]}
+- PATCH one (/vendor/updatevendor) working post {"id":"xx","fields":[{"brand":"newbrand","size":"new"}]}
