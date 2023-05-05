@@ -87,42 +87,21 @@ export default function EditTransactionForm(){
                             type="text" id={"amountInput"}></input>
                     </div>
                     <br className={"block md:hidden"}/>
-                    <div >
-                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
-                            QR Code Link</label>
-                        <label
-                            className={" block w-full p-2 md:p-3  rounded-lg  sm:text-md  underline text-[#509E82]"}
-                            >Generate by clicking button</label>
+
+                    {/*status*/}
+                     <div >
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                            Status</label>
+                        <input
+                            className={" block w-full p-2 md:p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                            type="text" id={"statusInput"}></input>
                     </div>
 
                 </div>
 
 
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-10 md:mb-4 "}>
-                     {/*status*/}
-                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
-                            Status</label>
-                        <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="payment-status-label"
-                            id="payment_status"
-                            value={transaction.payment_status}
-                            onChange={handleChange}
-                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
-
-                          >
-                            <MenuItem value={"Paid"}>Paid</MenuItem>
-                            <MenuItem value={"Pending"}>Pending</MenuItem>
-                            <MenuItem value={"Unpaid"}>Unpaid</MenuItem>
-
-                          </Select>
-                        </FormControl>
-                    </div>
-                    <br className={"block md:hidden"}/>
-
-                    {/*verified*/}
-                     <div >
+                    <div >
                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} >*
                             Verified</label>
                         <FormControl fullWidth focused={false} size={"small"}>
@@ -137,6 +116,16 @@ export default function EditTransactionForm(){
                           </Select>
                         </FormControl>
                     </div>
+                    <br className={"block md:hidden"}/>
+                    <div >
+                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                            QR Code Link</label>
+                        <label
+                            className={" block w-full p-2 md:p-3  rounded-lg  sm:text-md  underline text-[#509E82]"}
+                            >Generate by clicking button</label>
+                    </div>
+                    {/*verified*/}
+
                 </div>
 
 
