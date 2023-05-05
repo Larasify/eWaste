@@ -14,6 +14,8 @@ import DeviceUpload from './pages/DeviceUpload.js';
 import EditDeviceForm from './pages/EditDeviceForm.js';
 import AddDeviceForm from './pages/AddDeviceForm.js';
 import ViewDeviceReport from './pages/ViewDeviceReport.js';
+import EditTransactionForm from './pages/EditTransactionForm.js';
+import EditVendorForm from './pages/EditVendorForm';
 import './App.css';
 import EditUserForm from "./pages/editUserForm";
 import {createContext} from "react";
@@ -34,7 +36,9 @@ const App = () => {
           <Route path="edit-user-form" element={<EditUserForm/>}/>
           <Route path="add-device-form" element={<AddDeviceForm/>}/>
           <Route path="edit-device-form" element={<EditDeviceForm/>}/>
+          <Route path="edit-vendor-form" element={<EditVendorForm/>}/>
           <Route path="view-device-report" element={<ViewDeviceReport/>}/>
+          <Route path="edit-transaction-form" element={<EditTransactionForm/>}/>
           <Route path="staff-dashboard" element={<StaffDashboard/>}/>
 
         </Route>
