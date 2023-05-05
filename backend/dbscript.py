@@ -10,8 +10,8 @@ def rebuilddb():
     db.Users.drop()
     db.Vendors.drop()   
     #insert random 50 users with random uuid email password firstname lastname ts ts_mod
-    db.Users.insert_one({"_id":0,"email":"admin@admin.com","password":generate_password_hash("password"),"first_name":"admin","last_name":"admin","priviledge":"admin","ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_deleted":False})
-    db.Users.insert_one({"_id":1,"email":"staff@staff.com","password":generate_password_hash("password"),"first_name":"staff","last_name":"staff","priviledge":"staff","ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_deleted":False})
+    db.Users.insert_one({"_id":0,"email":"admin@admin.com","password":generate_password_hash("password"),"first_name":"admin","last_name":"admin","privilege":"admin","ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_deleted":False})
+    db.Users.insert_one({"_id":1,"email":"staff@staff.com","password":generate_password_hash("password"),"first_name":"staff","last_name":"staff","privilege":"staff","ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_deleted":False})
     user_id_list = []
     for i in range(50):
         userid = str(uuid.uuid4())
@@ -23,8 +23,8 @@ def rebuilddb():
         phone_no = "+449013169"
         ts = datetime.datetime.utcnow()
         ts_mod = datetime.datetime.utcnow()
-        priviledge = "user"
-        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"phone_no":phone_no,"priviledge":priviledge, "ts":ts,"ts_mod":ts_mod, "is_deleted":False})
+        privilege = "user"
+        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"phone_no":phone_no,"privilege":privilege, "ts":ts,"ts_mod":ts_mod, "is_deleted":False})
 
     vendor_id_list = []
     for i in range(50):

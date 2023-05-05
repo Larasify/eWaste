@@ -155,3 +155,24 @@ def notificationIsSeen():
         return {"response": "success"}
     else:
         return {"message": "Notification does not exist", "response":"error"}
+
+
+@user_api.route("/makeuserstaff", methods=['POST'])
+def makeUserStaff():
+    data = request.get_json()
+    userid = data.get("userid")
+    result = db.Users.update_one({ "_id": userid },{ "$set": { "privilege": "staff" } })
+    if result.matched_count == 1:
+        return {"response": "success"}
+    else:
+        return {"message": "User does not exist", "response":"error"}
+    
+@user_api.route("/makeuseradmin", methods=['POST'])
+def makeUserAdmin():
+    data = request.get_json()
+    userid = data.get("userid")
+    result = db.Users.update_one({ "_id": userid },{ "$set": { "privilege": "admin" } })
+    if result.matched_count == 1:
+        return {"response": "success"}
+    else:
+        return {"message": "User does not exist", "response":"error"}
