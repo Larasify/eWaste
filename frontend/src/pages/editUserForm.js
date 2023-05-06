@@ -1,5 +1,5 @@
 import './editUserForm.css';
-import React from "react";
+import React, {useEffect} from "react";
 import { IoChevronBackCircle } from "react-icons/io5";
 import {useLocation, useNavigate} from "react-router-dom";
 
@@ -50,54 +50,14 @@ export default function EditUserForm() {
         }
     };
 
-    // if the page is to edit a user's information, pull the originals and inject them into the form for editing.
-    // if the page is to add a new user, leave all fields empty
-    const fillUserInfo = () => {
-        if (!location.state || !location.state['user_id']) {
-            alert("invalid location.state or invalid user_id");
-            return;
-        }
-        const myRequest = new Request("/user/getuserbyid",{
-            headers: new Headers({'Content-Type': 'application/json'}),
-            method: "POST",
-            body: JSON.stringify({"userid": location.state['user_id']}),
-            credentials: "include"
-        });
-        fetch(myRequest)
-            .then((response) => {
-                if (response.status === 200) {
-                    return response.json();
-                } else {
-                    alert(`Fetch user info (HTTP) failed: ${response.status}: ${response.statusText}`);
-                }
-            })
-            .then((data)  => {
-                if (data['response'] === "success") {
-                    data = data['user_info']
-                    formData = {
-                        "firstName": data['first_name'],
-                        "firstNameChanged": false,
-                        "lastName": data['last_name'],
-                        "lastNameChanged": false,
-                        "emailAddr": data['email'],
-                        "emailAddrChanged": false,
-                        "phoneNo": data['phone_no'],
-                        "phoneNoChanged": false,
-                        "passwordChanged": false,
-                        "privilege": data['privilege'],
-                        "privilegeChanged": false
-                    }
-                    injectDataIntoForm();
-                } else {
-                    alert("Fetch user info failed: " + data['message'])
-                }
-            })
-    }
     const submitForm = () => {
+        // request body here
         const updateUserBody = {
-            "id": location.state['user_id'],
+            "id": location.state['_id'],
             fields: {},
         };
+
+        // track any changed data
         if (formData.firstNameChanged) {
             updateUserBody.fields['first_name'] = formData.firstName
         }
@@ -120,6 +80,7 @@ export default function EditUserForm() {
             navigate(-1);
             return;
         }
+        // Put changed fields into a bloody array. Idk why backend takes fields in an array.
         updateUserBody.fields = [updateUserBody.fields]
         const myRequest = new Request("/user/updateuser", {
             headers: new Headers({'Content-Type': 'application/json'}),
@@ -127,24 +88,39 @@ export default function EditUserForm() {
             body: JSON.stringify(updateUserBody),
             credentials: "include"
         });
+        // Submit the request
         fetch(myRequest).then((response) => {
+            // Check HTTP status
             if (response.status === 200) {
                 return response.json();
             } else {
                 alert(`Update user info (HTTP) failed: ${response.status}: ${response.statusText}`);
             }
         }).then((data) => {
+            // Check update response message
             if (data['response'] === "success") {
                 navigate(-1);
             } else {
                 alert(`Update user info failed: ${data['message']}`)
             }
         });
-
     };
 
+    // pull the originals and inject them into the form for editing.
+    useEffect(() => {
+        if (!location.state) {
+            alert("invalid location.state")
+        }
+        const state = location.state;
+        formData.firstName = state['first_name'];
+        formData.lastName = state['last_name'];
+        formData.emailAddr = state['email'];
+        formData.privilege = state['privilege'];
+        formData.phoneNo = state['phone_no']
+        injectDataIntoForm();
+    }, [])
     return (
-        <div onLoad={fillUserInfo} className={"flex flex-col md:flex-row relative my-4 w-5/6 mx-auto h-5/6 bg-[#ECF4F1] rounded-3xl"}>
+        <div className={"flex flex-col md:flex-row relative my-4 w-5/6 mx-auto h-5/6 bg-[#ECF4F1] rounded-3xl"}>
             <div className={"w-full md:w-1/3 h-full rounded-l-2xl"}>
                 <div className={"inline-flex w-full text-3xl md:text-4xl p-4 md:p-6 items-center text-black"}
                      onClick={askBackward}>

@@ -37,7 +37,7 @@ export default function IconTabs() {
         fetch('/user/getuserlist')
         .then(userRequest => (userRequest).json())
         .then(users => {
-            const userList = (JSON.parse(users.user_list)).filter(u => !u.is_deleted);
+            const userList = (users.user_list).filter(u => !u.is_deleted);
             userList.map( u => u.id = u._id)
             setUserData({
                 cols: [
