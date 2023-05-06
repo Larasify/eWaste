@@ -44,7 +44,7 @@ def getUserList():
     list_users = list(users)
     if len(list_users) == 0:
         return {"message":"list_empty", "response":"error"}
-    json_users = dumps(list_users)
+    json_users = list_users
     return {"response":"success", "user_list":json_users}
 
 @user_api.route("/postuser", methods=['POST'])
