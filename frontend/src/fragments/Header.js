@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useReducer, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import './Header.css'
 import {RiSearchLine, RiUser5Fill} from 'react-icons/ri';
 import { RiNotification3Line } from 'react-icons/ri';
@@ -52,6 +52,9 @@ export default function Header(props) {
                 authState.onLogout();
                 setUserInfo(null)
                 navigate("/")
+                break;
+            default:
+                alert("invalid dropdown value")
         }
     };
     const handleLoginClick = (event) => {
