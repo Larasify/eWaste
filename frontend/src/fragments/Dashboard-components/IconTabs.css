@@ -15,30 +15,30 @@
 .sdb-top-control {
     display: flex;
     font-size: 1.5rem;
-    color: #509E82;
+    /* color: #4b72b2; */
     align-items: center;
     cursor: pointer;
     height: 2.2rem;
 }
 
 .sdb-search-box {
-    border: 2px solid #509E82;
+    border: 2px solid #4b72b2;
     border-radius: 2rem;
     padding-left: 1rem;
     width: 15rem;
-    color: #509E82;
+    color: #4b72b2;
     height: 2.2rem;
     margin-right: 2rem;
 }
 
 .sdb-search-box > input{
-    color: #509E82;
+    color: #4b72b2;
     border: none;
     height: 2rem;
 }
 
 .sdb-search-box > input::placeholder {
-    color: #509E82;
+    color: #4b72b2;
 }
 
 .sdb-search-box > span {
@@ -56,7 +56,7 @@
 }
 
 .sdb-top-control .MuiButtonBase-root {
-    color: #509E82;
+    /* color: #4b72b2; */
 }
 
 
@@ -86,7 +86,7 @@
 }
 
 .sdb-controls .Mui-selected .sdb-tab{
-    color: #509E82;
+    color: #4b72b2;
 }
 
 .sdb-controls span.MuiTabs-indicator {
