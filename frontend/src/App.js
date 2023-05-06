@@ -1,6 +1,7 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 import Layout from './fragments/Layout.js';
+import StaffLayout from './fragments/StaffLayout.js';
 import Register from './pages/Register.js';
 import StaffDashboard from './pages/StaffDashboard.js';
 import Device from './pages/Device.js';
@@ -33,14 +34,15 @@ const App = () => {
           <Route path="user-account" element={<UserAccount/>}/>
           <Route path="user-device-upload" element={<DeviceUpload/>}/>
           <Route path="user-recycle" element={<UserRecycle/>}/>
-          <Route path="edit-user-form" element={<EditUserForm/>}/>
           <Route path="add-device-form" element={<AddDeviceForm/>}/>
+          <Route path="view-device-report" element={<ViewDeviceReport/>}/>
+        </Route>
+        <Route path="/staff" element={<StaffLayout/>}>
+          <Route path="dashboard" element={<StaffDashboard/>}/>
           <Route path="edit-device-form" element={<EditDeviceForm/>}/>
           <Route path="edit-vendor-form" element={<EditVendorForm/>}/>
-          <Route path="view-device-report" element={<ViewDeviceReport/>}/>
           <Route path="edit-transaction-form" element={<EditTransactionForm/>}/>
-          <Route path="staff-dashboard" element={<StaffDashboard/>}/>
-
+          <Route path="edit-user-form" element={<EditUserForm/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
