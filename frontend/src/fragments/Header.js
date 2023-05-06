@@ -54,7 +54,7 @@ export default function Header(props) {
                 navigate("/")
                 break;
             default:
-                alert("invalid dropdown value")
+                return
         }
     };
     const handleLoginClick = (event) => {
