@@ -34,15 +34,15 @@ const App = () => {
           <Route path="user-account" element={<UserAccount/>}/>
           <Route path="user-device-upload" element={<DeviceUpload/>}/>
           <Route path="user-recycle" element={<UserRecycle/>}/>
-          <Route path="edit-user-form" element={<EditUserForm/>}/>
           <Route path="add-device-form" element={<AddDeviceForm/>}/>
-          <Route path="edit-device-form" element={<EditDeviceForm/>}/>
-          <Route path="edit-vendor-form" element={<EditVendorForm/>}/>
           <Route path="view-device-report" element={<ViewDeviceReport/>}/>
-          <Route path="edit-transaction-form" element={<EditTransactionForm/>}/>
         </Route>
         <Route path="/staff" element={<StaffLayout/>}>
           <Route path="dashboard" element={<StaffDashboard/>}/>
+          <Route path="edit-device-form" element={<EditDeviceForm/>}/>
+          <Route path="edit-vendor-form" element={<EditVendorForm/>}/>
+          <Route path="edit-transaction-form" element={<EditTransactionForm/>}/>
+          <Route path="edit-user-form" element={<EditUserForm/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

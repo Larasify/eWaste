@@ -44,8 +44,7 @@ export default function IconTabs() {
                     {field: 'first_name', headerName: 'First Name', flex: 2},
                     {field: 'last_name', headerName: 'Last Name', flex: 2},
                     {field: 'email', headerName: 'Email', flex: 2},
-                    //fixme
-                    {field: 'priviledge', headerName: 'Previlege', flex: 1},
+                    {field: 'privilege', headerName: 'Privilege', flex: 1},
                 ],
                 rows: userList
             });
@@ -108,6 +107,7 @@ export default function IconTabs() {
     }
 
     const handleChange = (event, newValue) => {
+        fetchData();
         setValue(newValue);
     };
 
@@ -127,7 +127,8 @@ export default function IconTabs() {
                 title={title}
                 count={data.rows.length}
                 redirect_urls={{
-                    add: urls.add
+                    modify: urls.modify,
+                    delete: urls.delete
                 }}
             /> 
         }
@@ -189,22 +190,26 @@ export default function IconTabs() {
                 <div className="h-full">
                     <TabPanel className="h-full max-h-fit" value={value} index={0}>
                         {renderTable(userData, 'User', {
-                            add: '/'
+                            modify: '/staff/edit-user-form',
+                            delete: '/user/deleteuser'
                         })}
                     </TabPanel>
                     <TabPanel className="h-full max-h-fit" value={value} index={1}>
                         {renderTable(deviceData, 'Device', {
-                            add: '/'
+                            modify: '/staff/edit-device-form',
+                            delete: '/device/deletedevice'
                         })}
                     </TabPanel>
                     <TabPanel className="h-full max-h-fit" value={value} index={2}>
                         {renderTable(transactionData, 'Transaction', {
-                            add: '/'
+                            modify: '/staff/edit-transaction-form',
+                            delete: null
                         })}
                     </TabPanel>
                     <TabPanel className="h-full max-h-fit" value={value} index={3}>
                         {renderTable(vendorData, 'Data-source', {
-                            add: '/'
+                            modify: '/staff/edit-vendor-form',
+                            delete: '/vendor/deletevendor'
                         })}
                     </TabPanel>
                 </div>

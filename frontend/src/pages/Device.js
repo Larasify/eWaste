@@ -111,14 +111,6 @@ export default function Device(props) {
             })
 
         }
-        console.log({
-            color,
-            purchaseCost,
-            purchaseYear,
-            deviceCondition,
-            description,
-            wipeOnly
-        })
     }
 
     const fetchOptions = (column) => {

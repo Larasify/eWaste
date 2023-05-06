@@ -22,7 +22,7 @@ export default function DataTable({
 
     const navigate = useNavigate();
 
-    const [rowSelected, selectRow] = React.useState(false);
+    const [tableRows, setRows] = React.useState(rows);
     const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
     
     const tableOps = () => {
@@ -38,7 +38,52 @@ export default function DataTable({
     }
 
     const addRow = () => {
-        navigate(redirect_urls.add)
+        navigate(redirect_urls.modify)
+    }
+
+    const editRow = () => {
+        if(rowSelectionModel.length) {
+            const row = rows.find(e => e.id === rowSelectionModel[0])
+            navigate(redirect_urls.modify, {
+                state: {
+                    ...row
+                }
+            })
+        } else {
+            alert('please select a row')
+        }
+    }
+
+    const deleteRow = () => {
+        if(redirect_urls.delete === null) {
+            alert('deletion not permitted')
+        } else {
+            if(rowSelectionModel.length) {
+                fetch(redirect_urls.delete, {
+                    method: 'POST',
+                    credentials: "include",
+                    headers: new Headers({"Content-Type": "application/json"}),
+                    body: JSON.stringify({
+                        id: rowSelectionModel[0]
+                    })
+                })
+                .then(req => req.json())
+                .then((res) => {
+                    if(res.response === 'success') {
+                        alert('deleted!')
+                        setRows(tableRows.filter(r => r.id != rowSelectionModel[0]))
+                    } else {
+                        alert('error')
+                    }
+                })
+            } else {
+                alert('please select a row')
+            }
+        }
+    }
+
+    const freezeRow = () => {
+        alert('operation not permitted!');
     }
 
     return (
@@ -46,7 +91,7 @@ export default function DataTable({
             <div className={"flex w-full pt-4 justify-between"}>
                 <div className="flex ml-12 w-5/6 font-medium flex-col">
                     <span className={"text-lg"}>{title} List</span>
-                    <span className={"text-sm text-slate-400"}>{count} {`${title.toLowerCase()}s`}</span>
+                    <span className={"text-sm text-slate-400"}>{tableRows.length} {`${title.toLowerCase()}s`}</span>
                 </div>
                 <div className={"flex justify-end w-1/6 mr-8"}>
                     <div className="flex border-2 border-[#4b72b2] rounded-xl w-60 text-4b72b2 text-[#4b72b2] h-9 mr-8">
@@ -60,21 +105,21 @@ export default function DataTable({
                             </IconButton>
                         </Tooltip>
                     </div>
-                    <div  class="sdb-top-control color-grey">
+                    <div  class="sdb-top-control" onClick={deleteRow}>
                         <Tooltip title={fns[1]}>
                             <IconButton>
                                 <AiOutlineDelete id="delete-record" />
                             </IconButton>
                         </Tooltip>
                     </div>
-                    <div class="sdb-top-control">
+                    <div class="sdb-top-control" onClick={editRow}>
                         <Tooltip title={fns[2]}>
                             <IconButton>
                                 <AiOutlineEdit id="edit-record"/>
                             </IconButton>
                         </Tooltip>
                     </div>
-                    <div class="sdb-top-control">
+                    <div class="sdb-top-control" onClick={freezeRow}>
                         <Tooltip title={fns[3]}>
                             <IconButton>
                                 <MdOutlineHourglassDisabled id="freeze-record"/>
@@ -88,7 +133,7 @@ export default function DataTable({
                     sx={{
                         height: 'calc(100vh - 8rem)'
                     }}
-                    rows={rows}
+                    rows={tableRows}
                     columns={cols}
                     pageSizeOptions={ops && ops.pageSizeOptions || [10, 20, 25]}
                     checkboxSelection={ops && ops.check || false}
@@ -97,7 +142,6 @@ export default function DataTable({
                     onRowSelectionModelChange={(newRowSelectionModel) => {
                         setRowSelectionModel(newRowSelectionModel);
                         tableOps();
-                        console.log(rowSelectionModel)
                     }}
                     rowSelectionModel={rowSelectionModel}
                 />
