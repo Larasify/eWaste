@@ -1,5 +1,6 @@
 import React, {useContext} from 'react'
 import {Outlet} from 'react-router-dom'
+import { Toaster } from 'react-hot-toast';
 
 import Header from './Header'
 import {AuthContextProvider} from "../App";
@@ -14,6 +15,8 @@ export default function Layout() {
 
     return (
         <AuthContextProvider>
+            <Toaster
+            position="bottom-right"/>
             <Modal open={open} onClose={handleClose}>
                 <Box>
                     <Login loginModalClose={handleClose}/>

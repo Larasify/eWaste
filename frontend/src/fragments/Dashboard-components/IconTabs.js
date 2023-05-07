@@ -16,6 +16,7 @@ import TabPanel from './TabPanel.js';
 import {AuthContext} from "../../App";
 import {logoutSubmit} from "../Login.js";
 import DataTable from './DataTable';
+import { Notify } from '../Notify';
 
 export default function IconTabs() {
 
@@ -137,6 +138,7 @@ export default function IconTabs() {
     const logout = () => {
         logoutSubmit().then(_ => {});
         authState.onLogout();
+        Notify.success('logged out!')
         navigate("/")
     }
 

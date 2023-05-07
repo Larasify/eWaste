@@ -1,6 +1,7 @@
 import './UserAccount.css';
 import {useNavigate} from "react-router-dom";
 import {IoChevronBackCircle} from "react-icons/io5";
+import { Notify } from '../fragments/Notify';
 
 export default function UserAccount(){
     const navigate = useNavigate();
@@ -98,14 +99,14 @@ export default function UserAccount(){
             if (response.status === 200) {
                 return response.json();
             } else {
-                alert(`Update (HTTP) failed: ${response.status}: ${response.statusText}.`);
+                Notify.error(`Update (HTTP) failed: ${response.status}: ${response.statusText}.`);
             }
         }).then((data) => {
             if (data['response'] === "success") {
-                alert("Your information has been updated successfully. ")
+                Notify.success("Your information has been updated successfully. ")
                 navigate(-1);
             } else {
-                alert(`Update failed: ${data['message']}.`);
+                Notify.error(`Update failed: ${data['message']}.`);
             }
         });
     };

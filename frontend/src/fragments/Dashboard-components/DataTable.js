@@ -8,6 +8,7 @@ import { BsSearch } from 'react-icons/bs';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { useNavigate } from 'react-router-dom';
+import { Notify } from '../Notify';
 
 
 export default function DataTable({
@@ -50,13 +51,13 @@ export default function DataTable({
                 }
             })
         } else {
-            alert('please select a row')
+            Notify.error('please select a row')
         }
     }
 
     const deleteRow = () => {
         if(redirect_urls.delete === null) {
-            alert('deletion not permitted')
+            Notify.error('deletion not permitted')
         } else {
             if(rowSelectionModel.length) {
                 fetch(redirect_urls.delete, {
@@ -70,20 +71,20 @@ export default function DataTable({
                 .then(req => req.json())
                 .then((res) => {
                     if(res.response === 'success') {
-                        alert('deleted!')
+                        Notify.success('deleted!')
                         setRows(tableRows.filter(r => r.id != rowSelectionModel[0]))
                     } else {
-                        alert('error')
+                        Notify.error('error')
                     }
                 })
             } else {
-                alert('please select a row')
+                Notify.error('please select a row')
             }
         }
     }
 
     const freezeRow = () => {
-        alert('operation not permitted!');
+        Notify.error('operation not permitted!');
     }
 
     return (
