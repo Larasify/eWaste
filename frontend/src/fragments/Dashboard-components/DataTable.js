@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { AiOutlineEdit } from 'react-icons/ai';
@@ -8,7 +8,11 @@ import { BsSearch } from 'react-icons/bs';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { useNavigate } from 'react-router-dom';
+import {RiLogoutBoxLine} from 'react-icons/ri';
+
 import { Notify } from '../Notify';
+import {AuthContext} from "../../App";
+import {logoutSubmit} from "../Login.js";
 
 
 export default function DataTable({
@@ -18,9 +22,10 @@ export default function DataTable({
     fns,
     title,
     count,
-    redirect_urls
+    redirect_urls,
+    logout=false
 }) {
-
+    const authState = useContext(AuthContext)
     const navigate = useNavigate();
 
     const [tableRows, setRows] = React.useState(rows);
@@ -39,7 +44,11 @@ export default function DataTable({
     }
 
     const addRow = () => {
-        navigate(redirect_urls.modify)
+        const state = {}
+        cols.map(col => state[col.field] = '')
+        navigate(redirect_urls.modify, {
+            state
+        })
     }
 
     const editRow = () => {
@@ -87,6 +96,28 @@ export default function DataTable({
         Notify.error('operation not permitted!');
     }
 
+    const logoutUser = () => {
+        logoutSubmit().then(_ => {});
+        authState.onLogout();
+        Notify.success('logged out!')
+        navigate("/")
+    }
+
+    const renderLogout = () => {
+        if(logout) {
+            return <div class="sdb-top-control ml-8 rounded-lg bg-[#4b72b2] px-4" onClick={logoutUser}>
+                <Tooltip title='Logout'>
+                    <IconButton>
+                        <RiLogoutBoxLine className={"text-white"} id="table-logout"/>
+                    </IconButton>
+                </Tooltip>
+                <span className={'text-base font-bold text-white'}>Logout</span>
+            </div>
+        } else {
+            return <></>
+        }
+    }
+
     return (
         <div className='flex w-full h-full flex-col'>
             <div className={"flex w-full pt-4 justify-between"}>
@@ -127,6 +158,7 @@ export default function DataTable({
                             </IconButton>
                         </Tooltip>
                     </div>
+                    {renderLogout()}
                 </div>
             </div>
             <div className="sdb-main-content mt-4 w-full h-full ">

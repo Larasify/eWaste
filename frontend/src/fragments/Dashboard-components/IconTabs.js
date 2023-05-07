@@ -44,6 +44,7 @@ export default function IconTabs() {
                 cols: [
                     {field: 'first_name', headerName: 'First Name', flex: 2},
                     {field: 'last_name', headerName: 'Last Name', flex: 2},
+                    {field: 'phone_no', headerName: 'Phone Number', flex: 2},
                     {field: 'email', headerName: 'Email', flex: 2},
                     {field: 'privilege', headerName: 'Privilege', flex: 1},
                 ],
