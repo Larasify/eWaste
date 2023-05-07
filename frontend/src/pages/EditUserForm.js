@@ -1,25 +1,25 @@
-import './editUserForm.css';
+import './EditUserForm.css';
 import React, {useEffect} from "react";
 import { IoChevronBackCircle } from "react-icons/io5";
 import {useLocation, useNavigate} from "react-router-dom";
+import { Notify } from '../fragments/Notify';
 
 export default function EditUserForm() {
     let navigate = useNavigate();
     const location = useLocation();
-
     // object for saving form data temporary
     let formData = {
-        "firstName": "",
+        "firstName": location.state.first_name,
         "firstNameChanged": false,
-        "lastName": "",
+        "lastName": location.state.last_name,
         "lastNameChanged": false,
-        "emailAddr": "",
+        "emailAddr": location.state.email,
         "emailAddrChanged": false,
-        "phoneNo": "",
+        "phoneNo": location.state.phone_no,
         "phoneNoChanged": false,
         "password": "",
         "passwordChanged": false,
-        "privilege": "",
+        "privilege": location.state.privilege,
         "privilegeChanged": false
     }
 
@@ -50,59 +50,98 @@ export default function EditUserForm() {
     };
 
     const submitForm = () => {
-        // request body here
-        const updateUserBody = {
-            "id": location.state['_id'],
-            fields: {},
-        };
+        if(location.state._op === 'edit') {
+            // request body here
+            const updateUserBody = {
+                "id": location.state['id'],
+                fields: {},
+            };
 
-        // track any changed data
-        if (formData.firstNameChanged) {
-            updateUserBody.fields['first_name'] = formData.firstName
-        }
-        if (formData.lastNameChanged) {
-            updateUserBody.fields['last_name'] = formData.lastName
-        }
-        if (formData.emailAddrChanged) {
-            updateUserBody.fields['email'] = formData.emailAddr
-        }
-        if (formData.phoneNoChanged) {
-            updateUserBody.fields['phone_no'] = formData.phoneNo;
-        }
-        if (formData.passwordChanged) {
-            updateUserBody.fields['password'] = formData.password;
-        }
-        if (formData.privilegeChanged) {
-            updateUserBody.fields['privilege'] = formData.privilege;
-        }
-        if (updateUserBody.fields === {}) {
-            navigate(-1);
-            return;
-        }
-        // Put changed fields into a bloody array. Idk why backend takes fields in an array.
-        updateUserBody.fields = [updateUserBody.fields]
-        const myRequest = new Request("/user/updateuser", {
-            headers: new Headers({'Content-Type': 'application/json'}),
-            method: "POST",
-            body: JSON.stringify(updateUserBody),
-            credentials: "include"
-        });
-        // Submit the request
-        fetch(myRequest).then((response) => {
-            // Check HTTP status
-            if (response.status === 200) {
-                return response.json();
-            } else {
-                alert(`Update user info (HTTP) failed: ${response.status}: ${response.statusText}`);
+            // track any changed data
+            if (formData.firstNameChanged) {
+                updateUserBody.fields['first_name'] = formData.firstName
             }
-        }).then((data) => {
-            // Check update response message
-            if (data['response'] === "success") {
+            if (formData.lastNameChanged) {
+                updateUserBody.fields['last_name'] = formData.lastName
+            }
+            if (formData.emailAddrChanged) {
+                updateUserBody.fields['email'] = formData.emailAddr
+            }
+            if (formData.phoneNoChanged) {
+                updateUserBody.fields['phone_no'] = formData.phoneNo;
+            }
+            if (formData.passwordChanged) {
+                updateUserBody.fields['password'] = formData.password;
+            }
+            if (formData.privilegeChanged) {
+                updateUserBody.fields['privilege'] = formData.privilege;
+            }
+            if (updateUserBody.fields === {}) {
                 navigate(-1);
-            } else {
-                alert(`Update user info failed: ${data['message']}`)
+                return;
             }
-        });
+            // Put changed fields into a bloody array. Idk why backend takes fields in an array.
+            updateUserBody.fields = [updateUserBody.fields]
+            const myRequest = new Request("/user/updateuser", {
+                headers: new Headers({'Content-Type': 'application/json'}),
+                method: "POST",
+                body: JSON.stringify(updateUserBody),
+                credentials: "include"
+            });
+            // Submit the request
+            fetch(myRequest).then((response) => {
+                // Check HTTP status
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    alert(`Update user info (HTTP) failed: ${response.status}: ${response.statusText}`);
+                }
+            }).then((data) => {
+                // Check update response message
+                if (data['response'] === "success") {
+                    navigate(-1);
+                } else {
+                    alert(`Update user info failed: ${data['message']}`)
+                }
+            });
+        } else if (location.state._op === 'add') {
+            if(!formData.emailAddr || !formData.firstName || !formData.lastName || 
+            !formData.password ||!formData.phoneNo || !formData.privilege ) {
+                Notify.error('Please fill all fields');
+                return null;
+            }
+            console.log({
+                email: formData.emailAddr,
+                first_name: formData.firstName,
+                last_name: formData.lastName,
+                phone_no: formData.phoneNo,
+                password: formData.password,
+                privilege: formData.privilege
+            })
+            fetch('/user/postuser', {
+                headers: new Headers({'Content-Type': 'application/json'}),
+                method: "POST",
+                body: JSON.stringify({
+                    email: formData.emailAddr,
+                    first_name: formData.firstName,
+                    last_name: formData.lastName,
+                    phone_no: formData.phoneNo,
+                    password: formData.password,
+                    privilege: formData.privilege
+                }),
+                credentials: "include"
+            }).then(req => req.json())
+            .then(res => {
+                if(res.response === 'success') {
+                    Notify.success('User Added!')
+                    navigate(-1);
+                } else {
+                    console.log(res)
+                    Notify.error('Insert failed: ', res.message);
+                }
+            })
+        }
+        
     };
 
     // pull the originals and inject them into the form for editing.

@@ -47,7 +47,10 @@ export default function DataTable({
         const state = {}
         cols.map(col => state[col.field] = '')
         navigate(redirect_urls.modify, {
-            state
+            state: {
+                ...state,
+                _op: 'add'
+            }
         })
     }
 
@@ -56,7 +59,8 @@ export default function DataTable({
             const row = rows.find(e => e.id === rowSelectionModel[0])
             navigate(redirect_urls.modify, {
                 state: {
-                    ...row
+                    ...row,
+                    _op: 'edit'
                 }
             })
         } else {
