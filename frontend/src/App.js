@@ -20,6 +20,7 @@ import EditVendorForm from './pages/EditVendorForm';
 import './App.css';
 import EditUserForm from "./pages/editUserForm";
 import {createContext} from "react";
+import AdminDashboard from './pages/AdminDashboard.js';
 
 const App = () => {
   return (
@@ -42,6 +43,10 @@ const App = () => {
           <Route path="edit-device-form" element={<EditDeviceForm/>}/>
           <Route path="edit-vendor-form" element={<EditVendorForm/>}/>
           <Route path="edit-transaction-form" element={<EditTransactionForm/>}/>
+          <Route path="edit-user-form" element={<EditUserForm/>}/>
+        </Route>
+        <Route path="/admin" element={<StaffLayout/>}>
+          <Route path="dashboard" element={<AdminDashboard/>}/>
           <Route path="edit-user-form" element={<EditUserForm/>}/>
         </Route>
       </Routes>

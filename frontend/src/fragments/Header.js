@@ -78,6 +78,8 @@ export default function Header(props) {
                     setUserInfo(authState)
                     if(userInfo['privilege'] === 'staff') {
                         navigate('/staff/dashboard')
+                    } else if(userInfo['privilege'] === 'admin') {
+                        navigate('/admin/dashboard')
                     }
                 } else {
                     if (window.location.href.endsWith("/") || window.location.href.endsWith("/register")) {
