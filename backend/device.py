@@ -87,7 +87,11 @@ def addPayment():
     payment_ts = datetime.datetime.now()
     payment_ts_mod = datetime.datetime.now()
     query = {"_id":device_id}
-    update_dict = {"payment_id":payment_id,"payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod}
+    if "type" in data:
+        payment2_type = data.get("type")
+        update_dict = {"payment2_id":payment_id,"payment2_amount":payment_amount,"payment2_ts":payment_ts,"payment2_ts_mod":payment_ts_mod, "payment2_type":payment2_type}
+    else:
+        update_dict = {"payment_id":payment_id,"payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod}
     result = db.Devices.update_one(query, {"$set": update_dict})
     if result.matched_count == 1:
         #find device with that device id
