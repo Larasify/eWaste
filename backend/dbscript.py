@@ -67,7 +67,7 @@ def rebuilddb():
         payment_amount = None
         payment_ts = None
         payment_ts_mod = None
-        verified = "True"
+        verified = True
         db.Devices.insert_one({ "_id":device_id,"user_id":user_id,"vendor_id":vendor_id,
                               "brand":brand,"model":model,"identification":identification,
                               "status":status,"operating_system":operating_system,"memory_storage":memory_storage,

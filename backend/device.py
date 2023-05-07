@@ -57,6 +57,11 @@ def postDevice():
     device_ts = datetime.datetime.now()
     device_ts_mod = datetime.datetime.now()
     verified = data.get("verified")
+    if verified is False:
+        #send notification to every staff if a device is unverified
+        staffs = db.Users.find({"privilege":"staff"})
+        for staff in staffs:
+            addNotificationLocal(staff.get("_id"),"New Unverified Device Added", "A new unverified device has been added.")
     if "payment_id" in data:
         payment_id = data.get("payment_id")
         payment_amount = data.get("payment_amount")
