@@ -182,3 +182,19 @@ def updateDevice():
         return {"message": "Device does not exist", "response":"error"}
 
     
+
+@device_api.route("/uploadimg", methods=['POST'])
+def uploadImg():
+    file = request.files['file']
+    device_id = request.form.get("id")
+    #save file to deviceimages folder under deviceid.jpeg
+    file.save("deviceimages/" + device_id + ".jpeg")
+    #save filepath to db
+    query = {"_id":device_id}
+    update_dict = {"image_path":"deviceimages/" + device_id + ".jpeg"}
+    result = db.Devices.update_one(query, {"$set": update_dict})
+    if result.matched_count == 1:
+        return {"response":"success"}
+    else:
+        return {"message":"device does not exist", "response":"error"}
+    
