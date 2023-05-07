@@ -30,7 +30,17 @@ export default function DataTable({
 
     const [tableRows, setRows] = React.useState(rows);
     const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
-    
+    const [searchedRows,setSearchedRows] = React.useState(rows);
+    const [keyword,setKeyword] = React.useState([]);
+
+
+    const handleSearch = () =>{
+        const searchedRows = rows.filter((row) => Object.values(row).some(
+            (value) =>   typeof value === "string" && value.toLowerCase().includes(keyword)
+        ))
+        if(keyword === '') setSearchedRows(rows);
+        setSearchedRows(searchedRows);
+    };
     const tableOps = () => {
         if(rowSelectionModel) {
             document.getElementById('delete-record').style.color = '#4b72b2';  
@@ -127,8 +137,8 @@ export default function DataTable({
                 </div>
                 <div className={"flex justify-end w-1/6 mr-8"}>
                     <div className="flex border-2 border-[#4b72b2] rounded-xl w-60 text-4b72b2 text-[#4b72b2] h-9 mr-8">
-                        <input className="ml-4 w-40" type="text" placeholder='Search'></input>
-                        <span className="flex justify-center mr-4 mt-2"><BsSearch /></span>
+                        <input className="ml-4 w-40" type="text" placeholder='Search' onChange={(e) =>setKeyword(e.target.value)}></input>
+                        <span className="flex justify-center mr-4 mt-2" onClick={handleSearch}><BsSearch /></span>
                     </div>
                     <div class="sdb-top-control" onClick={addRow}>
                         <Tooltip title={fns[0]}>
@@ -166,7 +176,7 @@ export default function DataTable({
                     sx={{
                         height: 'calc(100vh - 8rem)'
                     }}
-                    rows={tableRows}
+                    rows={searchedRows}
                     columns={cols}
                     pageSizeOptions={ops && ops.pageSizeOptions || [10, 20, 25]}
                     checkboxSelection={ops && ops.check || false}
