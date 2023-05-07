@@ -27,7 +27,6 @@ export default function EditUserForm() {
     const handleFormChange = (e) => {
         formData[e.target.name] = e.target.value
         formData[e.target.name + 'Changed'] = true;
-        console.log(formData)
     }
 
     // inject and rerender the form by data saved in the variable formData
