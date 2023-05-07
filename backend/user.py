@@ -18,11 +18,6 @@ def getUser():
         if user_info.get("is_deleted"):
             return {"message":"record deleted", "response":"error"}
         return {"response":"success", "user_info":user_info}
-    elif('session-id' in request.cookies):
-        user_info = db.Users.find_one({"email":"jack0@gmail.com"})
-        if user_info is None:
-            return {"message":"empty_list", "response":"error"}
-        return {"response":"success", "user_info":user_info}
     else:
         return {"message":"not_logged_in", "response":"error"}
     
