@@ -3,16 +3,17 @@ import {FcGoogle} from "react-icons/fc";
 
 import './Register.css';
 import {loginSubmit} from "../fragments/Login";
+import { Notify } from '../fragments/Notify';
 
 const registerOnclick = (event) => {
     event.preventDefault();
     //TODO not blank check here before submitting any forms
     if (document.getElementById("firstNameInput").value === "") {
-        alert("First name can not be empty");
+        Notify.error("First name can not be empty");
         return;
     }
     if (document.getElementById("passwordInput").value !== document.getElementById("confirmPasswordInput").value) {
-        alert("Passwords are not matched. ");
+        Notify.error("Passwords are not matched. ");
         return;
     }
     const myRequest = new Request("/auth/register", {
@@ -29,9 +30,10 @@ const registerOnclick = (event) => {
     });
     fetch(myRequest).then((response) => {
         if (response.status === 200) {
+            Notify.success('Registration successful!')
             return response.json()
         } else {
-            alert("Register failed. " + response.statusText)
+            Notify.error("Register failed. " + response.statusText)
         }
     }).then((data) => {
         if (data['response'] === "success"){
@@ -39,11 +41,11 @@ const registerOnclick = (event) => {
                 if (data['response'] === "success"){
                     window.location.href = "/"
                 } else {
-                    alert("Auto login failed! Please login again. ERROR_MESSAGE: " + data['message'])
+                    Notify.error("Auto login failed! Please login again. ERROR_MESSAGE: " + data['message'])
                 }
             })
         } else {
-            alert("Register failed. Please try again. ERROR_MESSAGE: " + data['message'])
+            Notify.error("Register failed. Please try again. ERROR_MESSAGE: " + data['message'])
         }
     })
 };

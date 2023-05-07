@@ -7,6 +7,7 @@ import {Menu, MenuItem} from "@mui/material";
 import {AuthContext} from "../App";
 import {useNavigate} from "react-router-dom";
 import {logoutSubmit} from "./Login";
+import { Notify } from './Notify';
 
 export const fetchUserData = () => {
     const myRequest = new Request("/user/getuser", {
@@ -19,14 +20,16 @@ export const fetchUserData = () => {
                 if (response.status === 200) {
                     return response.json()
                 } else {
-                    alert("error on fetching user data: " + response.statusText)
+                    Notify.error("error on fetching user data: " + response.statusText)
                 }
             }
         )
         .then((data) => {
             if (data.response === "success") {
+                Notify.success('Login successful!')
                 return data['user_info']
             } else {
+                Notify.error('Login failed!')
                 return null
             }
         })
@@ -51,6 +54,7 @@ export default function Header(props) {
                 logoutSubmit().then(_ => {});
                 authState.onLogout();
                 setUserInfo(null)
+                Notify.success('Logout successful!')
                 navigate("/")
                 break;
             default:

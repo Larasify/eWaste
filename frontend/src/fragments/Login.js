@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import './Login.css'
 import {AuthContext} from "../App";
 import {fetchUserData} from "./Header";
+import { Notify } from "./Notify";
 
 
 export const loginSubmit = (email, password)=>{
@@ -44,12 +45,12 @@ export default function Login(props) {
                     if (userInfo !== null) {
                         authState.onLogin(userInfo["first_name"], userInfo["last_name"], userInfo["_id"]);
                     } else {
-                        alert("error on fetching user info")
+                        Notify.error("error on fetching user info")
                     }
                 })
                 window.location.reload()
             } else {
-                alert("login failed: " + data['message'])
+                Notify.error("login failed: " + data['message'].replaceAll('_', ' '))
             }
         })
     };

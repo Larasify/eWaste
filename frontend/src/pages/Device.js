@@ -7,6 +7,7 @@ import Tooltip from '@mui/material/Tooltip';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import {AuthContext} from "../App";
+import { Notify } from '../fragments/Notify';
 
 export default function Device(props) {
 
@@ -104,10 +105,10 @@ export default function Device(props) {
             .then(res => res.json())
             .then(payload => {
                 if(payload.response === 'success') {
-                    alert('success!')
+                    Notify.success('success!')
                     navigate('/');
                 }
-                else alert('failure');
+                else Notify.error('Something went wrong!');
             })
 
         }

@@ -3,6 +3,7 @@ import {BsFillArrowLeftCircleFill, BsPaypal} from "react-icons/bs";
 import {FaCcStripe} from "react-icons/fa";
 import './UserRecycle.css';
 import IconTabs from '../fragments/Useraccount-components/IconTabs';
+import { Notify } from '../fragments/Notify';
 
 export default function UserRecycle(){
     const [userInfo, setUserInfo] = React.useState({
@@ -18,7 +19,7 @@ export default function UserRecycle(){
         });
         fetch("/user/getuser", getUserRequest).then((response) => {
             if (response.status !== 200) {
-                alert("internal error: " + response.statusText)
+                Notify.error("internal error: " + response.statusText)
             } else {
                 return response.json()
             }
