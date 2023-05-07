@@ -116,7 +116,7 @@ export default function IconTabs() {
             Notify.error("Sorry, you have already add a retrieval!" )
         }
         else{
-            navigate('/payment', {state:{deviceId:deviceId,newService:'wipe and retrieval',amount:retrievalFee}})
+            navigate('/payment', {state:{deviceId:deviceId,newService:'wipe and retrieve',amount:retrievalFee}})
         }
     };
 
@@ -126,14 +126,14 @@ export default function IconTabs() {
         // TODO: Change wiping to wipe
         if(identification !== 'rare'){
             Notify.error("Sorry, This type cannot add a retrieval!" )
-        } else if(service === 'wipe and further retrieval'){
+        } else if(service === 'wipe and further retrieve'){
             Notify.error("Sorry, you have already extend this retrieval!" )
         } else if (service === 'wiping'){
             Notify.error("Sorry, please retrieve your data first, and then you can extend it!" )
         }else if(payment_id === null){
-            navigate('/payment',{state:{deviceId,newService:'wipe and further retrieval',amount:extendFee+retrievalFee}})
+            navigate('/payment',{state:{deviceId,newService:'wipe and further retrieve',amount:extendFee+retrievalFee,payment_id:payment_id}})
         } else{
-            navigate('/payment',{state:{deviceId,newService:'wipe and further retrieval',amount:extendFee}})
+            navigate('/payment',{state:{deviceId,newService:'wipe and further retrieve',amount:extendFee,payment_id:payment_id}})
         }
               };
 
