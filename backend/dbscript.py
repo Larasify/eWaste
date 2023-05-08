@@ -41,7 +41,7 @@ def rebuilddb():
         color = "red"
         type = "phone"
         description = "this is a phone"
-        service = "wiping"
+        service = "wipe"
         datalink = "www.google.com"
         qr_code = "123123123123123"
         device_ts = datetime.datetime.utcnow()
