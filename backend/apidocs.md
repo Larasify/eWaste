@@ -8,13 +8,28 @@
 - PATCH one (/user/updateuser) working post {"id":"xx","fields":[{"password":"new","email":"new@gmail.com"}]}
 
 ### user
-- Get User Information
-URL: /user/getuser
-Method: GET
-Description: Retrieves information about the currently logged-in user.
-Response:
+Get User Information
+- URL: /user/getuser
+- Method: GET
+- Description: Retrieves information about the currently logged-in user.
+- Response:
 Success：{"response": "success","user_info": {id,email,first_name,last_name,ts,ts_mod,"is_deleted": false}}(if user is logged in and session cookie is valid)
 Error: {"message": "not_logged_in", "response": "error"}(if session cookie is invalid or user is not logged in)
+
+Get user information based on ID
+-URL: /getuserbyid
+-Method: POST
+-Description: Obtain detailed information of the user based on their ID.
+-Data Params: { "userid": "user_id" }
+-Response: Details of the user with the specified ID, or error message
+
+
+Get user list
+-URL: /getuserlist
+-Method: GET
+-Description: Obtain a list of all undeleted users in the system.
+-Response: List containing all undeleted users, or error message
+
 
 
 ### device

@@ -18,7 +18,7 @@ import ViewDeviceReport from './pages/ViewDeviceReport.js';
 import EditTransactionForm from './pages/EditTransactionForm.js';
 import EditVendorForm from './pages/EditVendorForm';
 import './App.css';
-import EditUserForm from "./pages/editUserForm";
+import EditUserForm from "./pages/EditUserForm.js";
 import {createContext} from "react";
 import AdminDashboard from './pages/AdminDashboard.js';
 

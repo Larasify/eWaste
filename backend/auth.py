@@ -52,13 +52,17 @@ def register():
     ts = datetime.datetime.utcnow()
     ts_mod = datetime.datetime.utcnow()
     phone_no = data.get("phone_no")
+    if "privilege" in data:
+        privilege = data.get("privilege")
+    else:
+        privilege = "user"
     if db.Users.find_one({"email":email}) is not None:
         return {"response":"error", "message":"email_has_been_used"}
     if "last_name" in data:
         last_name = data.get("last_name")
-        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"phone_no":phone_no,"privilege":"user","ts":ts,"ts_mod":ts_mod, "is_deleted":False})
+        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"phone_no":phone_no,"privilege":privilege,"ts":ts,"ts_mod":ts_mod, "is_deleted":False})
     else:
-        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"phone_no":phone_no,"privilege":"user","ts":ts,"ts_mod":ts_mod, "is_deleted":False})
+        db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"phone_no":phone_no,"privilege":privilege,"ts":ts,"ts_mod":ts_mod, "is_deleted":False})
     return {"response":"success"}
 
 

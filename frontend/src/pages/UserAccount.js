@@ -40,7 +40,7 @@ export default function UserAccount(){
             if (response.status === 200) {
                 return response.json();
             } else {
-                alert(`Load user info (HTTP) failed: ${response.status}: ${response.statusText}`);
+                Notify.error(`Load user info (HTTP) failed: ${response.status}: ${response.statusText}`);
             }
         }).then((data) => {
             if (data['response'] === "success") {
@@ -56,14 +56,14 @@ export default function UserAccount(){
                 document.getElementById("infoBoardName").innerHTML = `${userInfo.firstName} ${userInfo.lastName}`;
                 document.getElementById("infoBoardEmailAddr").innerHTML = userInfo.emailAddr
             } else {
-                alert(`Load user info failed: ${data['message']}`);
+                Notify.error(`Load user info failed: ${data['message']}`);
             }
         })
     }
 
     const submitForm = () => {
         if (document.getElementById("passwordInput").value !== document.getElementById("confirmPasswordInput").value) {
-            alert("Your confirm password does not match the password above it.");
+            Notify.error("Your confirm password does not match the password above it.");
             return;
         }
         const reqBody = {
