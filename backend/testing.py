@@ -117,3 +117,20 @@ def test_vendor_apis(client):
     #getvendorlist
     rv = app.test_client().get('/vendor/getvendorlist')
     assert b'success' and b'testbrand' in rv.data
+
+def test_transaction_apis(client):
+    rv = app.test_client().get('/transaction/gettransactionlist')
+    assert b'empty list' in rv.data
+    #add device to user id 0
+    rv = app.test_client().post('/device/postdevice', json={"user_id":"0", "brand":"testbrand", "model":"testmodel", "identification":"rare", "status":"shipped", "operating_system":"android", "memory_storage":"64GB", "color":"red", "type":"phone", "description":"this is a phone", "service":"testservice", "datalink":"testdatalink", "qr_code":"testqrcode", "verified":False})
+    assert b'success' in rv.data
+    #get the id of the device that is owned by user 0 using getuserlistings
+    rv = app.test_client().post('/account/getuserlistingsbyid', json={"userid":"0"})
+    assert b'success' and b'testbrand' in rv.data
+    device_id = json.loads(json.loads(rv.data).get("device_list"))[0].get("_id")
+    rv = app.test_client().post('/device/addpayment', json={"id":device_id, "payment_amount":100, "payment_id":'999'})
+    assert b'success' in rv.data
+    rv = app.test_client().post('/transaction/getuserpaymentsbyid', json={"userid":"0"})
+    assert b'success' and b'999' in rv.data
+    rv = app.test_client().get('/transaction/gettransactionlist')
+    assert b'success' in rv.data
