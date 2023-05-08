@@ -20,11 +20,6 @@ def getUser():
         if user_info.get("is_deleted"):
             return {"message":"record deleted", "response":"error"}
         return {"response":"success", "user_info":user_info}
-    elif('session-id' in request.cookies):
-        user_info = db.Users.find_one({"email":"jack0@gmail.com"})
-        if user_info is None:
-            return {"message":"empty_list", "response":"error"}
-        return {"response":"success", "user_info":user_info}
     else:
         return {"message":"not_logged_in", "response":"error"}
     
@@ -119,9 +114,21 @@ def getUserListings():
         if len(tolist) == 0:
             return {"message":"empty list","response":"error"}
         json_list = dumps(tolist)
-        return {"response":"success", "user_list":json_list}
+        return {"response":"success", "device_list":json_list}
     else:
         return {"message":"not_logged_in", "response":"error"}
+    
+@account_api.route("/getuserlistingsbyid", methods=['POST'])
+def getUserListingsById():
+    data = request.get_json()
+    userid = data.get("userid")
+    mylist = db.Devices.find({"user_id":userid,"is_deleted":False})
+    tolist = list(mylist)
+    if len(tolist) == 0:
+        return {"message":"empty list","response":"error"}
+    json_list = dumps(tolist)
+    return {"response":"success", "device_list":json_list}
+
 
 
 @account_api.route("/getuserdatalinks", methods=['POST'])
