@@ -113,7 +113,7 @@ def generateDatalink():
     device_id = data.get("id")
     query = {"_id":device_id}
     ts_mod = datetime.datetime.utcnow()
-    datalink = str(uuid.uuid4())
+    datalink = "https://www.dropbox.com/"
     update = { "$set": { "device_ts_mod": ts_mod,"datalink":datalink}}
     result = db.Devices.update_one(query, update)
     if result.matched_count == 1:
