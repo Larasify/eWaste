@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 import uuid
 import pandas
+import random
 
 def rebuilddb():
     db.Devices.drop()
@@ -107,4 +108,25 @@ def buildvendordatasource():
         else:
             db.Vendors.update_one({"_id":vendor["_id"]},{"$set":{"sale_price2":sale_price,"ts_mod":ts_mod}})
 
-
+    vendors = db.Vendors.find({"sale_price2":{"$exists":False}})
+    for vendor in vendors:
+        random_percentage = random.randint(1,11)
+        price = int(vendor["sale_price"] + (vendor["sale_price"] * random_percentage / 100))
+        db.Vendors.update_one({"_id":vendor["_id"]},{"$set":{"sale_price2":price,"ts_mod":vendor["ts_mod"]}})
+    
+    vendors = db.Vendors.find({"storage":{"$exists":True}})
+    for vendor in vendors:
+        vendor_id = str(uuid.uuid4())
+        brand = vendor["brand"]
+        model_name = vendor["model_name"]
+        size = vendor["size"]
+        storage = vendor["storage"]*2
+        sale_price = vendor["sale_price"] + random.randint(60,80)
+        sale_price2 = vendor["sale_price2"] + random.randint(60,80)
+        ts = datetime.datetime.utcnow()
+        ts_mod = datetime.datetime.utcnow()
+        vendor = db.Vendors.find_one({"brand":brand, "model_name":model_name, "storage":storage})
+        if vendor is not None:
+            continue
+        else:
+            db.Vendors.insert_one({"_id":vendor_id,"brand":brand,"model_name":model_name,"size":size,"storage":storage,"sale_price":sale_price,"sale_price2":sale_price2,"ts":ts,"ts_mod":ts_mod,"is_deleted":False})
