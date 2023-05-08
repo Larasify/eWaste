@@ -1,5 +1,5 @@
 import pytest
-from app import app, db , rebuilddb
+from app import app, db , rebuilddb, buildvendordatasource
 import json
 
 
@@ -11,6 +11,7 @@ def client():
 
 def test_user_apis(client):
     rebuilddb()
+    buildvendordatasource()
     #TODO: can't test things that require session cookie
     #Standard get and post requests
     rv = app.test_client().get('/user/getuser')
