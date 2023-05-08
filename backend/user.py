@@ -114,7 +114,7 @@ def getUserListings():
         if len(tolist) == 0:
             return {"message":"empty list","response":"error"}
         json_list = dumps(tolist)
-        return {"response":"success", "device_list":json_list}
+        return {"response":"success", "user_list":json_list} #TODO:this really should be device list but it will break frontend so its not
     else:
         return {"message":"not_logged_in", "response":"error"}
     
@@ -127,7 +127,7 @@ def getUserListingsById():
     if len(tolist) == 0:
         return {"message":"empty list","response":"error"}
     json_list = dumps(tolist)
-    return {"response":"success", "device_list":json_list}
+    return {"response":"success", "user_list":json_list}
 
 
 

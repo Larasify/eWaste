@@ -127,7 +127,7 @@ def test_transaction_apis(client):
     #get the id of the device that is owned by user 0 using getuserlistings
     rv = app.test_client().post('/account/getuserlistingsbyid', json={"userid":"0"})
     assert b'success' and b'testbrand' in rv.data
-    device_id = json.loads(json.loads(rv.data).get("device_list"))[0].get("_id")
+    device_id = json.loads(json.loads(rv.data).get("user_list"))[0].get("_id")
     rv = app.test_client().post('/device/addpayment', json={"id":device_id, "payment_amount":100, "payment_id":'999'})
     assert b'success' in rv.data
     rv = app.test_client().post('/transaction/getuserpaymentsbyid', json={"userid":"0"})
