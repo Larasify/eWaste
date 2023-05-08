@@ -11,6 +11,7 @@ def client():
 
 def test_user_apis(client):
     rebuilddb()
+    #TODO: can't test things that require session cookie
     #Standard get and post requests
     rv = app.test_client().get('/user/getuser')
     assert b'not_logged_in' in rv.data
@@ -39,7 +40,7 @@ def test_user_apis(client):
     
     rv = app.test_client().post('/account/getuserlistings') #TODO: Do we need getuserlistingsbyid ?
     assert b'not_logged_in' in rv.data
-    rv = app.test_client().post('/account/getuserdatalinks')
+    rv = app.test_client().post('/account/getuserdatalinks') 
     assert b'not_logged_in' in rv.data
 
     #Add a notification and verify by checking user
@@ -94,3 +95,25 @@ def test_device_apis(client):
     #TODO: Upload image untested
 
 
+def test_vendor_apis(client):
+    rv = app.test_client().post('/vendor/getvendor', json={"id":"0"})
+    assert b'vendor_not_found' in rv.data
+    #post vendor
+    rv = app.test_client().post('/vendor/postvendor', json={"brand":"testbrand", "model_name":"testmodel", "size":"5.5'", "storage":"64GB", "sale_price":100})
+    assert b'success' in rv.data
+    rv = app.test_client().get('/vendor/getall')
+    assert b'success' and b'testbrand' in rv.data
+    vendor_id = json.loads(json.loads(rv.data).get("vendor_list"))[0].get("_id")
+    #update vendor
+    rv = app.test_client().post('/vendor/updatevendor', json={"id":vendor_id, "fields":[{"brand":"testbrand2"}]})
+    assert b'success' in rv.data
+    rv = app.test_client().post('/vendor/getvendor', json={"id":vendor_id})
+    assert b'success' and b'testbrand2' in rv.data
+    #delete vendor
+    rv = app.test_client().post('/vendor/deletevendor', json={"id":vendor_id})
+    assert b'success' in rv.data
+    rv = app.test_client().post('/vendor/getvendor', json={"id":vendor_id})
+    assert b'record deleted' in rv.data
+    #getvendorlist
+    rv = app.test_client().get('/vendor/getvendorlist')
+    assert b'success' and b'testbrand' in rv.data
