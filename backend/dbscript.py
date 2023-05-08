@@ -10,8 +10,8 @@ def rebuilddb():
     db.Users.drop()
     db.Vendors.drop()   
     #insert random 50 users with random uuid email password firstname lastname ts ts_mod
-    db.Users.insert_one({"_id":0,"email":"admin@admin.com","password":generate_password_hash("password"),"first_name":"admin","last_name":"admin","privilege":"admin","phone_no":"+44123123123","ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_deleted":False})
-    db.Users.insert_one({"_id":1,"email":"staff@staff.com","password":generate_password_hash("password"),"first_name":"staff","last_name":"staff","privilege":"staff","phone_no":"+44123123123","ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_deleted":False})
+    db.Users.insert_one({"_id":"0","email":"admin@admin.com","password":generate_password_hash("password"),"first_name":"admin","last_name":"admin","privilege":"admin","phone_no":"+44123123123","ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_deleted":False})
+    db.Users.insert_one({"_id":"1","email":"staff@staff.com","password":generate_password_hash("password"),"first_name":"staff","last_name":"staff","privilege":"staff","phone_no":"+44123123123","ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_deleted":False})
     user_id_list = []
     for i in range(50):
         userid = str(uuid.uuid4())
