@@ -114,9 +114,21 @@ def getUserListings():
         if len(tolist) == 0:
             return {"message":"empty list","response":"error"}
         json_list = dumps(tolist)
-        return {"response":"success", "user_list":json_list}
+        return {"response":"success", "device_list":json_list}
     else:
         return {"message":"not_logged_in", "response":"error"}
+    
+@account_api.route("/getuserlistingsbyid", methods=['POST'])
+def getUserListingsById():
+    data = request.get_json()
+    userid = data.get("userid")
+    mylist = db.Devices.find({"user_id":userid,"is_deleted":False})
+    tolist = list(mylist)
+    if len(tolist) == 0:
+        return {"message":"empty list","response":"error"}
+    json_list = dumps(tolist)
+    return {"response":"success", "device_list":json_list}
+
 
 
 @account_api.route("/getuserdatalinks", methods=['POST'])
