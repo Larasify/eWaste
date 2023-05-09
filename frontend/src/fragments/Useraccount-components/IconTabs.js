@@ -11,15 +11,16 @@ import {Notify} from "../Notify";
 
 export default function IconTabs() {
     let nextId=0;
-    let retrievalFee=13;
-    let extendFee=10;
     let navigate = useNavigate()
+    let price;
+    let serviceFee = 13;
+    let furtherFee = 10;
     const [form,setForm] = React.useState({
         id:'',
         modelName:'',
         identification:'',
         service:'',
-        fee:'',
+        price:'',
         payment:'',
         link:'',
         linkService:'',
@@ -44,34 +45,31 @@ export default function IconTabs() {
                 }
             )
             .then(data => {
-                let newData = data['user_list'] || []
-                newData = JSON.parse(newData)
-                setForm(newData.map((device) => {
-                        return {
-                            id:nextId++,
-                            modelName: device.model,
-                            identification: device.identification,
-                            service: device.service,
-                            fee: retrievalFee,
-                            payment: device.payment_amount,
-                            link: device.qr_code,
-                            linkService: device.datalink,
-                            deviceId: device._id,
-                            status:device.status,
-                            payment_id:device.payment_id,
-                            payment2_id:device.hasOwnProperty('payment2_id')?device.payment2_id:'',
-                        }
-                    }));
+                let newDataJson = data['user_list'] || []
+                const newData = JSON.parse(newDataJson)
+                newData.map((device) => {
+                            device.id = nextId++
+                            device.modelName = device.model
+                            device.price = price
+                            device.payment = device.hasOwnProperty('payment2_amount')
+                                ?(device.payment_amount+device.payment2_amount):device.payment_amount
+                            device.link = device.qr_code
+                            device.linkService = device.datalink
+                            device.deviceId = device._id
+                            device.payment2_id =device.hasOwnProperty('payment2_id')?device.payment2_id:''
+
+                    })
+                setForm(newData);
             })
     },[]);
 
 
     const recycleDevice = (deviceId,status,service,payment_id) => {
-        if(status !== 'unconfirmed'){
+        if(status !== 'Submitted for Review'){
             Notify.error("Sorry, you have already confirmed recycling!" )
         }
-        // TODO: Check the service to wipe
-        else if((payment_id === null)&&(service !=='wiping')){
+
+        else if((payment_id === null)&&(service !=='wipe')){
             Notify.error("Sorry, please pay for the service first!" )
         }
         else{
@@ -106,34 +104,30 @@ export default function IconTabs() {
 
 
     const dataRetrieval = (deviceId,service,identification,payment_id) => {
-        // TODO: Change it back to recycle identification
-        // TODO: Check if user pay first and wanna add second retrieval
-        if(identification !== 'rare'){
+
+        if(identification !== 'recycle'){
             Notify.error("Sorry, This type cannot add a retrieval!" )
         }
-        // TODO: Change the service to wipe
-        else if((service !== 'wiping') && (payment_id !== null)){
+
+        else if((service !== 'wipe') && (payment_id !== null)){
             Notify.error("Sorry, you have already add a retrieval!" )
         }
         else{
-            navigate('/payment', {state:{deviceId:deviceId,newService:'wipe and retrieval',amount:retrievalFee}})
+            navigate('/payment', {state:{deviceId:deviceId,newService:'wipe and retrieve',amount:serviceFee}})
         }
     };
 
     const extendRetrieval = (deviceId,service,identification,payment_id) => {
-        // TODO: Check if the payment if already paid
-        // TODO: Change it back to recycle identification
-        // TODO: Change wiping to wipe
-        if(identification !== 'rare'){
+        if(identification !== 'recycle'){
             Notify.error("Sorry, This type cannot add a retrieval!" )
-        } else if(service === 'wipe and further retrieval'){
+        } else if(service === 'wipe and further retrieve'){
             Notify.error("Sorry, you have already extend this retrieval!" )
-        } else if (service === 'wiping'){
+        } else if (service === 'wipe'){
             Notify.error("Sorry, please retrieve your data first, and then you can extend it!" )
         }else if(payment_id === null){
-            navigate('/payment',{state:{deviceId,newService:'wipe and further retrieval',amount:extendFee+retrievalFee}})
+            navigate('/payment',{state:{deviceId,newService:'wipe and further retrieve',amount:furtherFee+serviceFee,payment_id:payment_id}})
         } else{
-            navigate('/payment',{state:{deviceId,newService:'wipe and further retrieval',amount:extendFee}})
+            navigate('/payment',{state:{deviceId,newService:'wipe and further retrieve',amount:furtherFee,payment_id:payment_id}})
         }
               };
 
@@ -153,14 +147,14 @@ export default function IconTabs() {
           flex: 1.2,
         },
         {
-          field: 'fee',
-          headerName: 'Fee',
+          field: 'price',
+          headerName: 'Price',
           type: 'number',
           flex: 0.8
         },
         {
           field: 'payment',
-          headerName: 'Payment',
+          headerName: 'Fee',
           type:'number',
           flex: 1
         },
@@ -171,7 +165,10 @@ export default function IconTabs() {
           renderCell: (params) => {
               // if the url contains 'https://', use the code commented
               // return <a href={params.row.link} className={"underline "}>{params.row.link}</a>;
-              return <a href={'https://'+params.row.link} className={"underline "}>{"https://"}{params.row.link}</a>;
+              let link;
+              if(params.row.link !=='') link = "https://" + params.row.link;
+              else link = '';
+              return <a href={'https://'+params.row.link} className={"underline "}>{link}</a>;
             }
         },
             {
@@ -179,7 +176,11 @@ export default function IconTabs() {
           headerName: 'Link for Data Retrieval',
           flex: 2,
           renderCell: (params) => {
-              return <a href={'https://'+params.row.linkService} className={"underline "}>{"https://"}{params.row.linkService}</a>;
+              let linkService;
+              if(params.row.linkService !=='') linkService = "https://" + params.row.linkService;
+              else linkService = '';
+
+              return <a href={'https://'+params.row.linkService} className={"underline "}>{linkService}</a>;
             }
 
         },
