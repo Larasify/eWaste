@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import {useLocation, useNavigate} from "react-router-dom";
 import {BsFillCheckCircleFill, BsPaypal} from "react-icons/bs";
 import {Notify} from "../fragments/Notify";
-export  default  function Paypal(){
+export  default  function Paypal() {
 
     let navigate = useNavigate();
     const location = useLocation();
@@ -83,38 +83,47 @@ export  default  function Paypal(){
     }
 
     useEffect(()=>{
+        console.log(window.paypal.Buttons)
         window.paypal
             .Buttons({
-            createOrder:(data,actions,err)=>{
-                return actions.order.create({
-                    intent:"CAPTURE",
-                    purchase_units:[{
-                        description:description,
-                        amount:{
-                            currency_code:"GBP",
-                            value:amount,
-                        }
-                    }],
-                })
-            },
-            onApprove: async(data,actions)=>{
-              const order = await actions.order.capture()
-              paymentId = order.id;
-              updateService()
-              addPayment()
-            },
-            onError: (err) =>{
-                Notify.error("Sorry,something went wrong! Please try again!")
-            }
-        }).render(paypal.current)
+                createOrder: (data, actions, err) => {
+                    return actions.order.create({
+                        intent: "CAPTURE",
+                        purchase_units: [{
+                            description: description,
+                            amount: {
+                                currency_code: "GBP",
+                                value: amount,
+                            }
+                        }],
+                    })
+                },
+                onApprove: async (data, actions) => {
+                    const order = await actions.order.capture()
+                    paymentId = order.id;
+                    updateService()
+                    addPayment()
+                },
+                onError: (err) => {
+                    Notify.error("Sorry,something went wrong! Please try again!")
+                }
+            }).render(paypal.current)
+        // May render for many times so remove extra components
+        let children = paypal.current.getElementsByTagName("div")
+        paypal.current.firstElementChild.removeChild(paypal.current.firstElementChild.lastElementChild)
+        paypal.current.firstElementChild.removeChild(paypal.current.firstElementChild.lastElementChild)
+
+
+        console.log(paypal.current)
     },[])
+
     return(
         <div className={"flex flex-col md:w-1/2 h-1/2 mx-auto mt-12 md:border md:border-2 md:border-[#509E82] rounded-3xl"}>
             <BsPaypal className={"text-2xl mx-auto  justify-center items-center mt-6"} size={40}/>
             <label className={"flex py-5 w-full text-lg md:text-3xl justify-center items-center font-bold "}>Pay with PayPal</label>
 
             <div className={"w-1/2 mx-auto justify-center items-center"} >
-                <div ref={paypal}></div>
+                <div ref={paypal} ></div>
             </div>
         </div>
     )

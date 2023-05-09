@@ -14,7 +14,9 @@ export default function Payment(){
         if(document.getElementById("paypalRadio").checked){
             navigate('/payment-paypal',{state:{deviceId,newService,amount,description}})
         }
-        else if (document.getElementById("stripeRadio").checked){}
+        else if (document.getElementById("stripeRadio").checked){
+            navigate('/payment-stripe',{state:{deviceId,newService,amount,description}})
+        }
         else Notify.error('Please choose a payment method!')
     }
 
@@ -24,11 +26,11 @@ export default function Payment(){
     const {deviceId,newService,amount} = location.state;
     if(newService === 'wipe and retrieve') {
         serviceName = 'Retrieve the Data';
-        description = 'A secure link will show in your recycle page for a extend time (3-6 months for retrieving data, then deleted)';
+        description = 'A secure link will show in your recycle page (valid for 3 months, then deleted)';
     }
     else if(newService === 'wipe and further retrieve'){
         serviceName = 'Extend Retrieval';
-        description = 'A secure link will show in your recycle page (valid for 3 months, then deleted)';
+        description = 'A secure link will show in your recycle page for a extend time (3-6 months for retrieving data, then deleted)';
     }
 
 

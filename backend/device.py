@@ -1,4 +1,5 @@
-from flask import Blueprint, request
+import stripe
+from flask import Blueprint, request, redirect
 from app import db
 from bson.objectid import ObjectId
 from bson.json_util import dumps
@@ -7,7 +8,8 @@ import uuid
 from user import addNotificationLocal
 
 device_api = Blueprint('device_api', __name__)
-
+stripe.api_key = 'sk_test_51N5FUWEPDlosnaW6E9dWvzSXmBuvy5yEiA8zSEL5HtV16IEc3w' \
+                 'eE2xWjseNj7hlldrCNCj0vZ2pH3wWBXydFQa7000jf4ebOEf'
 #url_prefix = /device
 
 # Get a specific device
@@ -176,4 +178,19 @@ def updateDevice():
     else:
         return {"message": "Device does not exist", "response":"error"}
 
+@device_api.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    try:
+        data = request.get_json()
+        line_items = data.get("line_items")
+        checkout_session = stripe.checkout.Session.create(
+            line_items=line_items,
+            mode='payment',
+            success_url='http://localhost:8080/payment-stripe?success=true',
+            cancel_url='http://localhost:8080/payment-stripe?canceled=true',
+        )
+    except Exception as e:
+        return str(e)
+
+    return {"response": "success", "checkout_session": checkout_session}
     
