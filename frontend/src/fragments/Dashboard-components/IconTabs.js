@@ -10,6 +10,7 @@ import Tabs from '@mui/material/Tabs';
 import CircularProgress from '@mui/material/CircularProgress';
 import {useNavigate} from "react-router-dom";
 import Tab from '@mui/material/Tab';
+import Switch from '@mui/material/Switch';
 
 import './IconTabs.css';
 import TabPanel from './TabPanel.js';
@@ -25,7 +26,6 @@ export default function IconTabs() {
 
     const [value, setValue] = React.useState(0);
     const [loading, setLoading] = React.useState(true)
-    const [userData, setUserData] = React.useState({cols: [], rows: []})
     const [deviceData, setDeviceData] = React.useState({cols: [], rows: []})
     const [transactionData, setTransactionData] = React.useState({cols: [], rows: []})
     const [vendorData, setVendorData] = React.useState({cols: [], rows: []})
@@ -35,22 +35,6 @@ export default function IconTabs() {
     }, [loading])
 
     const fetchData = () => {
-        fetch('/user/getuserlist')
-        .then(userRequest => (userRequest).json())
-        .then(users => {
-            const userList = (users.user_list).filter(u => !u.is_deleted);
-            userList.map( u => u.id = u._id)
-            setUserData({
-                cols: [
-                    {field: 'first_name', headerName: 'First Name', flex: 2},
-                    {field: 'last_name', headerName: 'Last Name', flex: 2},
-                    {field: 'phone_no', headerName: 'Phone Number', flex: 2},
-                    {field: 'email', headerName: 'Email', flex: 2},
-                    {field: 'privilege', headerName: 'Privilege', flex: 1},
-                ],
-                rows: userList
-            });
-        });
         fetch('/device/getdevicelist')
         .then(deviceRequest => (deviceRequest).json())
         .then(devices => {
@@ -72,7 +56,35 @@ export default function IconTabs() {
                     {field: 'operating_system', headerName: 'Operating System', flex: 1},
                     {field: 'service', headerName: 'Service', flex: 1},
                     {field: 'status', headerName: 'Status', flex: 1},
-                    {field: 'verified', headerName: 'Verified', flex: 1},
+                    {field: 'verified', headerName: 'Verified', width: 150, 
+                        renderCell: (params) => {
+                            return <div>
+                            <Switch
+                                checked={params.row.verified}
+                                onChange={(e) => {
+                                    params.row.verified = !params.row.verified;
+                                    setDeviceData(deviceData)
+                                    fetch('/device/verifydevicebyid', { 
+                                        method: 'POST',
+                                        credentials: "include",
+                                        headers: new Headers({"Content-Type": "application/json"}),
+                                        body: JSON.stringify({
+                                            id: params.row.id,
+                                            verified: params.row.verified
+                                        })
+                                    }).then(req => req.json())
+                                    .then(res => {
+                                        if(res.response === 'success') {
+                                            Notify.success('Changed!')
+                                        } else {
+                                            Notify.error('Failed!')
+                                        }
+                                    });
+                                }}
+                                inputProps={{ 'aria-label': 'controlled' }}
+                                />
+                        </div>}
+                    },
                     {field: 'is_hidden',headerName: 'Visible',flex:1},
                 ],
                 rows: deviceList
@@ -150,16 +162,8 @@ export default function IconTabs() {
     return (
         <div className={'flex w-full h-screen flex-row'}>
             <div className={"flex flex-col w-16 h-full items-center sdb-controls"} style={{backgroundColor: '#ebebeb'}}>
-                <div className='flex flex-col h-full'>
+                <div className='flex flex-col h-full mt-12'>
                     <Tabs value={value} onChange={handleChange} aria-label="staff-dashboard" orientation='vertical'>
-                        <Tab icon={
-                            <div className="text-2xl flex justify-center cursor-pointer mt-4 mb-8 sdb-tab">
-                                <Tooltip title="Users" placement='right' arrow> 
-                                    <FiUser/>
-                                </Tooltip>
-                            </div>  
-                        } aria-label="users"/>
-
                         <Tab icon={
                             <div className="text-2xl flex justify-center cursor-pointer mb-8 sdb-tab">
                                 <Tooltip title="Devices" placement='right' arrow> 
@@ -196,27 +200,20 @@ export default function IconTabs() {
             <div className='flex flex-col w-full h-full'>
                 <div className="h-full">
                     <TabPanel className="h-full max-h-fit" value={value} index={0}>
-                        {renderTable(userData, 'User', {
-                            modify: '/staff/edit-user-form',
-                            delete: '/user/deleteuser',
-                            hidden: null,
-                        })}
-                    </TabPanel>
-                    <TabPanel className="h-full max-h-fit" value={value} index={1}>
                         {renderTable(deviceData, 'Device', {
                             modify: '/staff/edit-device-form',
                             delete: '/device/deletedevice',
                             hidden:'',
                         })}
                     </TabPanel>
-                    <TabPanel className="h-full max-h-fit" value={value} index={2}>
+                    <TabPanel className="h-full max-h-fit" value={value} index={1}>
                         {renderTable(transactionData, 'Transaction', {
                             modify: '/staff/edit-transaction-form',
                             delete: null,
                             hidden:null,
                         })}
                     </TabPanel>
-                    <TabPanel className="h-full max-h-fit" value={value} index={3}>
+                    <TabPanel className="h-full max-h-fit" value={value} index={2}>
                         {renderTable(vendorData, 'Data-source', {
                             modify: '/staff/edit-vendor-form',
                             delete: '/vendor/deletevendor',

@@ -150,7 +150,7 @@ export default function EditUserForm() {
     // pull the originals and inject them into the form for editing.
     useEffect(() => {
           
-        if(!authState.isLoggedIn || authState.privilege!='staff') navigate('/')
+        if(!authState.isLoggedIn || authState.privilege!='admin') navigate('/')
       
         if (!location.state) {
             alert("invalid location.state")
