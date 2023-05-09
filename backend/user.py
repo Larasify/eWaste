@@ -223,6 +223,29 @@ def addNotification():
     else:
         return {"message": "User does not exist", "response":"error"}
 
+
+@user_api.route("/getnotifications")
+def getNotifications():
+    if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
+        userid = session_ids[request.cookies.get('session-id')]
+        # look up the user in the collection
+        user_info = db.Users.find_one({"_id":userid})
+
+        # if user not exist or has been deleted, return error
+        if user_info is None:
+            return {"message":"empty_list", "response":"error"}
+        if user_info.get("is_deleted"):
+            return {"message":"record deleted", "response":"error"}
+        # return user information
+        noti_list = []
+        for n in user_info.get("notifications"):
+            if not n.get("is_seen"):
+                noti_list.append(n)
+                
+        return {"response":"success", "notifications":noti_list}
+    else:
+        return {"message":"not_logged_in", "response":"error"}
+
 # mark a specific notification as 'seen'
 @user_api.route("/notificationisseen", methods=['POST'])
 def notificationIsSeen():
