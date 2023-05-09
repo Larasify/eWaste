@@ -17,7 +17,7 @@ export default function AdminDashboard() {
     const [loading, setLoading] = React.useState(true)
 
     React.useEffect(() => {
-        if(!authState.isLoggedIn) navigate('/')
+        if(!authState.isLoggedIn || authState.privilege!='admin') navigate('/')
         fetchData();
     }, [loading])
 

@@ -43,7 +43,7 @@ export default function Login(props) {
                 props.loginModalClose()
                 fetchUserData().then((userInfo) => {
                     if (userInfo !== null) {
-                        authState.onLogin(userInfo["first_name"], userInfo["last_name"], userInfo["_id"]);
+                        authState.onLogin(userInfo["first_name"], userInfo["last_name"], userInfo["_id"], userInfo.privilege);
                     } else {
                         Notify.error("error on fetching user info")
                     }

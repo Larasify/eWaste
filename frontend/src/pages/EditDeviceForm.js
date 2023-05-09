@@ -6,6 +6,7 @@ import {FormControl, TextField} from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import {Notify} from "../fragments/Notify";
+import {AuthContext} from "../App";
 
 
 export default function EditDeviceForm(){
@@ -17,6 +18,7 @@ export default function EditDeviceForm(){
     const [storages, setStorages] = useState([]);
     const [prices, setPrices] = useState([]);
     const [draftMessage, setDraftMessage] = useState("")
+    const authState = React.useContext(AuthContext)
 
     const askBackward = () => {
         if (window.confirm("Are you sure you want to backward? Your update will be lost. ")) {
@@ -154,6 +156,8 @@ export default function EditDeviceForm(){
     }
 
     useEffect(() => {
+              
+        if(!authState.isLoggedIn || authState.privilege!='staff') navigate('/')
         const loadVendors = async () => {
             const myRequest = new Request("/vendor/getvendorlist", {
                 headers: new Headers({"Content-Type": "application/json"}),

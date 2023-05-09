@@ -5,9 +5,11 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea} from '@mui/material';
 
-export default function MultiActionAreaCard() {
+export default function MultiActionAreaCard({
+  title
+}) {
   return (
-    <Card sx={{ maxWidth: 345, paddingTop: '1rem', borderRadius: '0.6rem'}}>
+    <Card sx={{  paddingTop: '1rem', borderRadius: '0.6rem', width: '9rem'}}>
       <CardActionArea>
         <CardMedia
             component="img"
@@ -17,8 +19,8 @@ export default function MultiActionAreaCard() {
             paddingTop={"1rem"}
         />
         <CardContent>
-          <Typography gutterBottom variant="span" component="div" fontFamily={"pf"} textAlign={"center"}>
-            Random Device
+          <Typography gutterBottom variant="span" component="div" fontFamily={"pf"} textAlign={"center"} fontSize={'0.9rem'}>
+            {title}
           </Typography>
         </CardContent>
       </CardActionArea>

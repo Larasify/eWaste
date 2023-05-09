@@ -74,7 +74,7 @@ export default function Header(props) {
         if (!authState.isLoggedIn) {
             fetchUserData().then((userInfo) => {
                 if (userInfo !== null) {
-                    authState.onLogin(userInfo["first_name"], userInfo["last_name"], userInfo._id);
+                    authState.onLogin(userInfo["first_name"], userInfo["last_name"], userInfo._id, userInfo.privilege);
                     setUserInfo(authState)
                     if(userInfo['privilege'] === 'staff') {
                         navigate('/staff/dashboard')
