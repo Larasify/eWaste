@@ -26,7 +26,7 @@ def getVendor():
         return {"message":"vendor_not_found"}
     if vendor.get("is_deleted"):
         return {"message":"record deleted", "response":"error"}
-    return {"response":"success", "vendor_info":dumps(vendor)}
+    return {"response":"success", "vendor_info":vendor}
 
 #getall
 @vendors_api.route("/getall")

@@ -20,7 +20,7 @@ import EditVendorForm from './pages/EditVendorForm';
 import Paypal from './pages/Paypal';
 import Stripe from './pages/Stripe';
 import './App.css';
-import EditUserForm from "./pages/editUserForm";
+import EditUserForm from "./pages/EditUserForm.js";
 import {createContext} from "react";
 import AdminDashboard from './pages/AdminDashboard.js';
 import "@stripe/stripe-js";

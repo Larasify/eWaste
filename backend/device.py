@@ -59,6 +59,11 @@ def postDevice():
     device_ts = datetime.datetime.now()
     device_ts_mod = datetime.datetime.now()
     verified = data.get("verified")
+    if verified is False:
+        #send notification to every staff if a device is unverified
+        staffs = db.Users.find({"privilege":"staff"})
+        for staff in staffs:
+            addNotificationLocal(staff.get("_id"),"New Unverified Device Added", "A new unverified device has been added.")
     if "payment_id" in data:
         payment_id = data.get("payment_id")
         payment_amount = data.get("payment_amount")
@@ -110,7 +115,7 @@ def generateDatalink():
     device_id = data.get("id")
     query = {"_id":device_id}
     ts_mod = datetime.datetime.utcnow()
-    datalink = str(uuid.uuid4())
+    datalink = "https://www.dropbox.com/"
     update = { "$set": { "device_ts_mod": ts_mod,"datalink":datalink}}
     result = db.Devices.update_one(query, update)
     if result.matched_count == 1:
@@ -193,4 +198,20 @@ def create_checkout_session():
         return str(e)
 
     return {"response": "success", "checkout_session": checkout_session}
+    
+
+@device_api.route("/uploadimg", methods=['POST'])
+def uploadImg():
+    file = request.files['file']
+    device_id = request.form.get("id")
+    #save file to deviceimages folder under deviceid.jpeg
+    file.save("deviceimages/" + device_id + ".jpeg")
+    #save filepath to db
+    query = {"_id":device_id}
+    update_dict = {"image_path":"deviceimages/" + device_id + ".jpeg"}
+    result = db.Devices.update_one(query, {"$set": update_dict})
+    if result.matched_count == 1:
+        return {"response":"success"}
+    else:
+        return {"message":"device does not exist", "response":"error"}
     

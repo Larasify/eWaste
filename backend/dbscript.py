@@ -4,14 +4,16 @@ from bson.json_util import dumps
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 import uuid
+import pandas
+import random
 
 def rebuilddb():
     db.Devices.drop()
     db.Users.drop()
     db.Vendors.drop()   
     #insert random 50 users with random uuid email password firstname lastname ts ts_mod
-    db.Users.insert_one({"_id":0,"email":"admin@admin.com","password":generate_password_hash("password"),"first_name":"admin","last_name":"admin","privilege":"admin","phone_no":"+44123123123","ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_deleted":False})
-    db.Users.insert_one({"_id":1,"email":"staff@staff.com","password":generate_password_hash("password"),"first_name":"staff","last_name":"staff","privilege":"staff","phone_no":"+44123123123","ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_deleted":False})
+    db.Users.insert_one({"_id":"0","email":"admin@admin.com","password":generate_password_hash("password"),"first_name":"admin","last_name":"admin","privilege":"admin","phone_no":"+44123123123","ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_deleted":False})
+    db.Users.insert_one({"_id":"1","email":"staff@staff.com","password":generate_password_hash("password"),"first_name":"staff","last_name":"staff","privilege":"staff","phone_no":"+44123123123","ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_deleted":False})
     user_id_list = []
     for i in range(50):
         userid = str(uuid.uuid4())
@@ -26,29 +28,11 @@ def rebuilddb():
         privilege = "user"
         db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"phone_no":phone_no,"privilege":privilege, "ts":ts,"ts_mod":ts_mod, "is_deleted":False})
 
-    vendor_id_list = []
-    for i in range(50):
-        vendor_id = str(uuid.uuid4())
-        vendor_id_list.append(vendor_id)
-        brand_list = ["Samsung", "Apple", "Huawei"]
-        brand = brand_list[i%3]
-        model_list = ["phone_1", "phone_2", "phone_3"]
-        model_name = model_list[i%3]
-        size = "5.5'"
-        storage_list = ["64GB", "128GB", "256GB"]
-        storage = storage_list[i%3]
-        sale_price = 100 + i*10
-        ts = datetime.datetime.utcnow()
-        ts_mod = datetime.datetime.utcnow()
-        db.Vendors.insert_one({"_id":vendor_id,"brand":brand,"model_name":model_name,"size":size,"storage":storage,"sale_price":sale_price,"ts":ts,"ts_mod":ts_mod,"is_deleted":False})
-
-
-
     #insert random 50 device with random uuid email password firstname lastname ts ts_mod
     for i in range(50):
         device_id = str(uuid.uuid4())
         user_id = str(user_id_list[i%50])
-        vendor_id = str(vendor_id_list[i%50])
+        vendor_id = str(uuid.uuid4())
         brand = "testbrand"
         model = "testmodel"
         identification = "rare"
@@ -58,7 +42,7 @@ def rebuilddb():
         color = "red"
         type = "phone"
         description = "this is a phone"
-        service = "wiping"
+        service = "wipe"
         datalink = "www.google.com"
         qr_code = "123123123123123"
         device_ts = datetime.datetime.utcnow()
@@ -67,7 +51,7 @@ def rebuilddb():
         payment_amount = None
         payment_ts = None
         payment_ts_mod = None
-        verified = "True"
+        verified = True
         db.Devices.insert_one({ "_id":device_id,"user_id":user_id,"vendor_id":vendor_id,
                               "brand":brand,"model":model,"identification":identification,
                               "status":status,"operating_system":operating_system,"memory_storage":memory_storage,
@@ -76,3 +60,73 @@ def rebuilddb():
                               "payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod,"is_deleted":False ,"verified":verified})
 
 
+def buildvendordatasource():
+    dataset1 = pandas.read_csv("vendordatasource/data_2023.csv")
+    #print elements line by line
+    for i in range(len(dataset1)):
+        vendor_id = str(uuid.uuid4())
+        brand = dataset1['Brand'].iloc[i]
+        model_name = dataset1['Model'].iloc[i]
+        size = dataset1['Screen Size (inches)'].iloc[i]
+        storage = dataset1['Storage '].iloc[i]
+        storage = storage.replace("GB","")
+        if int(storage) > 1000 or int(storage) < 16:
+            continue
+        storage = int(storage)
+        sale_price = dataset1['Price ($)'].iloc[i]
+        #replace $ with empty space in sale price and parse to float and make commas into empty space
+        sale_price = float(sale_price.replace("$","").replace(",",""))
+        ts = datetime.datetime.utcnow()
+        ts_mod = datetime.datetime.utcnow()
+        vendor = db.Vendors.find_one({"brand":brand, "model_name":model_name, "storage":storage})
+        if vendor is None:
+            db.Vendors.insert_one({"_id":vendor_id,"brand":brand,"model_name":model_name,"size":size,"storage":storage,"sale_price":sale_price,"ts":ts,"ts_mod":ts_mod,"is_deleted":False})
+        else:
+            continue
+
+    dataset2 = pandas.read_csv("vendordatasource/data_india_gadgets360.csv")
+    #print elements line by line
+    for i in range(len(dataset2)):
+        vendor_id = str(uuid.uuid4())
+        brand = dataset2['Brand'].iloc[i]
+        model_name = dataset2['Model'].iloc[i]
+        #take out brand from model name
+        model_name = model_name.replace(brand,"")
+        size = dataset2['Screen size (inches)'].iloc[i]
+        storage = dataset2['Internal storage (GB)'].iloc[i]
+        #if storage is above 1000 continue
+        if int(storage) > 1000 or int(storage) < 16:
+            continue
+        storage = int(storage)
+        sale_price = dataset2['Price'].iloc[i]
+        sale_price = float(sale_price)*0.012
+        ts = datetime.datetime.utcnow()
+        ts_mod = datetime.datetime.utcnow()
+        vendor = db.Vendors.find_one({"brand":brand, "model_name":model_name, "storage":storage})
+        if vendor is None:
+            db.Vendors.insert_one({"_id":vendor_id,"brand":brand,"model_name":model_name,"size":size,"storage":storage,"sale_price":sale_price,"ts":ts,"ts_mod":ts_mod,"is_deleted":False})
+        else:
+            db.Vendors.update_one({"_id":vendor["_id"]},{"$set":{"sale_price2":sale_price,"ts_mod":ts_mod}})
+
+    vendors = db.Vendors.find({"sale_price2":{"$exists":False}})
+    for vendor in vendors:
+        random_percentage = random.randint(1,11)
+        price = int(vendor["sale_price"] + (vendor["sale_price"] * random_percentage / 100))
+        db.Vendors.update_one({"_id":vendor["_id"]},{"$set":{"sale_price2":price,"ts_mod":vendor["ts_mod"]}})
+    
+    vendors = db.Vendors.find({"storage":{"$exists":True}})
+    for vendor in vendors:
+        vendor_id = str(uuid.uuid4())
+        brand = vendor["brand"]
+        model_name = vendor["model_name"]
+        size = vendor["size"]
+        storage = vendor["storage"]*2
+        sale_price = vendor["sale_price"] + random.randint(60,80)
+        sale_price2 = vendor["sale_price2"] + random.randint(60,80)
+        ts = datetime.datetime.utcnow()
+        ts_mod = datetime.datetime.utcnow()
+        vendor = db.Vendors.find_one({"brand":brand, "model_name":model_name, "storage":storage})
+        if vendor is not None:
+            continue
+        else:
+            db.Vendors.insert_one({"_id":vendor_id,"brand":brand,"model_name":model_name,"size":size,"storage":storage,"sale_price":sale_price,"sale_price2":sale_price2,"ts":ts,"ts_mod":ts_mod,"is_deleted":False})

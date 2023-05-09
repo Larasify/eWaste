@@ -12,7 +12,7 @@ from auth import auth_api
 from vendors import vendors_api
 from datalinks import datalinks_api
 from transaction import transaction_api
-from dbscript import rebuilddb
+from dbscript import rebuilddb, buildvendordatasource
 
 app = Flask(__name__)
 app.register_blueprint(user_api, url_prefix='/user')
@@ -53,3 +53,4 @@ def apiposttest():
     return {"results": request.json}
 
 rebuilddb()
+buildvendordatasource()
