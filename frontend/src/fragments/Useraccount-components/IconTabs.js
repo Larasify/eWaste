@@ -45,25 +45,21 @@ export default function IconTabs() {
                 }
             )
             .then(data => {
-                let newData = data['user_list'] || []
-                newData = JSON.parse(newData)
-                setForm(newData.map((device) => {
-                        return {
-                            id:nextId++,
-                            modelName: device.model,
-                            identification: device.identification,
-                            service: device.service,
-                            price: price,
-                            payment: device.hasOwnProperty('payment2_amount')?(device.payment_amount+device.payment2_amount):device.payment_amount,
-                            link: device.qr_code,
-                            linkService: device.datalink,
-                            deviceId: device._id,
-                            status:device.status,
-                            payment_id:device.payment_id,
-                            payment2_id:device.hasOwnProperty('payment2_id')?device.payment2_id:'',
+                let newDataJson = data['user_list'] || []
+                const newData = JSON.parse(newDataJson)
+                newData.map((device) => {
+                            device.id = nextId++
+                            device.modelName = device.model
+                            device.price = price
+                            device.payment = device.hasOwnProperty('payment2_amount')
+                                ?(device.payment_amount+device.payment2_amount):device.payment_amount
+                            device.link = device.qr_code
+                            device.linkService = device.datalink
+                            device.deviceId = device._id
+                            device.payment2_id =device.hasOwnProperty('payment2_id')?device.payment2_id:''
 
-                        }
-                    }));
+                    })
+                setForm(newData);
             })
     },[]);
 
@@ -169,7 +165,10 @@ export default function IconTabs() {
           renderCell: (params) => {
               // if the url contains 'https://', use the code commented
               // return <a href={params.row.link} className={"underline "}>{params.row.link}</a>;
-              return <a href={'https://'+params.row.link} className={"underline "}>{"https://"}{params.row.link}</a>;
+              let link;
+              if(params.row.link !=='') link = "https://" + params.row.link;
+              else link = '';
+              return <a href={'https://'+params.row.link} className={"underline "}>{link}</a>;
             }
         },
             {
@@ -177,7 +176,11 @@ export default function IconTabs() {
           headerName: 'Link for Data Retrieval',
           flex: 2,
           renderCell: (params) => {
-              return <a href={'https://'+params.row.linkService} className={"underline "}>{"https://"}{params.row.linkService}</a>;
+              let linkService;
+              if(params.row.linkService !=='') linkService = "https://" + params.row.linkService;
+              else linkService = '';
+
+              return <a href={'https://'+params.row.linkService} className={"underline "}>{linkService}</a>;
             }
 
         },
