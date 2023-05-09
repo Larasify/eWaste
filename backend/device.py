@@ -1,3 +1,4 @@
+# import packages and modules
 import stripe
 from flask import Blueprint, request, redirect
 from app import db
@@ -11,6 +12,7 @@ from user import addNotificationLocal
 device_api = Blueprint('device_api', __name__)
 stripe.api_key = 'sk_test_51N5FUWEPDlosnaW6E9dWvzSXmBuvy5yEiA8zSEL5HtV16IEc3w' \
                  'eE2xWjseNj7hlldrCNCj0vZ2pH3wWBXydFQa7000jf4ebOEf'
+
 #url_prefix = /device
 
 # Get a specific device
@@ -223,7 +225,7 @@ def deleteDevice():
 # Update a device
 @device_api.route("/updatedevice", methods=['POST'])
 def updateDevice():
-    # extract device id, fields that need to be updated from the request
+    # extract device id and fields to be updated from the request
     data = request.get_json()
     device_id = data.get("id")
     query = {"_id":device_id}
@@ -235,7 +237,7 @@ def updateDevice():
     # update the device
     result = db.Devices.update_one(query, {"$set": update_dict})
 
-    # if successfully updated, return success and add notification, otherwise return an error.
+    # if successfully updated, return success and send notification, otherwise return an error.
     if result.matched_count == 1:
         #if update_dict has a key called status send a notification
         if "status" in update_dict:
@@ -247,11 +249,14 @@ def updateDevice():
     else:
         return {"message": "Device does not exist", "response":"error"}
 
+# create a checkout session
 @device_api.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
     try:
+        # extract the line items from request
         data = request.get_json()
         line_items = data.get("line_items")
+        # create a new stripe checkout session with redirect urls
         checkout_session = stripe.checkout.Session.create(
             line_items=line_items,
             mode='payment',
@@ -259,8 +264,8 @@ def create_checkout_session():
             cancel_url='http://localhost:8080/payment-stripe?canceled=true',
         )
     except Exception as e:
+        # if there is an error, return error message
         return str(e)
-
     return {"response": "success", "checkout_session": checkout_session}
 
 
