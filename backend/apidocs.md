@@ -30,6 +30,32 @@ Get user list
 - Description: Obtain a list of all undeleted users in the system.
 - Response: List containing all undeleted users, or error message
 
+Create New Document:
+- URL: /document/postdocument
+- Method: POST
+- Description: Creates a new document.
+- Request Body: {"title": "<Document Title>", "content": "<Document Content>"}
+- Response:
+Success: {"response": "success"}
+Error: {"message": "creation_failed", "response": "error"}(if the document creation failed)
+
+Delete Document:
+- URL: /document/deletedocument
+- Method: POST
+- : Deletes the document with a specific ID.
+- Request Body: {"document_id": "<Document ID>"}
+- Response:
+Success: {"response": "success"}(if the document is deleted successfully)
+Error: {"message": "document_does_not_exist", "response": "error"}(if the document does not exist)
+
+Update Document:
+- URL: /document/updatedocument
+- Method: POST
+- Description: Updates the document with a specific ID.
+- Request Body: {"document_id": "<Document ID>", "fields": {key: value, ...}}
+- Response:
+Success: {"response": "success"}(if the document is updated successfully)
+Error: {"message": "document_does_not_exist", "response": "error"}(if the document does not exist)
 
 
 ### device
