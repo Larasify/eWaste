@@ -1,29 +1,22 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
-import {FaCcStripe} from "react-icons/fa";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {IoChevronBackCircle} from "react-icons/io5";
-import { FormControl } from '@mui/material';
-import InputLabel from '@mui/material/InputLabel';
+import {FormControl, TextField} from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-
-
-const device = {
-    props:{
-        brand: 'Apple',
-        model: 'Apple 13 Pro',
-        color:'Olive',
-        system:'Ios',
-        storage:'256G',
-        degree:'30%',
-        worth:'382',
-    }
-};
+import Select from '@mui/material/Select';
+import {Notify} from "../fragments/Notify";
 
 
 export default function EditDeviceForm(){
-    let navigate = useNavigate();
+    const navigate = useNavigate();
+    const state = useLocation().state;
+    const [vendors, setVendors] = useState([])
+    const [brands, setBrands] = useState([]);
+    const [models, setModels] = useState([]);
+    const [storages, setStorages] = useState([]);
+    const [prices, setPrices] = useState([]);
+    const [draftMessage, setDraftMessage] = useState("")
 
     const askBackward = () => {
         if (window.confirm("Are you sure you want to backward? Your update will be lost. ")) {
@@ -31,15 +24,165 @@ export default function EditDeviceForm(){
         }
     };
 
+    const [device, setDevice] = React.useState(state);
 
-    const [device, setDevice] = React.useState({});
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        switch (name) {
+            case "brand":
+                setStorages([]);
+                setPrices([])
+                setModels([...new Set(vendors.filter((vendor) => vendor.brand === value).map((vendor) => vendor.model_name))]);
+                setDevice({...device, [name]: value, ["model"]: undefined, ["memory_storage"]: undefined})
+                break;
+            case "model":
+                setDevice({...device, [name]: value, ["storage"]: undefined, ["worth"]: undefined})
+                setStorages([
+                    ...new Set(vendors
+                        .filter(
+                            (vendor) => vendor.brand === device.brand && vendor.model_name === value)
+                        .map((vendor) => vendor.storage))
+                ]);
+                setPrices([...new Set(vendors
+                    .filter(
+                        (vendor) => vendor.brand === device.brand && vendor.model_name === value)
+                    .map((vendor) => vendor.sale_price)),
+                    ...new Set(vendors
+                        .filter(
+                            (vendor) => vendor.brand === device.brand && vendor.model_name === value)
+                        .map((vendor) => vendor.sale_price2))]);
+                break;
+            default:
+                setDevice({ ...device, [name]: value });
+        }
+        console.log(device)
+    };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setDevice({ ...device, [name]: value });
-  };
+    const submitForm = () => {
+        let myRequest;
+        if (state._op === "edit") {
+            myRequest = new Request("/device/updatedevice", {
+                headers: new Headers({"Content-Type": "application/json"}),
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify({"id": device.id, "fields": [device]})
+            });
+        } else {
+            myRequest = new Request("/device/postdevice", {
+                headers: new Headers({"Content-Type": "application/json"}),
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify(device)
+            })
+        }
+        fetch(myRequest)
+            .then((response) => {
+                if (response.status === 200) {
+                    return response.json()
+                } else {
+                    Notify.error(`Update device (HTTP) failed: ${response.status}: ${response.statusText}`);
+                    throw `Update device (HTTP) failed: ${response.status}: ${response.statusText}`
+                }
+            }).then((data) => {
+                if (data['response'] !== "success") {
+                    Notify.error(`Update device failed: ${data['message']}`);
+                } else {
+                    Notify.success("Update successfully")
+                    navigate(-1);
+                }
+        });
+    }
 
-  console.log(device);
+    const sendLink = () => {
+        const sendLinkSubmit = (id = device.id) => {
+            const myRequest = new Request("/device/generatedatalink", {
+                headers: new Headers({"Content-Type": "application/json"}),
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify({"id": id})
+            });
+            fetch(myRequest).then((response) => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    Notify.error(`Generate data link (HTTP) failed: ${response.status}: ${response.statusText}`);
+                    throw `Generate data link (HTTP) failed: ${response.status}: ${response.statusText}`;
+                }
+            }).then((data) => {
+                if (data['response'] === "success") {
+                    Notify.success("Data link is generated and sent to user");
+                } else {
+                    Notify.error(`Data link generates failed: ${data['message']}`);
+                    throw `Data link generates failed: ${data['message']}`;
+                }
+            })
+        }
+        if (state._op !== "edit") {
+            const myRequest = new Request("/device/postdevice", {
+                headers: new Headers({"Content-Type": "application/json"}),
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify(device)
+            })
+            fetch(myRequest)
+                .then((response) => {
+                    if (response.status === 200) {
+                        return response.json()
+                    } else {
+                        Notify.error(`Update device (HTTP) failed: ${response.status}: ${response.statusText}`);
+                        throw `Update device (HTTP) failed: ${response.status}: ${response.statusText}`
+                    }
+                }).then((data) => {
+                    if (data['response'] !== "success") {
+                        Notify.error(`Update device failed: ${data['message']}`);
+                        throw `Update device failed: ${data['message']}`
+                    } else {
+                        Notify.success("Create device successfully");
+                        setDevice({...device, ["id"]: data["new_device_id"]});
+                        sendLinkSubmit(data["new_device_id"]);
+                        navigate(-1);
+                    }
+                });
+            return;
+        }
+        sendLinkSubmit();
+    }
+
+    useEffect(() => {
+        const loadVendors = async () => {
+            const myRequest = new Request("/vendor/getvendorlist", {
+                headers: new Headers({"Content-Type": "application/json"}),
+                method: "GET",
+                credentials: "include"
+            })
+            const data = await (await fetch(myRequest)).json();
+            if (data['response'] !== "success") {
+                throw data['message'];
+            }
+            setVendors(data['vendor_list']);
+            setBrands([...new Set(data['vendor_list'].map((vendor) => vendor.brand))])
+            if (state._op === "edit") {
+                setDevice(state)
+                setModels([...new Set(data['vendor_list'].filter((vendor) => vendor.brand === device.brand).map((vendor) => vendor.model_name))]);
+                setStorages([
+                    ...new Set(data['vendor_list']
+                        .filter(
+                            (vendor) => vendor.brand === device.brand && vendor.model_name === device.model)
+                        .map((vendor) => vendor.storage))
+                ]);
+                setPrices([...new Set(data['vendor_list']
+                    .filter(
+                        (vendor) => vendor.brand === device.brand && vendor.model_name === device.model)
+                    .map((vendor) => vendor.sale_price)),
+                    ...new Set(data['vendor_list']
+                        .filter(
+                            (vendor) => vendor.brand === device.brand && vendor.model_name === device.model)
+                        .map((vendor) => vendor.sale_price2))])
+            } 
+        }
+        loadVendors().catch(e => Notify.error(e))
+    }, [])
+
 
     return (
         <div className={"flex flex-col md:flex-row relative my-4 w-5/6 mx-auto h-5/6 rounded-3xl bg-[#E3F0EB]"}>
@@ -56,22 +199,25 @@ export default function EditDeviceForm(){
                 <div className={"flex p-4 md:pl-8  justify-center"}>
                     <p className={"md:m-4 mx-auto text-center md:text-left leading-loose"}>
                     <span
-                        className={"text-base md:text-2xl lg:text-3xl text-black text-left font-bold lg:leading-10"}>iPhone 13</span>
+                        className={"text-base md:text-2xl lg:text-3xl text-black text-left font-bold lg:leading-10"}>{device.model}</span>
                         <br/>
                         <span
-                            className={"text-base md:text-lg lg:text-xl text-[#494949] text-left "}>Apple</span>
+                            className={"text-base md:text-lg lg:text-xl text-[#494949] text-left "}>{device.brand}</span>
                         <br className={"md:hidden"}/>
                         <span
-                            className={"md:text-lg lg:text-xl text-white font-bold rounded-full text-left bg-[#509E82] p-3 lg:ml-40"}>Current</span>
+                            className={"md:text-lg lg:text-xl text-white font-bold rounded-full text-left bg-[#509E82] p-2 m-2 lg:ml-40"}>{(device.identification || "UNKNOWN").charAt(0).toUpperCase() + (device.identification || "UNKNOWN").slice(1)}</span>
                         <br/>
                         <span
                             className={"text-base md:text-xl lg:text-2xl md:font-medium text-black text-left lg:leading-loose "}>Expected Value:</span>
                         <br/>
                         <span
-                            className={"text-base md:text-xl lg:text-3xl md:font-medium text-[#509E82] text-left lg:leading-loose "}>{"£"+"612"}</span>
-                        <button className={"underline text-base md:text-lg inline text-[#509E82] border-0 mx-2"}>(show report)</button>
+                            className={"text-base md:text-xl lg:text-3xl md:font-medium text-[#509E82] text-left lg:leading-loose "}>£{device.worth || " UNKNOWN"}</span>
+                        <button className={"underline text-base md:text-lg inline text-[#509E82] border-0 mx-2"}>(show
+                            report)
+                        </button>
                         <br/>
-                        <span className={"w-full break-normal flex justify-center text-md md:font-medium text-gray-400 text-left lg:leading-loose "}>This is a really good new phone,with big size and big storage,please use it!!!</span>
+                        <span
+                            className={"w-full break-normal flex justify-center text-md md:font-medium text-gray-400 text-left lg:leading-loose "}>{device.description}</span>
                     </p>
                 </div>
             </div>
@@ -82,127 +228,142 @@ export default function EditDeviceForm(){
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-6 md:mb-4 "}>
 
                     {/*brand*/}
-                    <div >
+                    <div>
                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Brand</label>
                         <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="brand-label"
-                            id="brand"
-                            value={device.brand}
-                            onChange={handleChange}
-                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
-                          >
-                            <MenuItem value={"Apple"}>Apple</MenuItem>
-                            <MenuItem value={"Oneplus"}>Oneplus</MenuItem>
-                            <MenuItem value={"Sumsang"}>Sumsang</MenuItem>
-                          </Select>
+                            <Select
+                                labelId="brand-label"
+                                id="brand"
+                                value={device.brand}
+                                onChange={handleChange}
+                                name={"brand"}
+                                className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                            >
+                                {brands.map((brand) => (
+                                    <MenuItem value={brand}>{brand}</MenuItem>
+                                ))}
+                                {brands.includes(device.brand) ? undefined :
+                                    <MenuItem value={device.brand}>{device.brand}</MenuItem>
+                                }
+                            </Select>
                         </FormControl>
                     </div>
                     <br className={"block md:hidden"}/>
 
                     {/*model name*/}
-                    <div >
+                    <div>
                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Model Name</label>
                         <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="model-label"
-                            id="model"
-                            value={device.model}
-                            onChange={handleChange}
-                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
-
-                          >
-                            <MenuItem value={"Apple12Pro"}>Apple12Pro</MenuItem>
-                            <MenuItem value={"Apple13Pro"}>Apple13Pro</MenuItem>
-                            <MenuItem value={"AppleX"}>AppleX</MenuItem>
-                          </Select>
+                            <Select
+                                labelId="model-label"
+                                id="model"
+                                value={device.model}
+                                onChange={handleChange}
+                                name={"model"}
+                                className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                            >
+                                {models.length === 0 ?
+                                   <MenuItem value={null} selected disabled>Please select a brand first</MenuItem>
+                                    :
+                                    models.map((model) => (<MenuItem value={model}>{model}</MenuItem>))
+                                }
+                                {device.model && !models.includes(device.model) ?
+                                    <MenuItem value={device.model}>{device.model}</MenuItem> : undefined
+                                }
+                            </Select>
                         </FormControl>
                     </div>
 
                 </div>
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     {/*Identification*/}
-                    <div >
+                    <div>
                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Identification(New)</label>
                         <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="identification-label"
-                            id="identification"
-                            value={device.identification}
-                            onChange={handleChange}
-                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
-                          >
-                            <MenuItem value={"Current(30%)"}>Current (30%)</MenuItem>
-                            <MenuItem value={"Current (70%)"}>Current (70%)</MenuItem>
-                            <MenuItem value={"Current (90%)"}>Current (90%)</MenuItem>
-                            <MenuItem value={"Rare (30%)"}>Rare (30%)</MenuItem>
-                            <MenuItem value={"Rare (70%)"}>Rare (70%)</MenuItem>
-                            <MenuItem value={"Rare (90%)"}>Rare (90%)</MenuItem>
-                            <MenuItem value={"Recycle"}>Recycle</MenuItem>
-                            <MenuItem value={"Unknown"}>Unknown</MenuItem>
-                          </Select>
+                            <Select
+                                labelId="identification-label"
+                                id="identification"
+                                value={device.identification}
+                                onChange={handleChange}
+                                name={"identification"}
+                                className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                            >
+                                <MenuItem value={"30%"}>Current (30%)</MenuItem>
+                                <MenuItem value={"70%"}>Current (70%)</MenuItem>
+                                <MenuItem value={"90%"}>Current (90%)</MenuItem>
+                                <MenuItem value={"rare"}>Rare</MenuItem>
+                                <MenuItem value={"recycle"}>Recycle</MenuItem>
+                                <MenuItem value={"unknown"}>Unknown</MenuItem>
+                            </Select>
                         </FormControl>
                     </div>
                     <br className={"block md:hidden"}/>
 
                     {/*operating system*/}
-                     <div >
+                    <div>
                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Operating System</label>
                         <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="system-label"
-                            id="system"
-                            value={device.system}
-                            onChange={handleChange}
-                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                            <Select
+                                labelId="system-label"
+                                id="system"
+                                name={"operating_system"}
+                                value={device.operating_system}
+                                onChange={handleChange}
+                                className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
 
-                          >
-                            <MenuItem value={"Andriod"}>Andriod</MenuItem>
-                            <MenuItem value={"Ios"}>IOS</MenuItem>
-                          </Select>
+                            >
+                                <MenuItem value={"android"}>Android</MenuItem>
+                                <MenuItem value={"ios"}>IOS</MenuItem>
+                                {device.operating_system && !(device.operating_system === "android" || device.operating_system === "ios") ?
+                                    <MenuItem value={device.operating_system}>{device.operating_system}</MenuItem> : undefined
+                                }
+                            </Select>
                         </FormControl>
                     </div>
 
                 </div>
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     {/*memory storage*/}
-                    <div >
+                    <div>
                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Memory Storage</label>
                         <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="storage-label"
-                            id="storage"
-                            value={device.storage}
-                            onChange={handleChange}
-                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
-
-                          >
-                            <MenuItem value={"256g"}>256g</MenuItem>
-                            <MenuItem value={"512g"}>512g</MenuItem>
-                          </Select>
+                            <Select
+                                labelId="storage-label"
+                                id="storage"
+                                value={device.memory_storage}
+                                name={"memory_storage"}
+                                onChange={handleChange}
+                                className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                            >
+                                {storages.length === 0 ?
+                                    <MenuItem value={null} disabled>Please select a model first</MenuItem>
+                                    :
+                                    storages.map((storage) => (<MenuItem value={storage}>{storage}GB</MenuItem>))
+                                }
+                                {device.memory_storage && !(storages.includes(device.memory_storage) || storages.includes(Number(device.memory_storage))) ?
+                                    <MenuItem value={device.memory_storage}>{device.memory_storage}</MenuItem> : undefined
+                                }
+                            </Select>
                         </FormControl>
                     </div>
                     <br className={"block md:hidden"}/>
 
                     {/*color*/}
-                    <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} >*
-                            Color</label>
+                    <div>
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} htmlFor={"color"}>
+                            * Color</label>
                         <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="color-label"
-                            id="color"
-                            value={device.color}
-                            onChange={handleChange}
-                            className={"border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}>
-                            <MenuItem value={"olive"}>olive</MenuItem>
-                            <MenuItem value={"black"}>black</MenuItem>
-                          </Select>
+                            <input type="text"
+                                   onChange={handleChange}
+                                   id={"color"}
+                                   name={"color"}
+                                   value={device.color}
+                                   className={"p-2 text-md rounded border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
                         </FormControl>
                     </div>
                 </div>
@@ -210,127 +371,153 @@ export default function EditDeviceForm(){
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
 
                     {/*type*/}
-                    <div >
+                    <div>
                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Type</label>
                         <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="type-label"
-                            id="type"
-                            value={device.type}
-                            onChange={handleChange}
-                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                            <Select
+                                labelId="type-label"
+                                id="type"
+                                value={device.type}
+                                onChange={handleChange}
+                                name={"type"}
+                                className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
 
-                          >
-                            <MenuItem value={"Phone"}>Phone</MenuItem>
-                            <MenuItem value={"Tablet"}>Tablet</MenuItem>
-                            <MenuItem value={"Laptop"}>Laptop</MenuItem>
+                            >
+                                <MenuItem value={"phone"}>Phone</MenuItem>
+                                <MenuItem value={"tablet"}>Tablet</MenuItem>
+                                <MenuItem value={"laptop"}>Laptop</MenuItem>
 
-                          </Select>
+                            </Select>
                         </FormControl>
                     </div>
                     <br className={"block md:hidden"}/>
 
                     {/*value*/}
-                    <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} >*
-                            Expected Value</label>
-                        <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="worth-label"
-                            id="worth"
-                            value={device.worth}
-                            onChange={handleChange}
-                            className={"border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}>
-                            <MenuItem value={"612"} className={"flex"}>
-                                <label>Cex</label>
-                                <label className={"absolute right-8 inline text-[#509E82] "}>£512</label>
-                            </MenuItem>
-                            <MenuItem value={"582"} className={"flex"}>
-                                <label>Cerweewwewqe</label>
-                                <label className={"absolute right-8 inline text-[#509E82] "}>£582</label>
-                            </MenuItem>
-                          </Select>
-                        </FormControl>
+                    <div>
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>* Expected Value</label>
+                        {prices.length === 0 ? (
+                                <FormControl fullWidth focused={false} size={"small"}>
+                                    <input type="text"
+                                           onChange={handleChange}
+                                           id={"price"}
+                                           name={"worth`"}
+                                           placeholder={"Please enter an estimated price."}
+                                           className={"p-2 text-md rounded border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
+                                </FormControl>
+                            )
+                            :
+                            (
+                                <FormControl fullWidth focused={false} size={"small"}>
+                                    <Select
+                                        labelId="worth-label"
+                                        id="worth"
+                                        name={"worth"}
+                                        value={device.worth}
+                                        onChange={handleChange}
+                                        className={"border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}>
+                                        <MenuItem value={prices[0] * 0.5} className={"flex"}>
+                                            <label>Cex</label>
+                                            <label className={"absolute right-8 inline text-[#509E82] "}>£{prices[0] * 0.5}</label>
+                                        </MenuItem>
+                                        <MenuItem value={prices[1] * 0.5} className={"flex"}>
+                                            <label>Argos</label>
+                                            <label className={"absolute right-8 inline text-[#509E82] "}>£{prices[1] * 0.5}</label>
+                                        </MenuItem>
+                                    </Select>
+                                </FormControl>
+                            )}
                     </div>
                 </div>
 
-                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
-                     {/*status*/}
-                     <div >
+                <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
+                    {/*status*/}
+                    <div>
                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Status</label>
                         <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="status-label"
-                            id="status"
-                            value={device.status}
-                            onChange={handleChange}
-                            className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
-
-                          >
-                            <MenuItem value={"Confirmed"}>Confirmed</MenuItem>
-                            <MenuItem value={"Shipped"}>Shipped</MenuItem>
-                            <MenuItem value={"Received"}>Received</MenuItem>
-                            <MenuItem value={"Wiped"}>Wiped</MenuItem>
-                            <MenuItem value={"Approved"}>Approved</MenuItem>
-                            <MenuItem value={"Rejected"}>Rejected</MenuItem>
-                            <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
-
-                          </Select>
+                            <Select
+                                name={"status"}
+                                labelId="status-label"
+                                id="status"
+                                value={device.status}
+                                onChange={handleChange}
+                                className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                            >
+                                <MenuItem value={"confirmed"}>Confirmed</MenuItem>
+                                <MenuItem value={"shipped"}>Shipped</MenuItem>
+                                <MenuItem value={"received"}>Received</MenuItem>
+                                <MenuItem value={"wiped"}>Wiped</MenuItem>
+                                <MenuItem value={"approved"}>Approved</MenuItem>
+                                <MenuItem value={"rejected"}>Rejected</MenuItem>
+                                <MenuItem value={"cancelled"}>Cancelled</MenuItem>
+                            </Select>
                         </FormControl>
                     </div>
                     <br className={"block md:hidden"}/>
 
                     {/*verified*/}
-                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} >*
+                    <div>
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Verified</label>
                         <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="verified-label"
-                            id="verified"
-                            value={device.verified}
-                            onChange={handleChange}
-                            className={"border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}>
-                            <MenuItem value={"true"} className={"flex"}>True</MenuItem>
-                            <MenuItem value={"false"} className={"flex"}>False</MenuItem>
-                          </Select>
+                            <Select
+                                labelId="verified-label"
+                                id="verified"
+                                value={device.verified}
+                                name={"verified"}
+                                onChange={handleChange}
+                                className={"border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}>
+                                <MenuItem value={"true"} className={"flex"}>Yes</MenuItem>
+                                <MenuItem value={"false"} className={"flex"}>No</MenuItem>
+                            </Select>
                         </FormControl>
                     </div>
                 </div>
 
                 {/*description*/}
-                 <label className={" text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} htmlFor={"descriptionInput"}>*
-                            Description (No more than 500 words)</label>
+                <label className={" text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}
+                       htmlFor={"descriptionInput"}>*
+                    Description (No more than 500 words)</label>
 
-                <textarea rows={"3"} className={" block w-full p-2 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
-                              type="text" id={"descriptionInput"}></textarea>
+                <textarea rows={3}
+                          className={" block w-full p-2 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                          id={"descriptionInput"}>{device.description}</textarea>
 
                 {/*service*/}
                 <div className="inline mt-4 md:grid md:grid-cols-2">
                     <div className={"flex items-center "}>
-                        <input type="radio" id="wiping" name="service" value="wiping" className="h-4 w-4 md:h-5 md:w-5  "  required/>
-                        <label htmlFor="wiping" className={"ml-2 text-left block text-xl font-medium text-gray-900 dark:text-white"}>Wipe Data from Device</label>
+                        <input type="radio" id="wiping" name="service" value="wipe"
+                               className="h-4 w-4 md:h-5 md:w-5" required checked={device.service === "wipe"} onChange={handleChange}/>
+                        <label htmlFor="wiping"
+                               className={"ml-2 text-left block text-xl font-medium text-gray-900 dark:text-white"}>Wipe
+                            Data from Device</label>
                     </div>
                     <br className={"md:hidden"}/>
                     <div className={"flex items-center "}>
-                        <input type="radio" id="retrieval" name="service" value="retrieval" className="h-4 w-4 md:h-5 md:w-5 " required/>
-                        <label  htmlFor="retrieval" className={"ml-2 text-left block text-xl font-medium text-gray-900 dark:text-white"}>Wipe & Retrieve Data from
-                        Device</label>
+                        <input type="radio" id="retrieval" name="service" value="retrieval"
+                               className="h-4 w-4 md:h-5 md:w-5" required checked={device.service === "retrieval"} onChange={handleChange}/>
+                        <label htmlFor="retrieval"
+                               className={"ml-2 text-left block text-xl font-medium text-gray-900 dark:text-white"}>Wipe
+                            & Retrieve Data from Device</label>
                     </div>
                 </div>
 
 
                 {/*buttons*/}
-                <label className={"flex text-lg text-[#509E82] underline justify-center md:justify-end mr-5 mt-4 md:mt-2"}>Draft has saved!</label>
+                <label
+                    className={"flex text-lg text-[#509E82] underline justify-center md:justify-end mr-5 mt-4 md:mt-2"}>{draftMessage}</label>
                 <div className={"flex flex-col md:flex-row justify-end"}>
-                    <button className={"w-full md:w-2/5 h-full mt-2 p-2 px-auto md:p-3 md:mr-10 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
-                    Send Link
-                    </button>
+                    {device.service === "retrieval" ?
+                        <button onClick={sendLink}
+                                className={"w-full md:w-2/5 h-full mt-2 p-2 px-auto md:p-3 md:mr-10 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
+                            Send Link
+                        </button> : undefined
+                    }
                     <br className={"md:hidden"}/>
-                    <button className={"w-full md:w-1/5 h-full md:mt-2 p-2 px-auto md:p-3 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
-                    Apply
+                    <button onClick={submitForm}
+                        className={"w-full md:w-1/5 h-full md:mt-2 p-2 px-auto md:p-3 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
+                        Apply
                     </button>
                 </div>
             </div>

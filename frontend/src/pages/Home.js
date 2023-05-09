@@ -37,7 +37,7 @@ export default function Home() {
         fetch('/vendor/getvendorlist')
             .then(vendorRequest => (vendorRequest).json())
             .then(vendors => {
-                setData(JSON.parse(vendors.vendor_list));
+                setData(vendors.vendor_list);
                 setBrands([... new Set(data.map(v => v.brand))])
                 setLoading(false);
             });

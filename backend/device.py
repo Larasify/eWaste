@@ -20,7 +20,7 @@ def getDevice():
         return {"message":"device_not_found"}
     if device.get("is_deleted"):
         return {"message":"record deleted", "response":"error"}
-    return {"response":"success", "device_info":dumps(device)}
+    return {"response":"success", "device_info":device}
 
 # Get a list of devices
 @device_api.route("/getdevicelist")
@@ -29,8 +29,7 @@ def getDeviceList():
     list_devices = list(devices)
     if len(list_devices) == 0:
         return {"message":"empty list", "response":"error"}
-    json_devices = dumps(list_devices)
-    return {"response":"success", "device_list":json_devices}
+    return {"response":"success", "device_list":list_devices}
 
 # Post a device
 @device_api.route("/postdevice", methods=['POST'])
@@ -81,7 +80,7 @@ def postDevice():
                             "qr_code":qr_code,"device_ts":device_ts,"device_ts_mod":device_ts_mod,"payment_id":payment_id,
                             "payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod,"is_deleted":False,"verified":verified})
 
-    return {"response":"success"}
+    return {"response":"success", "new_device_id": device_id}
 
 @device_api.route("/addpayment", methods=['POST'])
 def addPayment():

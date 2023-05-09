@@ -54,7 +54,7 @@ export default function IconTabs() {
         fetch('/device/getdevicelist')
         .then(deviceRequest => (deviceRequest).json())
         .then(devices => {
-            const deviceList = (JSON.parse(devices.device_list)).filter(u => !u.is_deleted);
+            const deviceList = (devices.device_list).filter(u => !u.is_deleted);
             deviceList.map( u => {
                 u.id = u._id
                 u.payment_status = u.payment_id ? 'Done' : 'Pending';
@@ -92,7 +92,7 @@ export default function IconTabs() {
         fetch('/vendor/getvendorlist')
         .then(vendorRequest => (vendorRequest).json())
         .then(vendors => {
-            const vendorList = (JSON.parse(vendors.vendor_list)).filter(u => !u.is_deleted);
+            const vendorList = (vendors.vendor_list).filter(u => !u.is_deleted);
             vendorList.map( u => u.id = u._id)
             setVendorData({
                 cols: [

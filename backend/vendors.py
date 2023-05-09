@@ -13,8 +13,7 @@ def getVendors():
     list_vendors = list(vendors)
     if len(list_vendors) == 0:
         return {"message":"empty list", "response":"error"}
-    json_vendors = dumps(list_vendors)
-    return {"response":"success", "vendor_list":json_vendors}
+    return {"response":"success", "vendor_list":list_vendors}
 
 #getvendor
 @vendors_api.route("/getvendor", methods=['POST'])
