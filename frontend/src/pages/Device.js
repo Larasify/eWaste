@@ -102,9 +102,9 @@ export default function Device(props) {
         const model = document.getElementById('model-id').value;
         const deviceStorage = document.getElementById('device-storage').value;
         const vendor = data.filter(v => {
-            return v.brand === brand && 
-                    v.model_name === model &&
-                    v.storage === deviceStorage
+            return v.brand == brand && 
+                    v.model_name == model &&
+                    v.storage == deviceStorage
         })[0]
         if(vendor) {
             fetch('/device/postdevice', {
@@ -137,7 +137,8 @@ export default function Device(props) {
                 }
                 else Notify.error('Something went wrong!');
             })
-
+        } else {
+            Notify.error('Please use the custom device page.')
         }
     }
 

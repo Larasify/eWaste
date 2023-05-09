@@ -88,15 +88,15 @@ export default function EditVendorForm(){
     };
 
     return (
-        <div onLoad={loadVendor} className={"flex flex-col md:flex-row relative my-4 w-5/6 mx-auto h-5/6 rounded-3xl bg-[#E3F0EB]"}>
+        <div onLoad={loadVendor} className={"flex flex-col md:flex-row relative my-4 w-5/6 mx-auto h-5/6 rounded-3xl bg-[#ddeafe]"}>
             <div className={"w-full md:w-1/3 h-full rounded-l-2xl"}>
-                <div className={"inline-flex w-full text-3xl md:text-4xl p-4 md:p-6 items-center text-[#509E82]"}
+                <div className={"inline-flex w-full text-3xl md:text-4xl p-4 md:p-6 items-center text-[#4b72b2]"}
                      onClick={askBackward}>
                     <IoChevronBackCircle className={"mx-2"}/>
                     <h1>Details</h1>
                 </div>
                 <img src="../images/phone-generic.jpg" alt=""
-                     className={"w-2/3 m-auto rounded-2xl border-[#3fb78c] border-2"}/>
+                     className={"w-2/3 m-auto rounded-2xl border-[#4b72b2] border-2"}/>
             </div>
 
             <div
@@ -106,14 +106,14 @@ export default function EditVendorForm(){
                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Brand</label>
                         <input type="text" id={"brandInput"} onChange={handleChange} name={"brand"}
-                               className={"block w-full p-2  text-gray-900 border border-[#509E82] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
+                               className={"block w-full p-2  text-gray-900 border border-[#4b72b2] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
                     </div>
                     <br className={"block md:hidden"}/>
                     <div>
                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Model Name</label>
                         <input type="text" id={"modelInput"} onChange={handleChange} name={"model_name"}
-                               className={"block w-full p-2  text-gray-900 border border-[#509E82] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
+                               className={"block w-full p-2  text-gray-900 border border-[#4b72b2] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
                     </div>
 
                 </div>
@@ -122,14 +122,14 @@ export default function EditVendorForm(){
                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Sale Price</label>
                         <input type="text" id={"priceInput"} onChange={handleChange} name={"sale_price"}
-                               className={"block w-full p-2  text-gray-900 border border-[#509E82] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
+                               className={"block w-full p-2  text-gray-900 border border-[#4b72b2] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
                     </div>
                     <br className={"block md:hidden"}/>
                     <div>
                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Size</label>
                         <input type="text" id={"sizeInput"} onChange={handleChange} name={"size"}
-                               className={"block w-full p-2  text-gray-900 border border-[#509E82] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
+                               className={"block w-full p-2  text-gray-900 border border-[#4b72b2] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
                     </div>
 
                 </div>
@@ -138,16 +138,16 @@ export default function EditVendorForm(){
                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Memory Storage</label>
                         <input type="text" id={"storageInput"} onChange={handleChange} name={"storage"}
-                               className={"block w-full p-2 text-gray-900 border border-[#509E82] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
+                               className={"block w-full p-2 text-gray-900 border border-[#4b72b2] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
                     </div>
                     <br className={"block md:hidden"}/>
                 </div>
 
                 <label id={"draftMessage"}
-                       className={"flex text-lg text-[#509E82] underline justify-center md:justify-end mr-5 mt-2 md:mt-0"}>{draftMessage}</label>
+                       className={"flex text-lg text-[#4b72b2] underline justify-center md:justify-end mr-5 mt-2 md:mt-0"}>{draftMessage}</label>
                 <div className={"flex justify-end"}>
                     <button onClick={submitForm}
-                            className={"w-full md:w-1/5 h-full mt-2 p-2 px-auto md:p-3 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold mb-6"}>
+                            className={"w-full md:w-1/5 h-full mt-2 p-2 px-auto md:p-3 cursor-pointer bg-[#4b72b2] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold mb-6"}>
                         Apply
                     </button>
                 </div>

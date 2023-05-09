@@ -185,16 +185,16 @@ export default function EditDeviceForm(){
 
 
     return (
-        <div className={"flex flex-col md:flex-row relative my-4 w-5/6 mx-auto h-5/6 rounded-3xl bg-[#E3F0EB]"}>
+        <div className={"flex flex-col md:flex-row relative my-4 w-5/6 mx-auto h-5/6 rounded-3xl bg-[#ddeafe]"}>
             {/*display area*/}
             <div className={"w-full md:w-1/3 h-full rounded-l-2xl"}>
-                <div className={"inline-flex w-full text-3xl md:text-4xl p-4 md:p-6 items-center text-[#509E82]"}
+                <div className={"inline-flex w-full text-3xl md:text-4xl p-4 md:p-6 items-center text-[#4b72b2]"}
                      onClick={askBackward}>
                     <IoChevronBackCircle className={"mx-2"}/>
                     <h1>Details</h1>
                 </div>
                 <img src="../images/phone-generic.jpg" alt=""
-                     className={"w-1/2 m-auto rounded-2xl border-[#3fb78c] border-2"}/>
+                     className={"w-1/2 m-auto rounded-2xl border-[#4b72b2] border-2"}/>
 
                 <div className={"flex p-4 md:pl-8  justify-center"}>
                     <p className={"md:m-4 mx-auto text-center md:text-left leading-loose"}>
@@ -205,14 +205,14 @@ export default function EditDeviceForm(){
                             className={"text-base md:text-lg lg:text-xl text-[#494949] text-left "}>{device.brand}</span>
                         <br className={"md:hidden"}/>
                         <span
-                            className={"md:text-lg lg:text-xl text-white font-bold rounded-full text-left bg-[#509E82] p-2 m-2 lg:ml-40"}>{(device.identification || "UNKNOWN").charAt(0).toUpperCase() + (device.identification || "UNKNOWN").slice(1)}</span>
+                            className={"md:text-lg lg:text-xl text-white font-bold rounded-full text-left bg-[#4b72b2] p-2 m-2 lg:ml-40"}>{(device.identification || "UNKNOWN").charAt(0).toUpperCase() + (device.identification || "UNKNOWN").slice(1)}</span>
                         <br/>
                         <span
                             className={"text-base md:text-xl lg:text-2xl md:font-medium text-black text-left lg:leading-loose "}>Expected Value:</span>
                         <br/>
                         <span
-                            className={"text-base md:text-xl lg:text-3xl md:font-medium text-[#509E82] text-left lg:leading-loose "}>£{device.worth || " UNKNOWN"}</span>
-                        <button className={"underline text-base md:text-lg inline text-[#509E82] border-0 mx-2"}>(show
+                            className={"text-base md:text-xl lg:text-3xl md:font-medium text-[#4b72b2] text-left lg:leading-loose "}>£{device.worth || " UNKNOWN"}</span>
+                        <button className={"underline text-base md:text-lg inline text-[#4b72b2] border-0 mx-2"}>(show
                             report)
                         </button>
                         <br/>
@@ -238,7 +238,7 @@ export default function EditDeviceForm(){
                                 value={device.brand}
                                 onChange={handleChange}
                                 name={"brand"}
-                                className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                                className={"text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
                             >
                                 {brands.map((brand) => (
                                     <MenuItem value={brand}>{brand}</MenuItem>
@@ -262,7 +262,7 @@ export default function EditDeviceForm(){
                                 value={device.model}
                                 onChange={handleChange}
                                 name={"model"}
-                                className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                                className={"text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
                             >
                                 {models.length === 0 ?
                                    <MenuItem value={null} selected disabled>Please select a brand first</MenuItem>
@@ -289,7 +289,7 @@ export default function EditDeviceForm(){
                                 value={device.identification}
                                 onChange={handleChange}
                                 name={"identification"}
-                                className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                                className={"text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
                             >
                                 <MenuItem value={"30%"}>Current (30%)</MenuItem>
                                 <MenuItem value={"70%"}>Current (70%)</MenuItem>
@@ -313,7 +313,7 @@ export default function EditDeviceForm(){
                                 name={"operating_system"}
                                 value={device.operating_system}
                                 onChange={handleChange}
-                                className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                                className={"text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
 
                             >
                                 <MenuItem value={"android"}>Android</MenuItem>
@@ -338,7 +338,7 @@ export default function EditDeviceForm(){
                                 value={device.memory_storage}
                                 name={"memory_storage"}
                                 onChange={handleChange}
-                                className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                                className={"text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
                             >
                                 {storages.length === 0 ?
                                     <MenuItem value={null} disabled>Please select a model first</MenuItem>
@@ -363,7 +363,7 @@ export default function EditDeviceForm(){
                                    id={"color"}
                                    name={"color"}
                                    value={device.color}
-                                   className={"p-2 text-md rounded border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
+                                   className={"p-2 text-md rounded border border-[#4b72b2] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
                         </FormControl>
                     </div>
                 </div>
@@ -381,7 +381,7 @@ export default function EditDeviceForm(){
                                 value={device.type}
                                 onChange={handleChange}
                                 name={"type"}
-                                className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                                className={"text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
 
                             >
                                 <MenuItem value={"phone"}>Phone</MenuItem>
@@ -403,7 +403,7 @@ export default function EditDeviceForm(){
                                            id={"price"}
                                            name={"worth`"}
                                            placeholder={"Please enter an estimated price."}
-                                           className={"p-2 text-md rounded border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
+                                           className={"p-2 text-md rounded border border-[#4b72b2] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
                                 </FormControl>
                             )
                             :
@@ -415,14 +415,14 @@ export default function EditDeviceForm(){
                                         name={"worth"}
                                         value={device.worth}
                                         onChange={handleChange}
-                                        className={"border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}>
+                                        className={"border border-[#4b72b2] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}>
                                         <MenuItem value={prices[0] * 0.5} className={"flex"}>
                                             <label>Cex</label>
-                                            <label className={"absolute right-8 inline text-[#509E82] "}>£{prices[0] * 0.5}</label>
+                                            <label className={"absolute right-8 inline text-[#4b72b2] "}>£{prices[0] * 0.5}</label>
                                         </MenuItem>
                                         <MenuItem value={prices[1] * 0.5} className={"flex"}>
                                             <label>Argos</label>
-                                            <label className={"absolute right-8 inline text-[#509E82] "}>£{prices[1] * 0.5}</label>
+                                            <label className={"absolute right-8 inline text-[#4b72b2] "}>£{prices[1] * 0.5}</label>
                                         </MenuItem>
                                     </Select>
                                 </FormControl>
@@ -442,7 +442,7 @@ export default function EditDeviceForm(){
                                 id="status"
                                 value={device.status}
                                 onChange={handleChange}
-                                className={"text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                                className={"text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
                             >
                                 <MenuItem value={"confirmed"}>Confirmed</MenuItem>
                                 <MenuItem value={"shipped"}>Shipped</MenuItem>
@@ -467,7 +467,7 @@ export default function EditDeviceForm(){
                                 value={device.verified}
                                 name={"verified"}
                                 onChange={handleChange}
-                                className={"border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}>
+                                className={"border border-[#4b72b2] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}>
                                 <MenuItem value={"true"} className={"flex"}>Yes</MenuItem>
                                 <MenuItem value={"false"} className={"flex"}>No</MenuItem>
                             </Select>
@@ -481,7 +481,7 @@ export default function EditDeviceForm(){
                     Description (No more than 500 words)</label>
 
                 <textarea rows={3}
-                          className={" block w-full p-2 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                          className={" block w-full p-2 text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
                           id={"descriptionInput"}>{device.description}</textarea>
 
                 {/*service*/}
@@ -506,17 +506,17 @@ export default function EditDeviceForm(){
 
                 {/*buttons*/}
                 <label
-                    className={"flex text-lg text-[#509E82] underline justify-center md:justify-end mr-5 mt-4 md:mt-2"}>{draftMessage}</label>
+                    className={"flex text-lg text-[#4b72b2] underline justify-center md:justify-end mr-5 mt-4 md:mt-2"}>{draftMessage}</label>
                 <div className={"flex flex-col md:flex-row justify-end"}>
                     {device.service === ("wipe and retrieve"||"wipe and further retrieve") ?
                         <button onClick={sendLink}
-                                className={"w-full md:w-2/5 h-full mt-2 p-2 px-auto md:p-3 md:mr-10 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
+                                className={"w-full md:w-2/5 h-full mt-2 p-2 px-auto md:p-3 md:mr-10 cursor-pointer bg-[#4b72b2] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
                             Send Link
                         </button> : undefined
                     }
                     <br className={"md:hidden"}/>
                     <button onClick={submitForm}
-                        className={"w-full md:w-1/5 h-full md:mt-2 p-2 px-auto md:p-3 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
+                        className={"w-full md:w-1/5 h-full md:mt-2 p-2 px-auto md:p-3 cursor-pointer bg-[#4b72b2] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
                         Apply
                     </button>
                 </div>
