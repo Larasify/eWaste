@@ -79,8 +79,7 @@ export default function Login(props) {
                     className={"block w-full p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500"}
                     type="password" id={"loginPanelPasswordInput"}></input>
             </div>
-            <span
-                className={"text-right my-2 text-sm md:text-md  cursor-pointer underline "}>Forgot your password?</span>
+            {/*<span className={"text-right my-2 text-sm md:text-md  cursor-pointer underline "}>Forgot your password?</span>*/}
             <div
                 className={"mt-4 text-white flex bg-[#509E82] mx-auto h-full justify-center w-4/5 text-xl p-3 items-center font-bold cursor-pointer rounded-2xl hover:bg-[#4E8E77]"}
                 onClick={loginOnclick}
@@ -91,11 +90,11 @@ export default function Login(props) {
                 className={"mt-4 text-white flex bg-[#509E82] mx-auto h-full justify-center w-4/5 text-xl p-3 items-center font-bold cursor-pointer rounded-2xl hover:bg-[#4E8E77]"}>
                 <span className="register" onClick={register}>REGISTER</span>
             </div>
-            <div
-                className={" mt-4 text-[#509E82] flex border border-2 border-[#509E82] bg-white mx-auto h-full justify-center w-4/5 text-xl p-3 items-center font-normal cursor-pointer rounded-2xl hover:bg-gray-100"}>
-                <span className="g-register">Continue with Google </span>
-                <div className={"ml-4"}><FcGoogle size={30}/></div>
-            </div>
+            {/*<div*/}
+            {/*    className={" mt-4 text-[#509E82] flex border border-2 border-[#509E82] bg-white mx-auto h-full justify-center w-4/5 text-xl p-3 items-center font-normal cursor-pointer rounded-2xl hover:bg-gray-100"}>*/}
+            {/*    <span className="g-register">Continue with Google </span>*/}
+            {/*    <div className={"ml-4"}><FcGoogle size={30}/></div>*/}
+            {/*</div>*/}
         </div>
     );
 }

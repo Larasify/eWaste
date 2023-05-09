@@ -84,6 +84,7 @@ export default function EditDeviceForm(){
                     throw `Update device (HTTP) failed: ${response.status}: ${response.statusText}`
                 }
             }).then((data) => {
+
                 if (data['response'] !== "success") {
                     Notify.error(`Update device failed: ${data['message']}`);
                 } else {
@@ -91,6 +92,11 @@ export default function EditDeviceForm(){
                     navigate(-1);
                 }
         });
+    }
+
+    const showReport = () =>{
+        let deviceId = device.id
+        navigate('/view-device-report',{state:{deviceId}})
     }
 
     const sendLink = () => {
@@ -212,9 +218,9 @@ export default function EditDeviceForm(){
                         <br/>
                         <span
                             className={"text-base md:text-xl lg:text-3xl md:font-medium text-[#509E82] text-left lg:leading-loose "}>£{device.worth || " UNKNOWN"}</span>
-                        <button className={"underline text-base md:text-lg inline text-[#509E82] border-0 mx-2"}>(show
-                            report)
-                        </button>
+                        {(state._op === "edit")?
+                            <button className={"underline text-base md:text-lg inline text-[#509E82] border-0 mx-2"} onClick={showReport}>(show report)
+                        </button>:undefined}
                         <br/>
                         <span
                             className={"w-full break-normal flex justify-center text-md md:font-medium text-gray-400 text-left lg:leading-loose "}>{device.description}</span>
