@@ -3,9 +3,11 @@ import React from 'react';
 import {useNavigate, useLocation} from "react-router-dom";
 import {IoChevronBackCircle} from "react-icons/io5";
 import QRCode from "react-qr-code";
+import {AuthContext} from "../App";
 import { Notify } from '../fragments/Notify';
 
 export default function EditTransactionForm(){
+    const authState = React.useContext(AuthContext)
     let navigate = useNavigate();
     const {state} = useLocation()
     let [qr, setQR] = React.useState('works');
@@ -31,6 +33,7 @@ export default function EditTransactionForm(){
     }
 
     React.useEffect(() => {
+        if(!authState.isLoggedIn || authState.privilege!='staff') navigate('/')
         prefetch()
     }, [])
 

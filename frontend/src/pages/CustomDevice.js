@@ -105,7 +105,7 @@ export default function Device(props) {
                 service: wipeOnly ? 'wipe' : 'wipe and retrieve',
                 datalink: '',
                 qr_code: '',
-                verified: true
+                verified: false
             })
         })
         .then(res => res.json())

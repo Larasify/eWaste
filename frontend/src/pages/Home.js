@@ -21,10 +21,13 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
     const [loading, setLoading] = React.useState(true)
+    const [deviceLoading, setDeviceLoading] = React.useState(true)
     const [data, setData] = React.useState([])
     const [brands, setBrands] = React.useState([])
     const [models, setModels] = React.useState([])
     const [storage, setStorage] = React.useState([])
+    const [recentDevices, setRecentDevices] = React.useState([])
+    const [commonDevices, setCommonDevices] = React.useState([])
     const authState = React.useContext(AuthContext)
     const iterator = Array.from(Array(4).keys())
     let navigate = useNavigate();
@@ -41,6 +44,18 @@ export default function Home() {
                 setBrands([... new Set(data.map(v => v.brand))])
                 setLoading(false);
             });
+        fetch('/device/getdevicelist')
+            .then(req => req.json())
+            .then(res => {
+                setRecentDevices(res.device_list
+                .slice(0,4))
+            })
+        fetch('/device/getmostcommondevices')
+            .then(req => req.json())
+            .then(res => {
+                setCommonDevices(res.device_list)
+                setDeviceLoading(false)
+            })
     }
 
     const fetchOptions = (column) => {
@@ -87,6 +102,50 @@ export default function Home() {
         index: PropTypes.number.isRequired,
         value: PropTypes.number.isRequired,
     };
+
+    const renderDevices = () => {
+        if (deviceLoading) {
+            return  <div className='w-full h-full justify-center items-center flex flex-col mt-8'>
+                <CircularProgress sx={{
+                    color: '#509E82'
+                }} />
+                <label className='mt-4 lg:mt-8 text-black'>Fetching Device Details. Please wait</label>
+            </div>
+        } else {
+            return <>
+                <div className={"home-tabs"}>
+                    <Tabs value={value} onChange={handleChange} aria-label="device-suggestions">
+                        <Tab className={"mr-8"} label="Recently Recycled" {...a11yProps(0)}/>
+                        <Tab label="Most Popular" {...a11yProps(1)} />
+                    </Tabs>
+                </div>
+                <TabPanel value={value} index={0}>
+                    <div className={"flex flex-col"}>
+                        <div className={"flex gap-x-4 md:gap-x-10 overflow-x-auto overflow-y-hidden pb-4"}>
+                            {recentDevices.map((i) => (
+                                <div>
+                                    <Listing
+                                    title={`A ${i.brand} ${i.model} was just recycled with the ${i.service} service`}/>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <div className={"flex flex-col"}>
+                        <div className={"flex gap-x-4 md:gap-x-10 overflow-x-auto overflow-y-hidden pb-4"}>
+                            {commonDevices.map((i) => (
+                                <div>
+                                    <Listing
+                                    title={`${i[0]} was recycled ${i[1]} times.`}/>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </TabPanel>
+            </>
+        }
+    }
 
     const renderForm = () => {
         if (loading) {
@@ -147,7 +206,12 @@ export default function Home() {
 
     return (
         <div className={"flex flex-col w-full"} style={{height: 'calc(100vh - 6rem)', fontFamily: 'pf'}}>
-            <div className={"flex flex-col-reverse lg:flex-row w-full bg-color-red h-auto lg:h-full bg-gradient-to-r from-[#ebfff3] to-[#c7efd7]"}>
+            <div className={"flex flex-col lg:flex-row w-full bg-color-red h-auto lg:h-full bg-gradient-to-r from-[#ebfff3] to-[#c7efd7]"}>            
+                <div className={"flex flex-col w-full lg:w-2/5 px-12 pb-4 mr-8 my-1/2 lg:my-16 justify-center items-center"}>
+                    <div className={'flex flex-col justify-center lg:max-w-md w-full mx-12 p-4 lg:px-16 lg:py-8 mt-8 items-center rounded-xl bg-[#ECF4F1] drop-shadow-lg'}>
+                        {renderForm()}
+                    </div>
+                </div>
                 <div className={"flex flex-col w-full lg:w-3/5 px-4 lg:px-16 mt-4 lg:my-16 gap-y-1 md:gap-y-4"}> 
                     <div className={"flex flex-col"}>
                         <span className={"text-2xl md:text-4xl"}>
@@ -161,39 +225,7 @@ export default function Home() {
                         </span>
                     </div>
                     <div className={"flex flex-col"}>
-                        <div className={"home-tabs"}>
-                        <Tabs value={value} onChange={handleChange} aria-label="device-suggestions">
-                            <Tab className={"mr-8"} label="Recently Recycled" {...a11yProps(0)}/>
-                            <Tab label="Most Popular" {...a11yProps(1)} />
-                        </Tabs>
-                        </div>
-                        <TabPanel value={value} index={0}>
-                            <div className={"flex flex-col"}>
-                                <div className={"flex gap-x-4 md:gap-x-10 overflow-x-auto overflow-y-hidden pb-4"}>
-                                    {iterator.map((i) => (
-                                        <div>
-                                            <Listing/>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </TabPanel>
-                        <TabPanel value={value} index={1}>
-                            <div className={"flex flex-col"}>
-                                <div className={"flex gap-x-4 md:gap-x-10 overflow-x-auto overflow-y-hidden pb-4"}>
-                                    {iterator.map((i) => (
-                                        <div>
-                                            <Listing/>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </TabPanel>
-                    </div>
-                </div>
-                <div className={"flex flex-col w-full lg:w-2/5 px-12 pb-4 mr-8 my-1/2 lg:my-16 justify-center items-center"}>
-                    <div className={'flex flex-col justify-center lg:max-w-md w-full mx-12 p-4 lg:px-16 lg:py-8 mt-8 items-center rounded-xl bg-[#ECF4F1] drop-shadow-lg'}>
-                        {renderForm()}
+                        {renderDevices()}
                     </div>
                 </div>
             </div>

@@ -3,10 +3,13 @@ import React, {useEffect} from "react";
 import { IoChevronBackCircle } from "react-icons/io5";
 import {useLocation, useNavigate} from "react-router-dom";
 import { Notify } from '../fragments/Notify';
+import {AuthContext} from "../App";
 
 export default function EditUserForm() {
     let navigate = useNavigate();
     const location = useLocation();
+    const authState = React.useContext(AuthContext)
+    
     // object for saving form data temporary
     let formData = {
         "firstName": location.state.first_name,
@@ -146,6 +149,9 @@ export default function EditUserForm() {
 
     // pull the originals and inject them into the form for editing.
     useEffect(() => {
+          
+        if(!authState.isLoggedIn || authState.privilege!='staff') navigate('/')
+      
         if (!location.state) {
             alert("invalid location.state")
         }
