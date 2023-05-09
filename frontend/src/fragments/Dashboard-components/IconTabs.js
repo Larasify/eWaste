@@ -58,6 +58,7 @@ export default function IconTabs() {
             deviceList.map( u => {
                 u.id = u._id
                 u.payment_status = u.payment_id ? 'Done' : 'Pending';
+                u.is_hidden = u.is_hidden? "false":"true";
             })
             setDeviceData({
                 cols: [
@@ -72,6 +73,7 @@ export default function IconTabs() {
                     {field: 'service', headerName: 'Service', flex: 1},
                     {field: 'status', headerName: 'Status', flex: 1},
                     {field: 'verified', headerName: 'Verified', flex: 1},
+                    {field: 'is_hidden',headerName: 'Visible',flex:1},
                 ],
                 rows: deviceList
             });
@@ -85,6 +87,7 @@ export default function IconTabs() {
                     {field: 'vendor_id', headerName: 'Vendor ID', flex: 1},
                     {field: 'verified', headerName: 'Verified', flex: 1},
                     {field: 'payment_status', headerName: 'Payment Status', flex: 1},
+
                 ],
                 rows: deviceList
             });
@@ -125,12 +128,13 @@ export default function IconTabs() {
             return <DataTable 
                 rows={data.rows}
                 cols={data.cols}
-                fns={[`Add ${title}`, `Delete ${title}`, `Edit ${title}`, `Freeze ${title} Record`]}
+                fns={[`Add ${title}`, `Delete ${title}`, `Edit ${title}`, `Hide ${title} `]}
                 title={title}
                 count={data.rows.length}
                 redirect_urls={{
                     modify: urls.modify,
-                    delete: urls.delete
+                    delete: urls.delete,
+                    hidden:urls.hidden,
                 }}
             /> 
         }
@@ -194,25 +198,29 @@ export default function IconTabs() {
                     <TabPanel className="h-full max-h-fit" value={value} index={0}>
                         {renderTable(userData, 'User', {
                             modify: '/staff/edit-user-form',
-                            delete: '/user/deleteuser'
+                            delete: '/user/deleteuser',
+                            hidden: null,
                         })}
                     </TabPanel>
                     <TabPanel className="h-full max-h-fit" value={value} index={1}>
                         {renderTable(deviceData, 'Device', {
                             modify: '/staff/edit-device-form',
-                            delete: '/device/deletedevice'
+                            delete: '/device/deletedevice',
+                            hidden:'',
                         })}
                     </TabPanel>
                     <TabPanel className="h-full max-h-fit" value={value} index={2}>
                         {renderTable(transactionData, 'Transaction', {
                             modify: '/staff/edit-transaction-form',
-                            delete: null
+                            delete: null,
+                            hidden:null,
                         })}
                     </TabPanel>
                     <TabPanel className="h-full max-h-fit" value={value} index={3}>
                         {renderTable(vendorData, 'Data-source', {
                             modify: '/staff/edit-vendor-form',
-                            delete: '/vendor/deletevendor'
+                            delete: '/vendor/deletevendor',
+                            hidden:null,
                         })}
                     </TabPanel>
                 </div>

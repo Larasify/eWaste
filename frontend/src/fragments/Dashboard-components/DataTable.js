@@ -45,11 +45,11 @@ export default function DataTable({
         if(rowSelectionModel) {
             document.getElementById('delete-record').style.color = '#4b72b2';  
             document.getElementById('edit-record').style.color = '#4b72b2';  
-            document.getElementById('freeze-record').style.color = '#4b72b2';  
+            document.getElementById('hide-record').style.color = '#4b72b2';
         } else {
             document.getElementById('delete-record').style.color = 'grey';  
             document.getElementById('edit-record').style.color = 'grey';  
-            document.getElementById('freeze-record').style.color = 'grey';  
+            document.getElementById('hide-record').style.color = 'grey';
         }
     }
 
@@ -106,8 +106,38 @@ export default function DataTable({
         }
     }
 
-    const freezeRow = () => {
-        Notify.error('operation not permitted!');
+    const hideRow = () => {
+        if(redirect_urls.hidden === null) {
+            Notify.error('operation not permitted')
+        } else {
+            if(rowSelectionModel.length) {
+                const row = rows.find(e => e.id === rowSelectionModel[0])
+                fetch('/device/updatedevice', {
+                    method: 'POST',
+                    credentials: "include",
+                    headers: new Headers({"Content-Type": "application/json"}),
+                    body: JSON.stringify({
+                        id: rowSelectionModel[0],
+                        fields:[{
+                        is_hidden: (row.is_hidden !== true)?true:false,
+                    }],
+                    })
+                })
+                .then(req => req.json())
+                .then((res) => {
+                    console.log(res.response)
+                    if(res.response === 'success') {
+                        Notify.success('Success!')
+                        window.location.reload();
+                        setRows(tableRows.filter(r => r.id != rowSelectionModel[0]))
+                    } else {
+                        Notify.error('error')
+                    }
+                })
+            } else {
+                Notify.error('please select a row')
+            }
+        }
     }
 
     const logoutUser = () => {
@@ -165,10 +195,10 @@ export default function DataTable({
                             </IconButton>
                         </Tooltip>
                     </div>
-                    <div class="sdb-top-control" onClick={freezeRow}>
+                    <div class="sdb-top-control" onClick={hideRow}>
                         <Tooltip title={fns[3]}>
                             <IconButton>
-                                <MdOutlineHourglassDisabled id="freeze-record"/>
+                                <MdOutlineHourglassDisabled id="hide-record"/>
                             </IconButton>
                         </Tooltip>
                     </div>
