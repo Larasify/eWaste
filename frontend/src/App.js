@@ -50,7 +50,6 @@ const App = () => {
           <Route path="edit-device-form" element={<EditDeviceForm/>}/>
           <Route path="edit-vendor-form" element={<EditVendorForm/>}/>
           <Route path="edit-transaction-form" element={<EditTransactionForm/>}/>
-          <Route path="edit-user-form" element={<EditUserForm/>}/>
         </Route>
         <Route path="/admin" element={<StaffLayout/>}>
           <Route path="dashboard" element={<AdminDashboard/>}/>
