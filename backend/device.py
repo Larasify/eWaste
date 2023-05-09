@@ -249,6 +249,28 @@ def updateDevice():
     else:
         return {"message": "Device does not exist", "response":"error"}
 
+@device_api.route("/verifydevicebyid", methods=['POST'])
+def verifyDeviceById():
+    # extract device id and fields to be updated from the request
+    data = request.get_json()
+    device_id = data.get("id")
+    verified = data.get("verified")
+    query = {"_id":device_id}
+    update_dict = {"verified":verified}
+    # update the device
+    result = db.Devices.update_one(query, {"$set": update_dict})
+
+    # if successfully updated, return success and send notification, otherwise return an error.
+    if result.matched_count == 1:
+        #if update_dict has a key called status send a notification
+        device = db.Devices.find_one({"_id":device_id})
+        user_id = device.get("user_id")
+        model_name = device.get("model")
+        addNotificationLocal(user_id,"Device Verified", "your device " + model_name + " has been verified.")
+        return {"response": "success"}
+    else:
+        return {"message": "Device does not exist", "response":"error"}
+
 # create a checkout session
 @device_api.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
