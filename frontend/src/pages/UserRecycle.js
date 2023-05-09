@@ -6,6 +6,7 @@ import IconTabs from '../fragments/Useraccount-components/IconTabs';
 import {IoChevronBackCircle} from "react-icons/io5";
 import {useNavigate} from "react-router-dom";
 import {Notify} from "../fragments/Notify";
+import {addPayment, updateService} from "./Stripe";
 
 export default function UserRecycle(){
     let navigate = useNavigate();

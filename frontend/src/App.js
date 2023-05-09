@@ -17,10 +17,13 @@ import AddDeviceForm from './pages/AddDeviceForm.js';
 import ViewDeviceReport from './pages/ViewDeviceReport.js';
 import EditTransactionForm from './pages/EditTransactionForm.js';
 import EditVendorForm from './pages/EditVendorForm';
+import Paypal from './pages/Paypal';
+import Stripe from './pages/Stripe';
 import './App.css';
 import EditUserForm from "./pages/EditUserForm.js";
 import {createContext} from "react";
 import AdminDashboard from './pages/AdminDashboard.js';
+import "@stripe/stripe-js";
 
 const App = () => {
   return (
@@ -37,6 +40,8 @@ const App = () => {
           <Route path="user-recycle" element={<UserRecycle/>}/>
           <Route path="add-device-form" element={<AddDeviceForm/>}/>
           <Route path="view-device-report" element={<ViewDeviceReport/>}/>
+          <Route path="payment-paypal" element={<Paypal/>}/>
+          <Route path="payment-stripe" element={<Stripe/>}/>
         </Route>
         <Route path="/staff" element={<StaffLayout/>}>
           <Route path="dashboard" element={<StaffDashboard/>}/>

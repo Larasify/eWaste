@@ -1,4 +1,5 @@
-from flask import Blueprint, request
+import stripe
+from flask import Blueprint, request, redirect
 from app import db
 from bson.objectid import ObjectId
 from bson.json_util import dumps
@@ -6,27 +7,36 @@ import datetime
 import uuid
 from user import addNotificationLocal
 
+# define a blueprint for device APIs
 device_api = Blueprint('device_api', __name__)
-
+stripe.api_key = 'sk_test_51N5FUWEPDlosnaW6E9dWvzSXmBuvy5yEiA8zSEL5HtV16IEc3w' \
+                 'eE2xWjseNj7hlldrCNCj0vZ2pH3wWBXydFQa7000jf4ebOEf'
 #url_prefix = /device
 
 # Get a specific device
 @device_api.route("/getdevice", methods=['POST'])
 def getDevice():
+    # extract device id from the request
     data = request.get_json()
     deviceid = data.get("id")
+    # look up in the table
     device = db.Devices.find_one({"_id":deviceid})
+
+    # check the result and return
     if device is None:
         return {"message":"device_not_found"}
     if device.get("is_deleted"):
         return {"message":"record deleted", "response":"error"}
     return {"response":"success", "device_info":device}
 
-# Get a list of devices
+# Get a list of all devices
 @device_api.route("/getdevicelist")
 def getDeviceList():
+    # find all devices in the database
     devices = db.Devices.find({"is_deleted":False})
     list_devices = list(devices)
+
+    # if the list is empty, return an error
     if len(list_devices) == 0:
         return {"message":"empty list", "response":"error"}
     return {"response":"success", "device_list":list_devices}
@@ -35,6 +45,7 @@ def getDeviceList():
 @device_api.route("/postdevice", methods=['POST'])
 def postDevice():
     device_id = str(uuid.uuid4())
+    # extract data from the request
     data = request.get_json()
     user_id = data.get("user_id")
     if "vendor_id" in data:
@@ -56,12 +67,14 @@ def postDevice():
     device_ts = datetime.datetime.now()
     device_ts_mod = datetime.datetime.now()
     verified = data.get("verified")
+
     if verified is False:
         #send notification to every staff if a device is unverified
         staffs = db.Users.find({"privilege":"staff"})
         for staff in staffs:
             addNotificationLocal(staff.get("_id"),"New Unverified Device Added", "A new unverified device has been added.")
     if "payment_id" in data:
+        # get payment information if it has any
         payment_id = data.get("payment_id")
         payment_amount = data.get("payment_amount")
         payment_ts = datetime.datetime.now()
@@ -73,6 +86,7 @@ def postDevice():
         payment_ts = None
         payment_ts_mod = None
 
+    # insert a new document to the table
     db.Devices.insert_one({ "_id":device_id,"user_id":user_id,"vendor_id":vendor_id,
                             "brand":brand,"model":model,"identification":identification,
                             "status":status,"operating_system":operating_system,"memory_storage":memory_storage,
@@ -82,8 +96,11 @@ def postDevice():
 
     return {"response":"success", "new_device_id": device_id}
 
+
+# add a payment to a device
 @device_api.route("/addpayment", methods=['POST'])
 def addPayment():
+    # extract data from the request
     data = request.get_json()
     device_id = data.get("id")
     payment_id = data.get("payment_id")
@@ -91,12 +108,18 @@ def addPayment():
     payment_ts = datetime.datetime.now()
     payment_ts_mod = datetime.datetime.now()
     query = {"_id":device_id}
+
+    # check the type of the payment
     if "type" in data:
         payment2_type = data.get("type")
         update_dict = {"payment2_id":payment_id,"payment2_amount":payment_amount,"payment2_ts":payment_ts,"payment2_ts_mod":payment_ts_mod, "payment2_type":payment2_type}
     else:
         update_dict = {"payment_id":payment_id,"payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod}
+
+    # update the device
     result = db.Devices.update_one(query, {"$set": update_dict})
+
+    # if successfully updated, return success and send notification, otherwise return an error.
     if result.matched_count == 1:
         #find device with that device id
         device = db.Devices.find_one({"_id":device_id})
@@ -108,13 +131,18 @@ def addPayment():
 # Generate datalink for a device
 @device_api.route("/generatedatalink", methods=['POST'])
 def generateDatalink():
+    # extract data from the request
     data = request.get_json()
     device_id = data.get("id")
     query = {"_id":device_id}
     ts_mod = datetime.datetime.utcnow()
+    # new datalink
     datalink = "https://www.dropbox.com/"
     update = { "$set": { "device_ts_mod": ts_mod,"datalink":datalink}}
+    # update the device
     result = db.Devices.update_one(query, update)
+
+    # if successfully updated, return success and send notification, otherwise return an error.
     if result.matched_count == 1:
         device = db.Devices.find_one({"_id":device_id})
         user_id = device.get("user_id")
@@ -127,13 +155,18 @@ def generateDatalink():
 # Generate a random QR code
 @device_api.route("/generateqr", methods=['POST'])
 def generateQR():
+    # extract data from the request
     data = request.get_json()
     device_id = data.get("id")
     query = {"_id":device_id}
     ts_mod = datetime.datetime.utcnow()
+    # generate qr code
     qr = str(uuid.uuid4())
     update = { "$set": { "device_ts_mod": ts_mod,"qr_code":qr}}
+    # update the device
     result = db.Devices.update_one(query, update)
+
+    # if successfully updated, return success and send notification, otherwise return an error.
     if result.matched_count == 1:
         #notification temporary
         device = db.Devices.find_one({"_id":device_id})
@@ -147,11 +180,15 @@ def generateQR():
 # Delete a device
 @device_api.route("/deletedevice", methods=['POST'])
 def deleteDevice():
+    # extract device id from the request
     data = request.get_json()
     deviceid = data.get("id")
     query = {"_id":deviceid}
     newvalues = { "$set": { "ts_mod": datetime.datetime.utcnow(),"is_deleted":True}}
+    # delete the device
     result = db.Devices.update_one(query, newvalues)
+
+    # if successfully deleted, return success, otherwise return an error.
     if result.matched_count == 1:
         return {"response":"success"}
     else:
@@ -160,6 +197,7 @@ def deleteDevice():
 # Update a device
 @device_api.route("/updatedevice", methods=['POST'])
 def updateDevice():
+    # extract device id, fields that need to be updated from the request
     data = request.get_json()
     device_id = data.get("id")
     query = {"_id":device_id}
@@ -168,7 +206,10 @@ def updateDevice():
     for key in fields:
         update_dict[key] = fields[key]
     update_dict["device_ts_mod"] = datetime.datetime.utcnow()
+    # update the device
     result = db.Devices.update_one(query, {"$set": update_dict})
+
+    # if successfully updated, return success and add notification, otherwise return an error.
     if result.matched_count == 1:
         #if update_dict has a key called status send a notification
         if "status" in update_dict:
@@ -180,10 +221,26 @@ def updateDevice():
     else:
         return {"message": "Device does not exist", "response":"error"}
 
-    
+@device_api.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    try:
+        data = request.get_json()
+        line_items = data.get("line_items")
+        checkout_session = stripe.checkout.Session.create(
+            line_items=line_items,
+            mode='payment',
+            success_url='http://localhost:8080/payment-stripe?success=true',
+            cancel_url='http://localhost:8080/payment-stripe?canceled=true',
+        )
+    except Exception as e:
+        return str(e)
+
+    return {"response": "success", "checkout_session": checkout_session}
+
 
 @device_api.route("/uploadimg", methods=['POST'])
 def uploadImg():
+    # extract image and device id from the request
     file = request.files['file']
     device_id = request.form.get("id")
     #save file to deviceimages folder under deviceid.jpeg
@@ -191,9 +248,12 @@ def uploadImg():
     #save filepath to db
     query = {"_id":device_id}
     update_dict = {"image_path":"deviceimages/" + device_id + ".jpeg"}
+    # update the device
     result = db.Devices.update_one(query, {"$set": update_dict})
+
+    # if successfully uploaded, return success, otherwise return an error.
     if result.matched_count == 1:
         return {"response":"success"}
     else:
         return {"message":"device does not exist", "response":"error"}
-    
+

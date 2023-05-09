@@ -62,6 +62,7 @@ export default function Device(props) {
     }
 
 
+
     const submitDevice = (e) => {
         e.preventDefault();
         const color = document.getElementById('color-id').value;

@@ -3,29 +3,34 @@ import {BsFillCheckCircleFill, BsPaypal} from "react-icons/bs";
 import {FaCcStripe} from "react-icons/fa";
 import './Payment.css';
 import {useNavigate,useLocation} from "react-router-dom";
+import {Notify} from "../fragments/Notify";
 
 
 export default function Payment(){
     let navigate = useNavigate();
-    const paySuc = () =>{
-      navigate(`/paysuc`);
-    }
+
 
     const handlePay = () =>{
-
+        if(document.getElementById("paypalRadio").checked){
+            navigate('/payment-paypal',{state:{deviceId,newService,amount,description}})
+        }
+        else if (document.getElementById("stripeRadio").checked){
+            navigate('/payment-stripe',{state:{deviceId,newService,amount,description}})
+        }
+        else Notify.error('Please choose a payment method!')
     }
 
     let serviceName = '';
     let description = '';
     const location = useLocation();
     const {deviceId,newService,amount} = location.state;
-    if(newService === 'wipe and retrieval') {
+    if(newService === 'wipe and retrieve') {
         serviceName = 'Retrieve the Data';
-        description = 'A secure link will show in your recycle page for a extend time (3-6 months for retrieving data, then deleted)';
-    }
-    else if(newService === 'wipe and further retrieval'){
-        serviceName = 'Extend Retrieval';
         description = 'A secure link will show in your recycle page (valid for 3 months, then deleted)';
+    }
+    else if(newService === 'wipe and further retrieve'){
+        serviceName = 'Extend Retrieval';
+        description = 'A secure link will show in your recycle page for a extend time (3-6 months for retrieving data, then deleted)';
     }
 
 
