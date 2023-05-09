@@ -32,14 +32,35 @@ def getDevice():
 # Get a list of all devices
 @device_api.route("/getdevicelist")
 def getDeviceList():
-    # find all devices in the database
-    devices = db.Devices.find({"is_deleted":False})
+    # find all devices in the database sort by ts
+    devices = db.Devices.find({"is_deleted":False}).sort("device_ts", -1)
     list_devices = list(devices)
 
     # if the list is empty, return an error
     if len(list_devices) == 0:
         return {"message":"empty list", "response":"error"}
     return {"response":"success", "device_list":list_devices}
+
+@device_api.route("/getmostcommondevices")
+def getMostCommonDevices():
+    #get all devices in the db
+    devices = db.Devices.find({"is_deleted":False})
+    list_devices = list(devices)
+    #if the list is empty, return an error
+    if len(list_devices) == 0:
+        return {"message":"empty list", "response":"error"}
+    #create a dictionary to store the count of each device
+    device_count = {}
+    for device in list_devices:
+        model = device.get("model")
+        if model in device_count:
+            device_count[model] += 1
+        else:
+            device_count[model] = 1
+    #sort the dictionary by value
+    sorted_device_count = sorted(device_count.items(), key=lambda x: x[1], reverse=True)
+    #return the top 4 devices
+    return {"response":"success", "device_list":sorted_device_count[:4]}
 
 # Post a device
 @device_api.route("/postdevice", methods=['POST'])
