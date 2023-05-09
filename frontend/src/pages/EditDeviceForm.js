@@ -495,8 +495,8 @@ export default function EditDeviceForm(){
                     </div>
                     <br className={"md:hidden"}/>
                     <div className={"flex items-center "}>
-                        <input type="radio" id="retrieval" name="service" value="retrieval"
-                               className="h-4 w-4 md:h-5 md:w-5" required checked={device.service === "retrieval"} onChange={handleChange}/>
+                        <input type="radio" id="retrieval" name="service" value="wipe and retrieve"
+                               className="h-4 w-4 md:h-5 md:w-5" required checked={device.service === "wipe and retrieve"} onChange={handleChange}/>
                         <label htmlFor="retrieval"
                                className={"ml-2 text-left block text-xl font-medium text-gray-900 dark:text-white"}>Wipe
                             & Retrieve Data from Device</label>
@@ -508,7 +508,7 @@ export default function EditDeviceForm(){
                 <label
                     className={"flex text-lg text-[#509E82] underline justify-center md:justify-end mr-5 mt-4 md:mt-2"}>{draftMessage}</label>
                 <div className={"flex flex-col md:flex-row justify-end"}>
-                    {device.service === "retrieval" ?
+                    {device.service === ("wipe and retrieve"||"wipe and further retrieve") ?
                         <button onClick={sendLink}
                                 className={"w-full md:w-2/5 h-full mt-2 p-2 px-auto md:p-3 md:mr-10 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
                             Send Link
