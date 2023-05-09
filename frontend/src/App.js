@@ -25,6 +25,7 @@ import EditUserForm from "./pages/EditUserForm.js";
 import {createContext} from "react";
 import AdminDashboard from './pages/AdminDashboard.js';
 import "@stripe/stripe-js";
+import PageNotFound from "./pages/PageNotFound";
 
 const App = () => {
   return (
@@ -44,6 +45,8 @@ const App = () => {
           <Route path="view-device-report" element={<ViewDeviceReport/>}/>
           <Route path="payment-paypal" element={<Paypal/>}/>
           <Route path="payment-stripe" element={<Stripe/>}/>
+          <Route path="/404" element={<PageNotFound />} />
+          <Route path="*" element={<PageNotFound />} />
         </Route>
         <Route path="/staff" element={<StaffLayout/>}>
           <Route path="dashboard" element={<StaffDashboard/>}/>

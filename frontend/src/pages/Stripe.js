@@ -98,7 +98,8 @@ export  default  function Stripe(){
                 newService = location.state.newService;
                 amount = location.state.amount;
                 description = location.state.description;
-                payment_id = location.state.payment_id;
+                payment_id = location.state.hasOwnProperty(payment_id)?location.state.payment_id:null;
+
             }else{
                 let paymentInfo = localStorage.getItem("paymentInfo")
                 paymentInfo = JSON.parse(paymentInfo)
@@ -108,6 +109,8 @@ export  default  function Stripe(){
                 description = paymentInfo.state.description;
                 payment_id = paymentInfo.state.payment_id;
                 newPaymentId = paymentInfo.newPaymentId;
+                console.log(payment_id)
+                console.log(paymentInfo)
             }
             // Check to see if this is a redirect back from Checkout
             const query = new URLSearchParams(window.location.search);
@@ -127,6 +130,8 @@ export  default  function Stripe(){
 
 
         const handleCheckout = async ()=>{
+            console.log(newService)
+            console.log(payment_id)
             const requestOptions = {
                 method: "POST",
                 redirect: 'follow',

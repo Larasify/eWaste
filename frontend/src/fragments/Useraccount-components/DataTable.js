@@ -18,14 +18,11 @@ export default function DataTable({
     count
 }) {
 
-    //TODO: Solve the problem of wrong list loading
 
     const [searchedRows,setSearchedRows] = React.useState(rows);
     const [keyword,setKeyword] = React.useState([]);
 
-
     const handleSearch = () =>{
-
         if(rows.length === 0){
             setSearchedRows(rows)
         }else{
@@ -36,7 +33,6 @@ export default function DataTable({
         if(keyword === '') setSearchedRows(rows);
 
         setSearchedRows(searchedRows);
-
         }
     };
 
@@ -50,7 +46,7 @@ export default function DataTable({
             <div className={"flex justify-end w-1/6 mr-8"}>
                 <div className="flex border-2 border-[#3fb78c] rounded-xl w-60 text-3fb78c text-[#3fb78c] h-9 mr-8">
                     <input className="ml-4 w-40" type="text" placeholder='Search' onChange={(e) =>setKeyword(e.target.value)}></input>
-                    <button className="flex justify-center mr-4 mt-2"
+                    <button className="flex justify-center mr-4 mt-2" id="search-box"
                             onClick={handleSearch}
                     ><BsSearch/></button>
                 </div>

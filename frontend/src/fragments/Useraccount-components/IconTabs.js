@@ -17,16 +17,6 @@ export default function IconTabs() {
     let serviceFee = 13;
     let furtherFee = 10;
     const [form,setForm] = React.useState([]
-    //{
-        // id:nextId++,
-        // modelName:'',
-        // identification:'',
-        // service:'',
-        // price:'',
-        // payment:'',
-        // link:'',
-        // linkService:'',
-        // status:'',}
     )
 
 
