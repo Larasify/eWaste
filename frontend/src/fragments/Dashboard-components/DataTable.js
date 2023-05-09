@@ -112,6 +112,7 @@ export default function DataTable({
         } else {
             if(rowSelectionModel.length) {
                 const row = rows.find(e => e.id === rowSelectionModel[0])
+                console.log(row.is_hidden)
                 fetch('/device/updatedevice', {
                     method: 'POST',
                     credentials: "include",
@@ -119,7 +120,7 @@ export default function DataTable({
                     body: JSON.stringify({
                         id: rowSelectionModel[0],
                         fields:[{
-                        is_hidden: (row.is_hidden !== true)?true:false,
+                        is_hidden: row.is_hidden,
                     }],
                     })
                 })

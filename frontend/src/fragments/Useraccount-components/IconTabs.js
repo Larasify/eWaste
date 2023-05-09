@@ -8,6 +8,7 @@ import {GridActionsCellItem,} from '@mui/x-data-grid';
 import {useNavigate} from 'react-router-dom';
 import DataTable from './DataTable';
 import {Notify} from "../Notify";
+import {updateCacheWithNewRows} from "@mui/x-data-grid/hooks/features/rows/gridRowsUtils";
 
 export default function IconTabs() {
     let nextId=0;
@@ -47,18 +48,26 @@ export default function IconTabs() {
             .then(data => {
                 let newDataJson = data['user_list'] || []
                 const newData = JSON.parse(newDataJson)
-                newData.map((device) => {
-                            device.id = nextId++
-                            device.modelName = device.model
-                            device.price = price
-                            device.payment = device.hasOwnProperty('payment2_amount')
-                                ?(device.payment_amount+device.payment2_amount):device.payment_amount
-                            device.link = device.qr_code
-                            device.linkService = device.datalink
-                            device.deviceId = device._id
-                            device.payment2_id =device.hasOwnProperty('payment2_id')?device.payment2_id:''
+                let device;
+                for(let i=0;i<newData.length;i++){
+                    device=newData[i];
+                    console.log(device.is_hidden)
+                    if (device.is_hidden === true){
+                        continue
+                    }
+                    else{
+                        device.id = nextId++
+                        device.modelName = device.model
+                        device.price = price
+                        device.payment = device.hasOwnProperty('payment2_amount')
+                            ?(device.payment_amount+device.payment2_amount):device.payment_amount
+                        device.link = device.qr_code
+                        device.linkService = device.datalink
+                        device.deviceId = device._id
+                        device.payment2_id =device.hasOwnProperty('payment2_id')?device.payment2_id:''
+                    }
+                }
 
-                    })
                 setForm(newData);
             })
     },[]);

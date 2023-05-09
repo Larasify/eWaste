@@ -58,7 +58,7 @@ export default function IconTabs() {
             deviceList.map( u => {
                 u.id = u._id
                 u.payment_status = u.payment_id ? 'Done' : 'Pending';
-                u.is_hidden = u.is_hidden? "false":"true";
+                u.is_hidden = !u.is_hidden;
             })
             setDeviceData({
                 cols: [
