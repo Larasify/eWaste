@@ -5,6 +5,7 @@ import StaffLayout from './fragments/StaffLayout.js';
 import Register from './pages/Register.js';
 import StaffDashboard from './pages/StaffDashboard.js';
 import Device from './pages/Device.js';
+import CustomDevice from './pages/CustomDevice.js';
 import Home from './pages/Home.js';
 import Payment from "./pages/Payment";
 import PaySuc from "./pages/PaySuc";
@@ -33,6 +34,7 @@ const App = () => {
           <Route index element={<Home/>}/>
           <Route path="register" element={<Register/>}/>
           <Route path="device" element={<Device/>}/>
+          <Route path="custom-device" element={<CustomDevice/>}/>
           <Route path="payment" element={<Payment/>}/>
           <Route path="payment-success" element={<PaySuc/>}/>
           <Route path="user-account" element={<UserAccount/>}/>

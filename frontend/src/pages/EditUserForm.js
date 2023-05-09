@@ -158,15 +158,15 @@ export default function EditUserForm() {
         injectDataIntoForm();
     }, [])
     return (
-        <div className={"flex flex-col md:flex-row relative my-4 w-5/6 mx-auto h-5/6 bg-[#ECF4F1] rounded-3xl"}>
+        <div className={"flex flex-col md:flex-row relative my-4 w-5/6 mx-auto h-5/6 bg-[#ddeafe] rounded-3xl"}>
             <div className={"w-full md:w-1/3 h-full rounded-l-2xl"}>
-                <div className={"inline-flex w-full text-3xl md:text-4xl p-4 md:p-6 items-center text-black"}
+                <div className={"inline-flex w-full text-3xl md:text-4xl p-4 md:p-6 items-center text-[#4b72b2]"}
                      onClick={askBackward}>
                     <IoChevronBackCircle className={"mx-2"}/>
                     <h1>User Details</h1>
                 </div>
                 <img src="../images/phone-generic.jpg" alt=""
-                     className={"w-2/3 m-auto md:mt-8 md:mx-auto  rounded-2xl border-[#3fb78c] border-2"}/>
+                     className={"w-2/3 m-auto md:mt-8 md:mx-auto  rounded-2xl border-[#4b72b2] border-2"}/>
             </div>
             <div className={"flex flex-col border-0 md:rounded-r-lg w-full md:w-4/5 h-full bg-white md:bg-auto overflow-auto p-4 md:p-16"}>
                 <div className={"md:grid md:grid-cols-2 gap-x-10 mt-6 md:mb-2 "}>
@@ -174,7 +174,7 @@ export default function EditUserForm() {
                         <label htmlFor="firstNameInput" className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
                             First Name</label>
                         <input
-                            className={"block w-full p-2 md:p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                            className={"block w-full p-2 md:p-3 text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#4b72b2] focus:border-[#4b72b2]"}
                             type="text" id={"firstNameInput"} name={"firstName"} onChange={handleFormChange} />
                     </div>
                     <br className={"block md:hidden"}/>
@@ -182,7 +182,7 @@ export default function EditUserForm() {
                         <label htmlFor="lastNameInput" className={" text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Last Name</label>
                         <input
-                            className={" block w-full p-2 md:p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                            className={" block w-full p-2 md:p-3 text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#4b72b2] focus:border-[#4b72b2]"}
                             type="text" id={"lastNameInput"} name={"lastName"} onChange={handleFormChange} />
                     </div>
                 </div>
@@ -191,7 +191,7 @@ export default function EditUserForm() {
                         <label htmlFor="emailInput" className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Email</label>
                         <input
-                            className={"block w-full p-2 md:p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                            className={"block w-full p-2 md:p-3 text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#4b72b2] focus:border-[#4b72b2]"}
                             type="text" id={"emailInput"} name={"emailAddr"} onChange={handleFormChange} />
                     </div>
                     <br className={"block md:hidden"}/>
@@ -199,7 +199,7 @@ export default function EditUserForm() {
                         <label htmlFor="phoneInput" className={" text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Phone Number</label>
                         <input
-                            className={" block w-full p-2 md:p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                            className={" block w-full p-2 md:p-3 text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#4b72b2] focus:border-[#4b72b2]"}
                             type="text" id={"phoneInput"} name={"phoneNo"} onChange={handleFormChange} />
                     </div>
                 </div>
@@ -209,21 +209,21 @@ export default function EditUserForm() {
                         <label htmlFor="passwordInput" className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
                             Password</label>
                         <input
-                            className={"block w-full p-2 md:p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
+                            className={"block w-full p-2 md:p-3 text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#4b72b2] focus:border-[#4b72b2]"}
                             type="password" id={"passwordInput"} name={"password"} onChange={handleFormChange}></input>
                     </div>
                 </div>
                 <div className={"mt-4 flex flex-row space-x-10 mb-6"}>
                     <div className={"flex my-auto items-center "}>
-                        <input id="staffRadio" className="h-4 w-4 md:h-6 md:w-6 border border-[#509E82] mr-4 border-2
-                        focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]" onChange={handleFormChange}
+                        <input id="staffRadio" className="h-4 w-4 md:h-6 md:w-6 border border-[#4b72b2] mr-4 border-2
+                        focus:outline-0 focus:ring-[#4b72b2] focus:border-[#4b72b2]" onChange={handleFormChange}
                                type="radio" value={"staff"} name={"privilege"} />
                         <label htmlFor={"staffRadio"} className={"text-left block text-xl font-medium text-gray-900 dark:text-white"}>Staff</label>
                     </div>
                     <br className={"md:hidden"}/>
                     <div className={"flex my-auto items-center"}>
-                        <input id="userRadio" className="h-4 w-4 md:h-6 md:w-6  border border-[#509E82] border-2 mr-4
-                        focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]" onChange={handleFormChange}
+                        <input id="userRadio" className="h-4 w-4 md:h-6 md:w-6  border border-[#4b72b2] border-2 mr-4
+                        focus:outline-0 focus:ring-[#4b72b2] focus:border-[#4b72b2]" onChange={handleFormChange}
                                type="radio" value={"user"} name={"privilege"} />
                         <label htmlFor={"userRadio"} className={"text-left block text-xl font-medium text-gray-900 dark:text-white"}>User</label>
                     </div>
@@ -231,7 +231,7 @@ export default function EditUserForm() {
 
 
                 <button onClick={submitForm}
-                        className={"flex w-2/5 lg:w-2/5 h-full mt-6 p-2 md:p-3 mx-auto cursor-pointer bg-[#509E82] text-white  rounded-full items-center justify-center text-2xl font-bold mb-6"}>
+                        className={"flex w-2/5 lg:w-2/5 h-full mt-6 p-2 md:p-3 mx-auto cursor-pointer bg-[#4b72b2] text-white  rounded-full items-center justify-center text-2xl font-bold mb-6"}>
                     Apply
                 </button>
             </div>

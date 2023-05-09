@@ -1,29 +1,14 @@
 import React from 'react';
 
-import {FaCcStripe} from "react-icons/fa";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import {IoChevronBackCircle} from "react-icons/io5";
-import { FormControl } from '@mui/material';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-
-
-const device = {
-    props:{
-        brand: 'Apple',
-        model: 'Apple 13 Pro',
-        color:'Olive',
-        system:'Ios',
-        storage:'256G',
-        degree:'30%',
-        worth:'382',
-    }
-};
-
+import QRCode from "react-qr-code";
+import { Notify } from '../fragments/Notify';
 
 export default function EditTransactionForm(){
     let navigate = useNavigate();
+    const {state} = useLocation()
+    let [qr, setQR] = React.useState('works');
 
     const askBackward = () => {
         if (window.confirm("Are you sure you want to backward? Your update will be lost. ")) {
@@ -34,111 +19,111 @@ export default function EditTransactionForm(){
 
     const [transaction, setTransaction] = React.useState({});
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setTransaction({ ...transaction, [name]: value });
-  };
+    const prefetch = () => {
+        if(state) {
+            document.getElementById('amount').value = state.payment_amount;
+            document.getElementById('verified').value = state.verified
+            document.getElementById('status').value = state.status;
+            document.getElementById('transaction-id').value = state.payment_id;
+            document.getElementById('payment-status').value = state.payment_status;
+            setQR(state.qr_code);
+        }
+    }
 
-  console.log(transaction);
+    React.useEffect(() => {
+        prefetch()
+    }, [])
+
+    
+    const generateQR = () => {
+        setQR(Math.random().toString(36).slice(2))
+    }
+
+  const handleSubmit = () => {
+    const amount = document.getElementById('amount').value
+    const status = document.getElementById('status').value
+    const verified = document.getElementById('verified').value
+    const paymentStatus = document.getElementById('payment-status').value
+    const paymentID = document.getElementById('transaction-id').value
+    if(amount=='' || status ==''|| verified == '' || paymentID == '' || paymentStatus == '') {
+        Notify.error('Please fill all fields')
+    } else {
+        fetch('/device/updatedevice', {
+            headers: new Headers({"Content-Type": "application/json"}),
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify({"id": state.id, "fields": [{ 
+                payment_amount: amount, 
+                status, 
+                verified ,
+                qr_code: qr,
+                payment_id: paymentID,
+                payment_status: paymentStatus
+            }]})
+        }).then(req => req.json())
+        .then(res => {
+            if(res.response === 'success') {
+                Notify.success('Saved!')
+                navigate(-1)
+            } else Notify.error('Error. Something went wrong!')
+        })
+    }
+  }
 
     return (
-        <div className={"flex flex-col md:flex-row relative my-4 w-5/6 mx-auto h-5/6 rounded-3xl bg-[#E3F0EB]"}>
-            <div className={"w-full md:w-1/3 h-full rounded-l-2xl"}>
-                <div className={"inline-flex w-full text-3xl md:text-4xl p-4 md:p-8 items-center text-[#509E82]"}
-                     onClick={askBackward}>
-                    <IoChevronBackCircle className={"mx-2"}/>
-                    <h1>Details</h1>
+        <div className={"flex h-full flex-col relative my-4 w-5/6 mx-auto h-5/6 rounded-3xl"}>
+            <div className={"flex h-8 w-full text-2xl md:text-4xl p-4 md:p-8 bg-[#4b72b2] items-center text-white rounded-lg"}
+                    onClick={askBackward}>
+                <IoChevronBackCircle className={"mx-2"}/>
+                <span className='ml-2 text-2xl'>Transaction Details</span>
+            </div>
+            <div className='flex flex-row mx-8 h-full mt-8'>
+                <div className='flex flex-col w-1/2 gap-4'>
+                    <div className='flex flex-col'>
+                        <label className='text-lg mb-1'>Amount</label>
+                        <input id='amount' className='h-12 pl-2 border-[#4b72b2] border-2 rounded-lg' type='text'></input>
+                    </div>
+                    <div className='flex flex-col'>
+                        <label className='text-lg mb-1'>Status</label>
+                        <input id='status' className='h-12 pl-2 border-[#4b72b2] border-2 rounded-lg' type='text'></input>
+                    </div>
+                    <div className='flex flex-col'>
+                        <label className='text-lg mb-1'>Transaction ID</label>
+                        <input id='transaction-id' className='h-12 pl-2 border-[#4b72b2] border-2 rounded-lg' type='text'></input>
+                    </div>
+                    <div className='flex flex-col'>
+                        <label className='text-lg mb-1'>Payment Status</label>
+                        <input id='payment-status' className='h-12 pl-2 border-[#4b72b2] border-2 rounded-lg' type='text'></input>
+                    </div>
+                    <div className='flex flex-col'>
+                        <label className='text-lg mb-1'>Verified</label>
+                        <select id='verified'
+                            className='border-[#4b72b2] border-2 rounded-lg h-12 pl-2 bg-white'>
+                            <option value='true'>True</option>
+                            <option value='false'>False</option>
+                        </select>
+                    </div>
                 </div>
-                <img src="../images/phone-generic.jpg" alt=""
-                     className={"w-1/2 m-auto rounded-2xl border-[#3fb78c] border-2"}/>
-
-                <div className={"flex p-4 md:pl-8  justify-center"}>
-                    <p className={"md:m-4 mx-auto text-center md:text-left leading-loose"}>
-                    <span
-                        className={"text-base md:text-2xl lg:text-3xl text-black text-left font-bold lg:leading-10"}>iPhone 13</span>
-                        <br/>
-                        <span
-                            className={"text-base md:text-lg lg:text-xl text-[#494949] text-left "}>Apple</span>
-                        <br className={"md:hidden"}/>
-                        <span
-                            className={"md:text-lg lg:text-xl text-white font-bold rounded-full text-left bg-[#509E82] p-3 lg:ml-40"}>Current</span>
-                        <br/>
-                        <span
-                            className={"text-base md:text-xl lg:text-2xl md:font-medium text-black text-left lg:leading-loose "}>Expected Value:</span>
-                        <br/>
-                        <span
-                            className={"text-base md:text-xl lg:text-3xl md:font-medium text-[#509E82] text-left lg:leading-loose "}>{"£"+"612"}</span>
-                        <button className={"underline text-base md:text-lg inline text-[#509E82] border-0 mx-2"}>(show report)</button>
-                        <br/>
-                        <span className={"w-full break-normal flex justify-center text-md md:font-medium text-gray-400 text-left lg:leading-loose "}>This is a really good new phone,with big size and big storage,please use it!!!</span>
-                    </p>
+                <div className='flex w-1/2 h-full justify-center items-center mt-24 flex-col'>
+                    <QRCode 
+                        value={qr}
+                        size={160}
+                    />
+                    <span className='mt-8 text-lg font-bold text-[#4b72b2]'>QR code</span>
+                    <span className='text-lg font-bold'>{qr}</span>
                 </div>
             </div>
-            <div
-                className={"flex flex-col border-0 md:rounded-r-lg w-full md:w-4/5 h-full bg-white md:bg-auto overflow-auto p-4 md:p-16"}>
-                <div className={"md:grid md:grid-cols-2 gap-x-6 mt-16 md:mb-4 "}>
-
-                    {/*amount*/}
-                    <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
-                            Amount</label>
-                        <input
-                            className={" block w-full p-2 md:p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
-                            type="text" id={"amountInput"}></input>
-                    </div>
-                    <br className={"block md:hidden"}/>
-
-                    {/*status*/}
-                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
-                            Status</label>
-                        <input
-                            className={" block w-full p-2 md:p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
-                            type="text" id={"statusInput"}></input>
-                    </div>
-
-                </div>
-
-
-                <div className={"md:grid md:grid-cols-2 gap-x-6 mt-10 md:mb-4 "}>
-                    <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} >*
-                            Verified</label>
-                        <FormControl fullWidth focused={false} size={"small"}>
-                          <Select
-                            labelId="verified-label"
-                            id="verified"
-                            value={device.verified}
-                            onChange={handleChange}
-                            className={"border border-[#509E82] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}>
-                            <MenuItem value={"true"} className={"flex"}>True</MenuItem>
-                            <MenuItem value={"false"} className={"flex"}>False</MenuItem>
-                          </Select>
-                        </FormControl>
-                    </div>
-                    <br className={"block md:hidden"}/>
-                    <div >
-                         <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
-                            QR Code Link</label>
-                        <label
-                            className={" block w-full p-2 md:p-3  rounded-lg  sm:text-md  underline text-[#509E82]"}
-                            >Generate by clicking button</label>
-                    </div>
-                    {/*verified*/}
-
-                </div>
-
-
-                <label className={"flex text-lg text-[#509E82] underline justify-center md:justify-end mr-5 mt-4 md:mt-16"}>Draft has saved!</label>
-                <div className={"flex flex-col md:flex-row justify-end"}>
-                    <button className={"w-full md:w-2/5 h-full mt-2 p-2 px-auto md:p-3 md:mr-10 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
-                    Generate Link
-                    </button>
-                    <br className={"md:hidden"}/>
-                    <button className={"w-full md:w-1/5 h-full md:mt-2 p-2 px-auto md:p-3 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
-                    Apply
-                    </button>
-                </div>
+            <div class='flex w-full gap-16 mt-16 justify-end'>
+                <span 
+                onClick={generateQR}
+                className='cursor-pointer bg-[#4b72b2] py-4 px-16 rounded-xl text-lg font-bold text-white'>
+                    Generate new QR code
+                </span>
+                <span
+                onClick={handleSubmit}
+                className='cursor-pointer bg-[#4b72b2] py-4 px-16 rounded-xl text-lg font-bold text-white'>
+                    Save
+                </span>
             </div>
         </div>
     );
