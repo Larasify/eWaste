@@ -16,17 +16,18 @@ export default function IconTabs() {
     let price;
     let serviceFee = 13;
     let furtherFee = 10;
-    const [form,setForm] = React.useState({
-        id:nextId++,
-        modelName:'',
-        identification:'',
-        service:'',
-        price:'',
-        payment:'',
-        link:'',
-        linkService:'',
-        status:'',
-    })
+    const [form,setForm] = React.useState([]
+    //{
+        // id:nextId++,
+        // modelName:'',
+        // identification:'',
+        // service:'',
+        // price:'',
+        // payment:'',
+        // link:'',
+        // linkService:'',
+        // status:'',}
+    )
 
 
     const myRequest = new Request("account/getuserlistings", {

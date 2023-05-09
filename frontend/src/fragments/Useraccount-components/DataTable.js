@@ -25,7 +25,11 @@ export default function DataTable({
 
 
     const handleSearch = () =>{
-        const searchedRows = rows.filter((row) => Object.values(row).some(
+
+        if(rows.length === 0){
+            setSearchedRows(rows)
+        }else{
+             const searchedRows = rows.filter((row) => Object.values(row).some(
             (value) =>   typeof value === "string" && value.toLowerCase().includes(keyword)
         ))
 
@@ -33,6 +37,7 @@ export default function DataTable({
 
         setSearchedRows(searchedRows);
 
+        }
     };
 
     return (
