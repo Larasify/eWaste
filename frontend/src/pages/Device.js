@@ -63,21 +63,28 @@ export default function Device(props) {
     }
 
     const predict = () => {
-        const price = document.getElementById('cost-purchase-id').value
+        const brand = document.getElementById('brand-id').value;
+        const model = document.getElementById('model-id').value;
+        const deviceStorage = document.getElementById('device-storage').value;
+        const vendor = data.filter(v => {
+            return v.brand == brand && 
+                    v.model_name == model &&
+                    v.storage == deviceStorage
+        })[0]
         const condition = document.getElementById('device-condition').value
-        if(price && condition) {
+        if(vendor && condition ) {
             switch(condition) {
                 case 'new': 
-                    setEstimation(`£ ${price}`)
+                    setEstimation(`£ ${vendor.sale_price}`)
                     break
                 case 'ninety': 
-                    setEstimation(`£ ${price*.9}`)
+                    setEstimation(`£ ${vendor.sale_price*.9}`)
                     break
                 case 'seventy': 
-                    setEstimation(`£ ${price*.7}`)
+                    setEstimation(`£ ${vendor.sale_price*.7}`)
                     break
                 case 'thirty': 
-                    setEstimation(`£ ${price*.3}`)
+                    setEstimation(`£ ${vendor.sale_price*.3}`)
                     break
                 case 'recycle': 
                     setEstimation(`£ ${0}`)
@@ -234,7 +241,7 @@ export default function Device(props) {
                             ))}
                         </select>
                     </div>
-                    <div className='flex flex-col w-full'>
+                    <div className='flex flex-col w-full' onChange={predict}>
                         <label className='mb-1 text-base font-semibold'>Operating System</label>
                         <input required className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full' type="text" id='os-id'></input>
                     </div>

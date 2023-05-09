@@ -9,9 +9,9 @@ import './StaffDashboard.css';
 export default function StaffDashboard() {
   const authState = React.useContext(AuthContext)
   const navigate = useNavigate()
-
+  
   React.useEffect(() => {
-    if(!authState.isLoggedIn) navigate('/')
+    if(!authState.isLoggedIn || authState.privilege!='staff') navigate('/')
   }, [])
 
   return (

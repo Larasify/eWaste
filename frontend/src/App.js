@@ -53,7 +53,6 @@ const App = () => {
           <Route path="edit-device-form" element={<EditDeviceForm/>}/>
           <Route path="edit-vendor-form" element={<EditVendorForm/>}/>
           <Route path="edit-transaction-form" element={<EditTransactionForm/>}/>
-          <Route path="edit-user-form" element={<EditUserForm/>}/>
         </Route>
         <Route path="/admin" element={<StaffLayout/>}>
           <Route path="dashboard" element={<AdminDashboard/>}/>
@@ -69,7 +68,8 @@ export const AuthContext = createContext({
   lastName: null,
   userId: null,
   onLogin: null,
-  onLogout: null
+  onLogout: null,
+  privilege: null
 })
 const contextValue = {
   isLoggedIn: false,
@@ -77,20 +77,23 @@ const contextValue = {
   lastName: null,
   userId: null,
   onLogin: null,
-  onLogout: null
+  onLogout: null,
+  privilege: null
 }
 export const AuthContextProvider = (props) => {
-  const onLogin = (firstName, lastName, userId) => {
+  const onLogin = (firstName, lastName, userId, privilege) => {
     contextValue.firstName = firstName
     contextValue.lastName = lastName
     contextValue.userId = userId
     contextValue.isLoggedIn = true
+    contextValue.privilege = privilege;
   }
   const onLogout = () => {
     contextValue.firstName = null;
     contextValue.lastName = null;
     contextValue.userId = null;
     contextValue.isLoggedIn = false
+    contextValue.privilege = null;
   }
   contextValue.onLogin = onLogin
   contextValue.onLogout = onLogout

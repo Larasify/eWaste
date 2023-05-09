@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import {useLocation, useNavigate} from "react-router-dom";
+import {AuthContext} from "../App";
 import {IoChevronBackCircle} from "react-icons/io5";
 
 
@@ -10,7 +11,12 @@ export default function EditVendorForm(){
     const location = useLocation();
     const state = useLocation().state;
     const [draftMessage, setDraftMessage] = useState("");
+    const authState = React.useContext(AuthContext)
     let vendor = {}
+      
+    React.useEffect(() => {
+        if(!authState.isLoggedIn || authState.privilege!='staff') navigate('/')
+    }, [])
     // let throttlePause;
     // const throttle = (callback, delay) => {
     //     if (throttlePause) return;
