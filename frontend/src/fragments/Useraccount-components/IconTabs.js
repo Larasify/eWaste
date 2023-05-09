@@ -17,7 +17,7 @@ export default function IconTabs() {
     let serviceFee = 13;
     let furtherFee = 10;
     const [form,setForm] = React.useState({
-        id:'',
+        id:nextId++,
         modelName:'',
         identification:'',
         service:'',
@@ -47,25 +47,26 @@ export default function IconTabs() {
             )
             .then(data => {
                 let newDataJson = data['user_list'] || []
-                const newData = JSON.parse(newDataJson)
+                let newData = JSON.parse(newDataJson)
                 let device;
+                console.log(newData)
+                newData = newData.filter((device)=> {
+                    if(device.is_hidden === false)
+                        return device
+                })
+                console.log(newData)
                 for(let i=0;i<newData.length;i++){
                     device=newData[i];
                     console.log(device.is_hidden)
-                    if (device.is_hidden === true){
-                        continue
-                    }
-                    else{
-                        device.id = nextId++
-                        device.modelName = device.model
-                        device.price = price
-                        device.payment = device.hasOwnProperty('payment2_amount')
+                    device.id = nextId++
+                    device.modelName = device.model
+                    device.price = price
+                    device.payment = device.hasOwnProperty('payment2_amount')
                             ?(device.payment_amount+device.payment2_amount):device.payment_amount
-                        device.link = device.qr_code
-                        device.linkService = device.datalink
-                        device.deviceId = device._id
-                        device.payment2_id =device.hasOwnProperty('payment2_id')?device.payment2_id:''
-                    }
+                    device.link = device.qr_code
+                    device.linkService = device.datalink
+                    device.deviceId = device._id
+                    device.payment2_id =device.hasOwnProperty('payment2_id')?device.payment2_id:''
                 }
 
                 setForm(newData);
