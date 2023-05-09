@@ -60,7 +60,7 @@ def rebuilddb():
                               "status":status,"operating_system":operating_system,"memory_storage":memory_storage,
                               "color":color,"type":type,"description":description,"service":service,"datalink":datalink,
                               "qr_code":qr_code,"device_ts":device_ts,"device_ts_mod":device_ts_mod,"payment_id":payment_id,
-                              "payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod,"is_deleted":False ,"verified":verified})
+                              "payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod,"is_deleted":False ,"verified":verified, "is_hidden":False})
 
 # insert mobile phone data from datasources
 def buildvendordatasource():

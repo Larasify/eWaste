@@ -68,6 +68,11 @@ def postDevice():
     device_ts_mod = datetime.datetime.now()
     verified = data.get("verified")
 
+    if "is_hidden" in data:
+        is_hidden = data.get("is_hidden")
+    else:
+        is_hidden = False
+
     if verified is False:
         #send notification to every staff if a device is unverified
         staffs = db.Users.find({"privilege":"staff"})
@@ -92,7 +97,7 @@ def postDevice():
                             "status":status,"operating_system":operating_system,"memory_storage":memory_storage,
                             "color":color,"type":dtype,"description":description,"service":service,"datalink":datalink,
                             "qr_code":qr_code,"device_ts":device_ts,"device_ts_mod":device_ts_mod,"payment_id":payment_id,
-                            "payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod,"is_deleted":False,"verified":verified})
+                            "payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod,"is_deleted":False,"verified":verified, "is_hidden":is_hidden})
 
     return {"response":"success", "new_device_id": device_id}
 
