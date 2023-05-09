@@ -1,3 +1,4 @@
+# import packages and modules
 from app import db
 from bson.objectid import ObjectId
 from bson.json_util import dumps
@@ -7,7 +8,9 @@ import uuid
 import pandas
 import random
 
+# rebuild the database
 def rebuilddb():
+    # delete old collections
     db.Devices.drop()
     db.Users.drop()
     db.Vendors.drop()   
@@ -59,10 +62,11 @@ def rebuilddb():
                               "qr_code":qr_code,"device_ts":device_ts,"device_ts_mod":device_ts_mod,"payment_id":payment_id,
                               "payment_amount":payment_amount,"payment_ts":payment_ts,"payment_ts_mod":payment_ts_mod,"is_deleted":False ,"verified":verified})
 
-
+# insert mobile phone data from datasources
 def buildvendordatasource():
+    # load csv files
     dataset1 = pandas.read_csv("vendordatasource/data_2023.csv")
-    #print elements line by line
+    # loop through the dataset and insert the corresponding data into the database
     for i in range(len(dataset1)):
         vendor_id = str(uuid.uuid4())
         brand = dataset1['Brand'].iloc[i]
@@ -84,8 +88,9 @@ def buildvendordatasource():
         else:
             continue
 
+    # load csv files
     dataset2 = pandas.read_csv("vendordatasource/data_india_gadgets360.csv")
-    #print elements line by line
+    # loop through the dataset and insert the corresponding data into the database
     for i in range(len(dataset2)):
         vendor_id = str(uuid.uuid4())
         brand = dataset2['Brand'].iloc[i]
@@ -108,12 +113,14 @@ def buildvendordatasource():
         else:
             db.Vendors.update_one({"_id":vendor["_id"]},{"$set":{"sale_price2":sale_price,"ts_mod":ts_mod}})
 
+    # add sale_price2 to all vendors in the collection that do not have a "sale_price2"
     vendors = db.Vendors.find({"sale_price2":{"$exists":False}})
     for vendor in vendors:
         random_percentage = random.randint(1,11)
         price = int(vendor["sale_price"] + (vendor["sale_price"] * random_percentage / 100))
         db.Vendors.update_one({"_id":vendor["_id"]},{"$set":{"sale_price2":price,"ts_mod":vendor["ts_mod"]}})
-    
+
+    # insert new documents into the database with double the storage and increased sale_prices
     vendors = db.Vendors.find({"storage":{"$exists":True}})
     for vendor in vendors:
         vendor_id = str(uuid.uuid4())
