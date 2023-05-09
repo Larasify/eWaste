@@ -12,6 +12,7 @@ import { Notify } from '../fragments/Notify';
 export default function Device(props) {
 
     const {state} = useLocation()
+    const [estimatedValue, setEstimation] = React.useState('Please provide more details');
 
     const [loading, setLoading] = React.useState(true)
     const [data, setData] = React.useState([])
@@ -61,6 +62,31 @@ export default function Device(props) {
             });
     }
 
+    const predict = () => {
+        const price = document.getElementById('cost-purchase-id').value
+        const condition = document.getElementById('device-condition').value
+        if(price && condition) {
+            switch(condition) {
+                case 'new': 
+                    setEstimation(`£ ${price}`)
+                    break
+                case 'ninety': 
+                    setEstimation(`£ ${price*.9}`)
+                    break
+                case 'seventy': 
+                    setEstimation(`£ ${price*.7}`)
+                    break
+                case 'thirty': 
+                    setEstimation(`£ ${price*.3}`)
+                    break
+                case 'recycle': 
+                    setEstimation(`£ ${0}`)
+                    break
+                default:
+                    break;
+            }
+        }
+    }
 
 
     const submitDevice = (e) => {
@@ -131,10 +157,35 @@ export default function Device(props) {
     }
 
     const navigateBack = () => {
-        if (window.confirm("Are you sure you want to backward? Your update will be lost. ")) {
+        if (window.confirm("Are you sure you want to backward? Your update will be lost.")) {
             navigate(-1);
         }
     };
+
+    const navigateToCustom = () => {
+        const color = document.getElementById('color-id').value;
+        const purchaseCost = document.getElementById('cost-purchase-id').value;
+        const purchaseYear = document.getElementById('year-purchase-id').value;
+        const os = document.getElementById('os-id').value;
+        const deviceCondition = document.getElementById('device-condition').value;
+        const description = document.getElementById('description').value;
+        const brand = document.getElementById('brand-id').value;
+        const model = document.getElementById('model-id').value;
+        const deviceStorage = document.getElementById('device-storage').value;
+        navigate('/custom-device', {
+            state: {
+                color,
+                os,
+                condition: deviceCondition,
+                description,
+                brand,
+                model,
+                storage: deviceStorage,
+                cost: purchaseCost,
+                year: purchaseYear
+            }
+        })
+    }
 
     const renderForm = () => {
         if (loading) {
@@ -176,15 +227,6 @@ export default function Device(props) {
                     <div className='flex flex-col w-full'>
                         <label className='mb-1 text-base font-semibold'>Storage</label>
                         <select required id="device-storage" className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full bg-white'>
-                            {/* <option>4 GB</option>
-                        <option>8 GB</option>
-                        <option>16 GB</option>
-                        <option>32 GB</option>
-                        <option>64 GB</option>
-                        <option>128 GB</option>
-                        <option>256 GB</option>
-                        <option>512 GB</option>
-                        <option>1 TB</option> */}
                             <option selected disabled>Please Select a Model First</option>
                             {storage.map((str) => (
                                 <option key={str} value={str} name={str}>{str}</option>
@@ -194,23 +236,16 @@ export default function Device(props) {
                     <div className='flex flex-col w-full'>
                         <label className='mb-1 text-base font-semibold'>Operating System</label>
                         <input required className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full' type="text" id='os-id'></input>
-                        {/* <label className='mb-1 text-base font-semibold'>Type</label>
-                        <select disabled required id='device-type' className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full bg-white'>
-                            <option selected>Phone</option>
-                        </select> */}
                     </div>
                 </div>
                 <div className="flex-col lg:flex-row flex mt-4 w-full gap-8">
                     <div className='flex flex-col w-full'>
                         <label className='mb-1 text-base font-semibold'>Color</label>
-                        {/* <select required id='device-color' className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full bg-white'>
-                            <option>Black</option>
-                        </select> */}
                         <input required className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full' type="text" id='color-id'></input>
                     </div>
                     <div className='flex flex-col w-full'>
                         <label className='mb-1 text-base font-semibold'>Device Condition</label>
-                        <select required id='device-condition' className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full bg-white'>
+                        <select onChange={predict} required id='device-condition' className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full bg-white'>
                             <option value='new'>Like New</option>
                             <option value='ninety'>90%</option>
                             <option value='seventy'>70%</option>
@@ -226,7 +261,7 @@ export default function Device(props) {
                     </div>
                     <div className='flex flex-col w-full'>
                         <label className='mb-1 text-base font-semibold'>Cost at Purchase</label>
-                        <input required className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full' type="text" id='cost-purchase-id'></input>
+                        <input onChange={predict} required className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full' type="text" id='cost-purchase-id'></input>
                     </div>
                 </div>
                 <div className="flex-col lg:flex-row flex mt-4 w-full gap-8">
@@ -241,9 +276,12 @@ export default function Device(props) {
                     <input type="radio" id="retrieval" name="service" value="retrieval" required />
                     <label className='mr-2 lg:mr-12 ml-2 font-bold' for="retrieval">Wipe & Retrieve Data from Device</label>
                 </div>
-                <div className="flex justify-end mb-4">
+                <div className="flex justify-end mb-4 flex-col w-full items-end">
+                    <span className='mt-4 cursor-pointer text-[#499177]' onClick={navigateToCustom}>
+                        <a className='underline underline-offset-2'>Cannot find your device? Please enter the details</a>
+                    </span>
                     <button type='submit'>
-                        <div className="flex mt-4 w-52 bg-[#509E82] text-white h-10 justify-center items-center font-semibold rounded-lg cursor-pointer">
+                        <div className="flex w-52 mt-1 bg-[#509E82] text-white h-10 justify-center items-center font-semibold rounded-lg cursor-pointer">
                             <span className="register">Submit and get quote!</span>
                         </div>
                     </button>
@@ -277,7 +315,7 @@ export default function Device(props) {
                             </Tooltip>
                         </div>
                     </div>
-                    <span id='price-estimate' className='text-base'>£ 70</span>
+                    <span id='price-estimate' className='text-base'>{estimatedValue || ' 70'}</span>
                 </div>
                 <div className="mt-4 w-full lg:w-2/3 flex flex-col">
                     {renderForm()}
