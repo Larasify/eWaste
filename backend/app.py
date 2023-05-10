@@ -52,5 +52,5 @@ def apiposttest():
     print(request.json)
     return {"results": request.json}
 
-rebuilddb()
 buildvendordatasource()
+rebuilddb()

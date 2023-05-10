@@ -13,7 +13,7 @@ def rebuilddb():
     # delete old collections
     db.Devices.drop()
     db.Users.drop()
-    db.Vendors.drop()   
+
     #insert random 50 users with random uuid email password firstname lastname ts ts_mod
     db.Users.insert_one({"_id":"0","email":"admin@admin.com","password":generate_password_hash("password"),"first_name":"admin","last_name":"admin","privilege":"admin","phone_no":"+44123123123","ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_deleted":False})
     db.Users.insert_one({"_id":"1","email":"staff@staff.com","password":generate_password_hash("password"),"first_name":"staff","last_name":"staff","privilege":"staff","phone_no":"+44123123123","ts":datetime.datetime.utcnow(),"ts_mod":datetime.datetime.utcnow(),"is_deleted":False})
@@ -32,22 +32,25 @@ def rebuilddb():
         db.Users.insert_one({"_id":userid,"email":email, "password":password, "first_name":first_name,"last_name":last_name,"phone_no":phone_no,"privilege":privilege, "ts":ts,"ts_mod":ts_mod, "is_deleted":False})
 
     #insert random 50 device with random uuid email password firstname lastname ts ts_mod
+    vendors = list(db.Vendors.aggregate([{ "$sample": { "size": 50 } }]))
     for i in range(50):
+        vendor = vendors[i]
+        #get 50 random vendors from the vendor db        
         device_id = str(uuid.uuid4())
         user_id = str(user_id_list[i%50])
-        vendor_id = str(uuid.uuid4())
-        brand = "testbrand"
-        model = "testmodel"
+        vendor_id = vendor["_id"]
+        brand = vendor["brand"]
+        model = vendor["model_name"]
         identification = "rare"
         status = "shipped"
         operating_system = "android"
-        memory_storage = "64GB"
+        memory_storage = vendor["storage"]
         color = "red"
         type = "phone"
         description = "this is a phone"
         service = "wipe"
         datalink = "www.google.com"
-        qr_code = "123123123123123"
+        qr_code = "zQQfds123d"
         device_ts = datetime.datetime.utcnow()
         device_ts_mod = datetime.datetime.utcnow()
         payment_id = None
@@ -64,6 +67,7 @@ def rebuilddb():
 
 # insert mobile phone data from datasources
 def buildvendordatasource():
+    db.Vendors.drop()
     # load csv files
     dataset1 = pandas.read_csv("vendordatasource/data_2023.csv")
     # loop through the dataset and insert the corresponding data into the database

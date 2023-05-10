@@ -27,7 +27,9 @@ def getUser():
             return {"message":"empty_list", "response":"error"}
         if user_info.get("is_deleted"):
             return {"message":"record deleted", "response":"error"}
-        # return user information        
+        #remove password from user_info
+        user_info.pop("password")
+        # return user information 
         return {"response":"success", "user_info":user_info}
     else:
         return {"message":"not_logged_in", "response":"error"}
@@ -35,6 +37,14 @@ def getUser():
 # get user information of a specific user
 @user_api.route("/getuserbyid", methods=['POST'])
 def getUserById():
+    #check if the request is done by an admin or staff
+    if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
+        callerid = session_ids[request.cookies.get('session-id')]
+        caller_info = db.Users.find_one({"_id":callerid})
+        if not (caller_info.get("privilege") == "admin" or caller_info.get("privilege") == "staff"):
+            return {"message":"not_authorized", "response":"error"}
+    else:
+        return {"message":"not_logged_in", "response":"error"}
     # extract user id from the request
     data = request.get_json()
     userid = data.get("userid")
@@ -46,12 +56,21 @@ def getUserById():
         return {"message":"empty_list", "response":"error"}
     if user_info.get("is_deleted"):
         return {"message":"record deleted", "response":"error"}
+    #remove password fields from user_info
+    user_info.pop("password")
     # return user information 
     return {"response":"success", "user_info":user_info}
     
 # get a list of all users in the collection
 @user_api.route("/getuserlist")
 def getUserList():
+    if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
+        callerid = session_ids[request.cookies.get('session-id')]
+        caller_info = db.Users.find_one({"_id":callerid})
+        if not (caller_info.get("privilege") == "admin" or caller_info.get("privilege") == "staff"):
+            return {"message":"not_authorized", "response":"error"}
+    else:
+        return {"message":"not_logged_in", "response":"error"}
     # find all users haven't been deleted
     users = db.Users.find({"is_deleted":False})
     list_users = list(users)
@@ -60,6 +79,9 @@ def getUserList():
     if len(list_users) == 0:
         return {"message":"list_empty", "response":"error"}
     json_users = list_users
+    # remove password fields from the list
+    for user in json_users:
+        user.pop("password")
     return {"response":"success", "user_list":json_users}
 
 # add a user to the collection
@@ -263,6 +285,14 @@ def notificationIsSeen():
 # make a user a staff member
 @user_api.route("/makeuserstaff", methods=['POST'])
 def makeUserStaff():
+    #check if the call is from an admin if not return error
+    if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
+        callerid = session_ids[request.cookies.get('session-id')]
+        caller_info = db.Users.find_one({"_id":callerid})
+        if not (caller_info.get("privilege") == "admin" ):
+            return {"message":"not_authorized", "response":"error"}
+    else:
+        return {"message":"not_logged_in", "response":"error"}
     # extract user id from the request
     data = request.get_json()
     userid = data.get("userid")
@@ -277,6 +307,14 @@ def makeUserStaff():
     
 @user_api.route("/makeuseradmin", methods=['POST'])
 def makeUserAdmin():
+    #check if the call is from an admin if not return error
+    if('session-id' in request.cookies and request.cookies.get('session-id') in session_ids):
+        callerid = session_ids[request.cookies.get('session-id')]
+        caller_info = db.Users.find_one({"_id":callerid})
+        if not (caller_info.get("privilege") == "admin" ):
+            return {"message":"not_authorized", "response":"error"}
+    else:
+        return {"message":"not_logged_in", "response":"error"}
     # extract user id from the request
     data = request.get_json()
     userid = data.get("userid")
