@@ -1,5 +1,4 @@
 import React, {useContext} from 'react'
-import {FiUser} from 'react-icons/fi';
 import {HiOutlineDeviceTablet} from 'react-icons/hi';
 import {BsReceipt} from 'react-icons/bs';
 import {MdSystemUpdateAlt} from 'react-icons/md';
@@ -226,7 +225,7 @@ export default function IconTabs() {
                 </div>
                 <div className='flex flex-col h-1/6 items-end'>
                     <div className="text-2xl mb-8 flex justify-self-end cursor-pointer">
-                        <Tooltip title="Logout" placement='right' arrow onClick={onCLick}>
+                        <Tooltip title="Logout" placement='right' arrow onClick={logout}>
                             <IconButton>      
                                 <RiLogoutBoxLine/>  
                             </IconButton>
