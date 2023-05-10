@@ -3,11 +3,14 @@ import './Header.css'
 import {RiSearchLine, RiUser5Fill} from 'react-icons/ri';
 import { RiNotification3Line } from 'react-icons/ri';
 import logo from "../images/logo.png";
-import {Menu, MenuItem} from "@mui/material";
+import {Menu, MenuItem, Popper} from "@mui/material";
 import {AuthContext} from "../App";
 import {useNavigate} from "react-router-dom";
-import {logoutSubmit} from "./Login";
+import {loginSubmit, logoutSubmit} from "./Login";
 import { Notify } from './Notify';
+import { Button, List, ListItem, ListItemText } from '@mui/material';
+import Badge from '@mui/material/Badge';
+
 
 export const fetchUserData = () => {
     const myRequest = new Request("/user/getuser", {
@@ -35,12 +38,18 @@ export const fetchUserData = () => {
         })
 }
 
+
+
+
 export default function Header(props) {
     const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorNotification, setAnchorNotification] = useState(null);
+    const [notification,setNotification] = useState([]);
     const navigate = useNavigate();
     const authState = useContext(AuthContext)
     const [userInfo, setUserInfo] = useState(null);
     const open = Boolean(anchorEl);
+    const [openNotification, setOpenNotification] = useState(false);
     const handleLoginDropdownClose = (event) => {
         setAnchorEl(null);
         switch (event.target.getAttribute("value")){
@@ -69,6 +78,75 @@ export default function Header(props) {
         }
     }
 
+    const handleNotificationClick = (event: React.MouseEvent<HTMLElement>) => {
+        if (authState.isLoggedIn) {
+            setAnchorNotification(event.currentTarget);
+            setOpenNotification((previousOpen) => !previousOpen)
+        } else {
+            props.openLoginWindow()
+        }
+    }
+
+    const handleNotificationDropdownClose = (event) => {
+        setAnchorNotification(null);
+    };
+
+    const handleItem = async(id)=> {
+        const myRequest = new Request('/user/notificationisseen',{
+        credentials: "include",
+        headers: new Headers({"Content-Type": "application/json"}),
+        method: "POST",
+        body: JSON.stringify({
+                notificationid: id,
+            })
+        })
+        fetch(myRequest).then((response) => {
+            if (response.status === 200) {
+                return response.json()
+            } else {
+                Notify.error(" Error! " + response.statusText)
+            }
+        }).then((data) => {
+            if (data['response'] === "success"){
+                console.log('yes')
+            } else {
+                Notify.error("Get notifications failed!Please try again. ERROR_MESSAGE: " + data['message'])
+            }
+        })
+        if (userInfo['privilege'] === 'staff') navigate('/staff/dashboard/device')
+        if (userInfo['privilege'] === 'user') navigate('/user-recycle')
+    }
+
+    const readAll = async(notification) => {
+        notification.map((notify) => (
+            fetch(new Request('/user/notificationisseen',{
+                credentials: "include",
+                headers: new Headers({"Content-Type": "application/json"}),
+                method: "POST",
+                body: JSON.stringify({
+                        notificationid: notify.id,
+                    })
+                })).then((response) => {
+                if (response.status === 200) {
+                    return response.json()
+                } else {
+                    Notify.error(" Error! " + response.statusText)
+                }
+            }).then((data) => {
+                if (data['response'] === "success"){
+                    window.location.reload()
+                } else {
+                    Notify.error("Get notifications failed!Please try again. ERROR_MESSAGE: " + data['message'])
+                }
+            })
+        ))
+    }
+
+    const handleClickAway = () => {
+        setAnchorNotification(false);
+        };
+    const canBeOpenNotification = openNotification && Boolean(anchorNotification);
+    const id = canBeOpenNotification ? 'transition-popper' : undefined;
 
     useEffect(() => {
         if (!authState.isLoggedIn) {
@@ -89,8 +167,30 @@ export default function Header(props) {
                 }
             })
         }
+        const myRequest = new Request('/user/getnotifications',{
+        credentials: "include",
+        headers: new Headers({"Content-Type": "application/json"}),
+        method: "GET",
+        })
+        fetch(myRequest).then((response) => {
+            if (response.status === 200) {
+                return response.json()
+            } else {
+                Notify.error(" Error! " + response.statusText)
+            }
+        }).then((data) => {
+            if (data['response'] === "success"){
+                setNotification(data['notifications'].filter(n => n.is_seen !== true))
+
+            } else {
+                Notify.error("Get notifications failed!Please try again. ERROR_MESSAGE: " + data['message'])
+            }
+        })
+
+
     }, [])
     return (
+
         <nav className={"fixed z-50 min-w-[324px] w-full h-16 md:h-24 bg-gradient-to-r from-[#ebfff3] to-[#c7efd7]"}>
             <div className={"pr-2 flex flex-row justify-center items-center w-full h-full bg-bottom md:pr-8"}>
                 <a href='/'><img src={logo} alt="" className={"h-full mr-auto"} onClick={() => navigate("/")}/></a>
@@ -121,9 +221,37 @@ export default function Header(props) {
                     <MenuItem onClick={handleLoginDropdownClose} value={"myAccount"}>My account</MenuItem>
                     <MenuItem onClick={handleLoginDropdownClose} value={"logout"}>Logout</MenuItem>
                 </Menu>
-                <RiNotification3Line
-                    className={"w-8 h-8 md:w-10 md:h-10 mx-1 md:mx-5 text-[#499177] border-2 border-[#499177] rounded-xl text-m p-1 hover:text-white hover:bg-[#3fb78c] hover:border-[#3fb78c]"}/>
+                {authState.isLoggedIn ?
+                    <Badge badgeContent={notification.length} color="success" aria-setsize={60}  className={"pl-0"}>
+                        <RiNotification3Line onClick={handleNotificationClick}
+                                             className={"w-8 h-8 md:w-10 md:h-10  text-[#499177] border-2 border-[#499177] rounded-xl text-m p-1 hover:text-white hover:bg-[#3fb78c] hover:border-[#3fb78c]"}/>
+                    </Badge> : <RiNotification3Line onClick={handleNotificationClick}
+                                                    className={"w-8 h-8 md:w-10 md:h-10  text-[#499177] border-2 border-[#499177] rounded-xl text-m p-1 hover:text-white hover:bg-[#3fb78c] hover:border-[#3fb78c]"}/>
+                }
+
+                    <Popper
+                    disablePortal={true}
+                    placement="top-end"
+                    id={id}
+                    anchorEl={anchorNotification}
+                    open={openNotification}
+                    onClose={handleNotificationDropdownClose}
+                    className={"max-h-48  overflow-auto bg-gray-50 rounded-3xl shadow-lg "}>
+
+                    <List className={"mx-auto "}>
+                        {notification.length === 0?
+                            <ListItem value={null} ></ListItem>:
+                            notification.map((notify) => (<ListItem value={notify.id} className={"hover:bg-[#ECF4F1]"}>
+                                <ListItemText primary={notify.title} secondary={notify.message} onClick={()=>handleItem(notify.id)}/>
+                            </ListItem>))
+                        }
+                        {notification.length !== 0?<ListItem className={"font-bold mx-auto hover:bg-[#ECF4F1]"} onClick={()=>readAll(notification)}> Read All</ListItem>:
+                        <span className={"mx-auto px-5  my-auto"}>There is no message.</span>}
+                    </List>
+                </Popper>
+
             </div>
         </nav>
+
     );
 }

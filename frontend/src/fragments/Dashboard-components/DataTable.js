@@ -120,7 +120,7 @@ export default function DataTable({
                     body: JSON.stringify({
                         id: rowSelectionModel[0],
                         fields:[{
-                        is_hidden: row.is_hidden,
+                        is_hidden: !row.is_hidden,
                     }],
                     })
                 })
@@ -130,7 +130,7 @@ export default function DataTable({
                     if(res.response === 'success') {
                         Notify.success('Success!')
                         window.location.reload();
-                        setRows(tableRows.filter(r => r.id != rowSelectionModel[0]))
+                        setRows(tableRows.filter(r => r.id !== rowSelectionModel[0]))
                     } else {
                         Notify.error('error')
                     }

@@ -42,7 +42,7 @@ export default function IconTabs() {
             deviceList.map( u => {
                 u.id = u._id
                 u.payment_status = u.payment_id ? 'Done' : 'Pending';
-                u.is_hidden = !u.is_hidden;
+
             })
             setDeviceData({
                 cols: [
@@ -85,7 +85,7 @@ export default function IconTabs() {
                                 />
                         </div>}
                     },
-                    {field: 'is_hidden',headerName: 'Visible',flex:1},
+                    {field: 'is_hidden',headerName: 'Hidden',flex:1},
                 ],
                 rows: deviceList
             });
