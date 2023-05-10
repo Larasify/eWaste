@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 import {AuthContext} from "../App";
 import {IoChevronBackCircle} from "react-icons/io5";
+import {Notify} from "../fragments/Notify";
 
 
 
@@ -62,11 +63,11 @@ export default function EditVendorForm(){
             if (response.status === 200) {
                 return response.json();
             } else {
-                alert(`Update vendor (HTTP) failed: ${response.status}: ${response.statusText}`);
+                Notify.error(`Update vendor (HTTP) failed: ${response.status}: ${response.statusText}`);
             }
         }).then((data) => {
             if (data['response'] !== "success") {
-                alert("Update vendor failed: " + data['message']);
+                Notify.error("Update vendor failed: " + data['message']);
                 return;
             }
             navigate(-1);

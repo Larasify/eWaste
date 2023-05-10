@@ -97,14 +97,14 @@ export default function EditUserForm() {
                 if (response.status === 200) {
                     return response.json();
                 } else {
-                    alert(`Update user info (HTTP) failed: ${response.status}: ${response.statusText}`);
+                    Notify.error(`Update user info (HTTP) failed: ${response.status}: ${response.statusText}`);
                 }
             }).then((data) => {
                 // Check update response message
                 if (data['response'] === "success") {
                     navigate(-1);
                 } else {
-                    alert(`Update user info failed: ${data['message']}`)
+                    Notify.error(`Update user info failed: ${data['message']}`)
                 }
             });
         } else if (location.state._op === 'add') {
@@ -153,7 +153,7 @@ export default function EditUserForm() {
         if(!authState.isLoggedIn || authState.privilege!='admin') navigate('/')
       
         if (!location.state) {
-            alert("invalid location.state")
+            Notify.error("invalid location.state")
         }
         const state = location.state;
         formData.firstName = state['first_name'];
