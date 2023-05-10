@@ -28,6 +28,15 @@ export default function EditDeviceForm(){
 
     const [device, setDevice] = React.useState(state);
 
+    const blockRetrieve = (e) => {
+        const identification = e.target.value
+        if (['30%','70%','90%'].includes(identification)) {
+            document.getElementById('retrieval').disabled = true;
+        } else {
+            document.getElementById('retrieval').disabled = false;
+        }
+    }
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         switch (name) {
@@ -57,7 +66,6 @@ export default function EditDeviceForm(){
             default:
                 setDevice({ ...device, [name]: value });
         }
-        console.log(device)
     };
 
     const submitForm = () => {
@@ -296,7 +304,10 @@ export default function EditDeviceForm(){
                                 labelId="identification-label"
                                 id="identification"
                                 value={device.identification}
-                                onChange={handleChange}
+                                onChange={(e) => {
+                                    handleChange(e)
+                                    blockRetrieve(e)
+                                }}
                                 name={"identification"}
                                 className={"text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
                             >

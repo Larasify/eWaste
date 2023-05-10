@@ -85,6 +85,7 @@ export default function Device(props) {
         const wipeOnly = document.getElementById('wiping').checked;
         const brand = document.getElementById('brand-id').value;
         const model = document.getElementById('model-id').value;
+        const type = document.getElementById('device-type').value;
         const deviceStorage = document.getElementById('device-storage').value;
         fetch('/device/postdevice', {
             method: 'POST',
@@ -105,6 +106,7 @@ export default function Device(props) {
                 service: wipeOnly ? 'wipe' : 'wipe and retrieve',
                 datalink: '',
                 qr_code: '',
+                type,
                 verified: false
             })
         })
@@ -197,6 +199,16 @@ export default function Device(props) {
                             <div className='flex flex-col w-full'>
                                 <label className='mb-1 text-base font-semibold'>Cost at Purchase</label>
                                 <input onChange={predict} required className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full' type="text" id='cost-purchase-id'></input>
+                            </div>
+                        </div>
+                        <div className="flex-col lg:flex-row flex mt-4 w-1/2 pr-4 gap-8">
+                            <div className='flex flex-col w-full'>
+                                <label className='mb-1 text-base font-semibold'>Type</label>
+                                <select required id='device-type' className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full bg-white'>
+                                    <option value='phone'>Phone</option>
+                                    <option value='tablet'>Tablet</option>
+                                    <option value='laptop'>Laptop</option>
+                                </select>
                             </div>
                         </div>
                         <div className="flex-col lg:flex-row flex mt-4 w-full gap-8">

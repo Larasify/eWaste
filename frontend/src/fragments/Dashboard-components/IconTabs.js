@@ -11,6 +11,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import {useNavigate} from "react-router-dom";
 import Tab from '@mui/material/Tab';
 import Switch from '@mui/material/Switch';
+import { styled } from '@mui/material/styles';
 
 import './IconTabs.css';
 import TabPanel from './TabPanel.js';
@@ -34,6 +35,40 @@ export default function IconTabs() {
         fetchData();
     }, [loading])
 
+    const onCLick = () => {
+        console.log(deviceData.rows[0]);
+    }
+    
+    const Android12Switch = styled(Switch)(({ theme }) => ({
+        padding: 8,
+        '& .MuiSwitch-track': {
+            backgroundColor: 'grey',
+            borderRadius: 22 / 2,
+        '&:before, &:after': {
+            content: '""',
+            position: 'absolute',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: 16,
+            height: 16,
+        },
+        '&:before': {
+            left: 12,
+        },
+        '&:after': {
+            right: 12,
+        },
+        },
+        '& .MuiSwitch-thumb': {
+        boxShadow: 'none',
+        width: 16,
+        height: 16,
+        margin: 2,
+        backgroundColor: 'white',
+        },
+    }));
+  
+
     const fetchData = () => {
         fetch('/device/getdevicelist')
         .then(deviceRequest => (deviceRequest).json())
@@ -56,14 +91,16 @@ export default function IconTabs() {
                     {field: 'operating_system', headerName: 'Operating System', flex: 1},
                     {field: 'service', headerName: 'Service', flex: 1},
                     {field: 'status', headerName: 'Status', flex: 1},
+                    {field: 'type', headerName: 'Type', flex: 1},
                     {field: 'verified', headerName: 'Verified', width: 150, 
                         renderCell: (params) => {
                             return <div>
-                            <Switch
+                            <Android12Switch
                                 checked={params.row.verified}
                                 onChange={(e) => {
-                                    params.row.verified = !params.row.verified;
-                                    setDeviceData(deviceData)
+                                    deviceData.rows.map( d => {
+                                        if (d.id === params.row.id) d.verified = !d.verified
+                                    })
                                     fetch('/device/verifydevicebyid', { 
                                         method: 'POST',
                                         credentials: "include",
@@ -189,7 +226,7 @@ export default function IconTabs() {
                 </div>
                 <div className='flex flex-col h-1/6 items-end'>
                     <div className="text-2xl mb-8 flex justify-self-end cursor-pointer">
-                        <Tooltip title="Logout" placement='right' arrow onClick={logout}>
+                        <Tooltip title="Logout" placement='right' arrow onClick={onCLick}>
                             <IconButton>      
                                 <RiLogoutBoxLine/>  
                             </IconButton>
