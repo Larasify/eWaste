@@ -10,8 +10,8 @@ def client():
     yield client
 
 def test_user_apis(client):
-    rebuilddb()
     buildvendordatasource()
+    rebuilddb()
     #Standard get and post requests
     rv = app.test_client().get('/user/getuser')
     assert b'not_logged_in' in rv.data
