@@ -56,6 +56,7 @@ export default function IconTabs() {
                     {field: 'operating_system', headerName: 'Operating System', flex: 1},
                     {field: 'service', headerName: 'Service', flex: 1},
                     {field: 'status', headerName: 'Status', flex: 1},
+                    {field: 'type', headerName: 'Type', flex: 1},
                     {field: 'verified', headerName: 'Verified', width: 150, 
                         renderCell: (params) => {
                             return <div>
