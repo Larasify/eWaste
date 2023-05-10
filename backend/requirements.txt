@@ -3,3 +3,4 @@ Flask_Cors==3.0.10
 pymongo==4.3.3
 Werkzeug==2.2.3
 pytest==7.1.2
+stripe==2.21.0
