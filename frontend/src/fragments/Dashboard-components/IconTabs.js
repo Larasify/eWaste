@@ -100,7 +100,6 @@ export default function IconTabs() {
                                 onChange={(e) => {
                                     deviceData.rows.map( d => {
                                         if (d.id === params.row.id) d.verified = !d.verified
-                                        console.log(d.verified)
                                     })
                                     fetch('/device/verifydevicebyid', { 
                                         method: 'POST',
