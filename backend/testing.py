@@ -12,14 +12,13 @@ def client():
 def test_user_apis(client):
     rebuilddb()
     buildvendordatasource()
-    #TODO: can't test things that require session cookie
     #Standard get and post requests
     rv = app.test_client().get('/user/getuser')
     assert b'not_logged_in' in rv.data
     rv = app.test_client().get('/user/getuserlist')
-    assert b'jack0@gmail.com' in rv.data
+    assert b'not_logged_in' in rv.data
     rv = app.test_client().post('/user/getuserbyid', json={"userid":"0"})
-    assert b'admin@admin.com' in rv.data
+    assert b'not_logged_in' in rv.data
 
     #Test postuser and verify by checking userlist
     rv = app.test_client().post('/user/postuser', json={"email":"test@unit.com","password":"password","first_name":"test","phone_no":"+44123123123"})
@@ -29,7 +28,7 @@ def test_user_apis(client):
     rv = app.test_client().post('/user/postuser', json={"email":"admintest@unit.com","password":"password","first_name":"test","phone_no":"+44123123123", "privilege":"admin"})
     assert b'success' in rv.data
     rv = app.test_client().get('/user/getuserlist')
-    assert b'test@unit.com' and b'admintest@unit.com' in rv.data
+    assert b'not_logged_in' in rv.data
 
     rv = app.test_client().post('/user/deleteuser', json={"id":"0"})
     assert b'success' in rv.data
@@ -39,7 +38,7 @@ def test_user_apis(client):
     rv = app.test_client().post('/user/updateuser', json={"id":"1", "fields":[{"first_name":"test2"}]})
     assert b'success' in rv.data
     
-    rv = app.test_client().post('/account/getuserlistings') #TODO: Do we need getuserlistingsbyid ?
+    rv = app.test_client().post('/account/getuserlistings') 
     assert b'not_logged_in' in rv.data
     rv = app.test_client().post('/account/getuserdatalinks') 
     assert b'not_logged_in' in rv.data
@@ -48,18 +47,15 @@ def test_user_apis(client):
     rv = app.test_client().post('/user/addnotification', json={"userid":"1", "title":"testnotification", "message":"test"})
     assert b'success' in rv.data
     rv = app.test_client().post('/user/getuserbyid', json={"userid":"1"})
-    assert b'testnotification' in rv.data
+    assert b'not_logged_in' in rv.data
 
     #Make user a staff and admin and verify by checking user
     rv = app.test_client().post('/user/makeuserstaff', json={"userid":"0"})
-    assert b'success' in rv.data 
-    user_info = db.Users.find_one({"_id":"0"})
-    assert user_info.get("privilege") == "staff"
+    assert b'not_logged_in' in rv.data 
 
     rv = app.test_client().post('/user/makeuseradmin', json={"userid":"1"})
-    assert b'success' in rv.data
-    user_info = db.Users.find_one({"_id":"1"})
-    assert user_info.get("privilege") == "admin"
+    assert b'not_logged_in' in rv.data
+
 
 
 def test_device_apis(client):
@@ -69,7 +65,7 @@ def test_device_apis(client):
     assert b'success' in rv.data
     rv = app.test_client().get('/device/getdevicelist')
     assert b'success' and b'this is a phone' in rv.data
-    device_id = json.loads(json.loads(rv.data).get("device_list"))[0].get("_id")
+    device_id = json.loads(rv.data).get("device_list")[0].get("_id")
 
     rv = app.test_client().post('/device/addpayment' , json={"id":device_id, "payment_amount":100, "payment_id":999})
     assert b'success' in rv.data
