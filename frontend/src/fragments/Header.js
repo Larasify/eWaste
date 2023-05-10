@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react';
 import './Header.css'
 import {RiSearchLine, RiUser5Fill} from 'react-icons/ri';
 import { RiNotification3Line } from 'react-icons/ri';
@@ -10,6 +10,8 @@ import {loginSubmit, logoutSubmit} from "./Login";
 import { Notify } from './Notify';
 import { Button, List, ListItem, ListItemText } from '@mui/material';
 import Badge from '@mui/material/Badge';
+import { Cookies } from 'react-cookie';
+
 
 
 export const fetchUserData = () => {
@@ -42,6 +44,7 @@ export const fetchUserData = () => {
 
 
 export default function Header(props) {
+    const cookie = new Cookies();
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorNotification, setAnchorNotification] = useState(null);
     const [notification,setNotification] = useState([]);
@@ -149,48 +152,47 @@ export default function Header(props) {
     const id = canBeOpenNotification ? 'transition-popper' : undefined;
 
     useEffect(() => {
-        if (!authState.isLoggedIn) {
-            fetchUserData().then((userInfo) => {
-                if (userInfo !== null) {
-                    authState.onLogin(userInfo["first_name"], userInfo["last_name"], userInfo._id, userInfo.privilege);
-                    setUserInfo(authState)
-                    if(userInfo['privilege'] === 'staff') {
-                        navigate('/staff/dashboard')
-                    } else if(userInfo['privilege'] === 'admin') {
-                        navigate('/admin/dashboard')
+        if (cookie.get("session-id")) {
+            if (!authState.isLoggedIn) {
+                fetchUserData().then((userInfo) => {
+                    if (userInfo !== null) {
+                        authState.onLogin(userInfo["first_name"], userInfo["last_name"], userInfo._id, userInfo.privilege);
+                        setUserInfo(authState)
+                        if (userInfo['privilege'] === 'staff') {
+                            navigate('/staff/dashboard')
+                        } else if (userInfo['privilege'] === 'admin') {
+                            navigate('/admin/dashboard')
+                        }
+                    } else {
+                        if (window.location.href.endsWith("/") || window.location.href.endsWith("/register")) {
+                            return
+                        }
+                        props.openLoginWindow()
                     }
+                })
+            }
+            const myRequest = new Request('/user/getnotifications', {
+                credentials: "include",
+                headers: new Headers({"Content-Type": "application/json"}),
+                method: "GET",
+            })
+            fetch(myRequest).then((response) => {
+                if (response.status === 200) {
+                    return response.json()
                 } else {
-                    if (window.location.href.endsWith("/") || window.location.href.endsWith("/register")) {
-                        return
-                    }
-                    props.openLoginWindow()
+                    Notify.error(" Error! " + response.statusText)
+                }
+            }).then((data) => {
+                if (data['response'] === "success") {
+                    setNotification(data['notifications'].filter(n => n.is_seen !== true))
+
+                } else {
+                    Notify.error("Get notifications failed!Please try again. ERROR_MESSAGE: " + data['message'])
                 }
             })
         }
-        const myRequest = new Request('/user/getnotifications',{
-        credentials: "include",
-        headers: new Headers({"Content-Type": "application/json"}),
-        method: "GET",
-        })
-        fetch(myRequest).then((response) => {
-            if (response.status === 200) {
-                return response.json()
-            } else {
-                Notify.error(" Error! " + response.statusText)
-            }
-        }).then((data) => {
-            if (data['response'] === "success"){
-                setNotification(data['notifications'].filter(n => n.is_seen !== true))
-
-            } else {
-                Notify.error("Get notifications failed!Please try again. ERROR_MESSAGE: " + data['message'])
-            }
-        })
-
-
     }, [])
     return (
-
         <nav className={"fixed z-50 min-w-[324px] w-full h-16 md:h-24 bg-gradient-to-r from-[#ebfff3] to-[#c7efd7]"}>
             <div className={"pr-2 flex flex-row justify-center items-center w-full h-full bg-bottom md:pr-8"}>
                 <a href='/'><img src={logo} alt="" className={"h-full mr-auto"} onClick={() => navigate("/")}/></a>
