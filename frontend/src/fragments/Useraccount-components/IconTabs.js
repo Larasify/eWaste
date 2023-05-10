@@ -8,7 +8,6 @@ import {GridActionsCellItem,} from '@mui/x-data-grid';
 import {useNavigate} from 'react-router-dom';
 import DataTable from './DataTable';
 import {Notify} from "../Notify";
-import {updateCacheWithNewRows} from "@mui/x-data-grid/hooks/features/rows/gridRowsUtils";
 
 export default function IconTabs() {
     let nextId=0;

@@ -28,8 +28,6 @@ export default function Home() {
     const [storage, setStorage] = React.useState([])
     const [recentDevices, setRecentDevices] = React.useState([])
     const [commonDevices, setCommonDevices] = React.useState([])
-    const authState = React.useContext(AuthContext)
-    const iterator = Array.from(Array(4).keys())
     let navigate = useNavigate();
     
     React.useEffect(() => {
