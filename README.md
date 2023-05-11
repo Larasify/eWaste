@@ -45,8 +45,8 @@ mobile web browser interface as well).
 
 ## Backend
     
-Sample React App
+Flask with MongoDB
 
 ## Frontend
 
-Flask
+React
