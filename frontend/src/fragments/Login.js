@@ -62,7 +62,7 @@ export default function Login(props) {
                 <span>Login</span>
             </div>
             <div className={"flex flex-col w-full"}>
-                <label className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"} htmlFor={"loginPanelEmailInput"}>
+                <label className={"text-left block mb-4 text-xl font-medium text-gray-900"} htmlFor={"loginPanelEmailInput"}>
                     Email Address
                 </label>
                 <input
@@ -72,7 +72,7 @@ export default function Login(props) {
                 ></input>
             </div>
             <div className={"flex flex-col w-full mt-4 lg:mt-6"}>
-                <label className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"} htmlFor={"loginPanelPasswordInput"}>
+                <label className={"text-left block mb-4 text-xl font-medium text-gray-900 "} htmlFor={"loginPanelPasswordInput"}>
                     Password
                 </label>
                 <input

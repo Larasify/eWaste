@@ -57,7 +57,7 @@ export default function AddDeviceForm(){
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-6 md:mb-4 "}>
 
                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Brand</label>
                         <input
                             className={"block w-full p-2  text-gray-900 border border-[#509E82] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
@@ -65,7 +65,7 @@ export default function AddDeviceForm(){
                     </div>
                     <br className={"block md:hidden"}/>
                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Model Name</label>
                         <input
                             className={"block w-full p-2  text-gray-900 border border-[#509E82] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
@@ -75,7 +75,7 @@ export default function AddDeviceForm(){
                 </div>
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Color</label>
                         <input
                             className={"block w-full p-2  text-gray-900 border border-[#509E82] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
@@ -83,7 +83,7 @@ export default function AddDeviceForm(){
                     </div>
                     <br className={"block md:hidden"}/>
                      <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Operating System</label>
                         <input
                             className={"block w-full p-2  text-gray-900 border border-[#509E82] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
@@ -93,7 +93,7 @@ export default function AddDeviceForm(){
                 </div>
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                      <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Memory Storage</label>
                         <input
                             className={"block w-full p-2  text-gray-900 border border-[#509E82] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
@@ -103,7 +103,7 @@ export default function AddDeviceForm(){
 
                     {/*value*/}
                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} >*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "} >*
                             Expected Value</label>
                         <input
                             className={"block w-full p-2  text-gray-900 border border-[#509E82] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
@@ -113,7 +113,7 @@ export default function AddDeviceForm(){
 
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Identification</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                           <Select
@@ -134,7 +134,7 @@ export default function AddDeviceForm(){
 
 
                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Type</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                           <Select
@@ -157,7 +157,7 @@ export default function AddDeviceForm(){
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                      {/*status*/}
                      <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Status</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                           <Select
@@ -183,7 +183,7 @@ export default function AddDeviceForm(){
 
                     {/*verified*/}
                      <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} >*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "} >*
                             Verified</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                           <Select
@@ -200,7 +200,7 @@ export default function AddDeviceForm(){
                 </div>
 
                 {/*description*/}
-                 <label className={" text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} htmlFor={"descriptionInput"}>*
+                 <label className={" text-left block mb-2 text-xl font-medium text-gray-900 "} htmlFor={"descriptionInput"}>*
                             Description (No more than 500 words)</label>
 
                 <textarea rows={"3"} className={" block w-full p-2 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
@@ -210,12 +210,12 @@ export default function AddDeviceForm(){
                 <div className="inline mt-4 md:grid md:grid-cols-2">
                     <div className={"flex items-center "}>
                         <input type="radio" id="wiping" name="service" value="wiping" className="h-4 w-4 md:h-5 md:w-5  "  required/>
-                        <label htmlFor="wiping" className={"ml-2 text-left block text-xl font-medium text-gray-900 dark:text-white"}>Wipe Data from Device</label>
+                        <label htmlFor="wiping" className={"ml-2 text-left block text-xl font-medium text-gray-900 "}>Wipe Data from Device</label>
                     </div>
                     <br className={"md:hidden"}/>
                     <div className={"flex items-center "}>
                         <input type="radio" id="retrieval" name="service" value="retrieval" className="h-4 w-4 md:h-5 md:w-5 " required/>
-                        <label  htmlFor="retrieval" className={"ml-2 text-left block text-xl font-medium text-gray-900 dark:text-white"}>Wipe & Retrieve Data from
+                        <label  htmlFor="retrieval" className={"ml-2 text-left block text-xl font-medium text-gray-900 "}>Wipe & Retrieve Data from
                         Device</label>
                     </div>
                 </div>

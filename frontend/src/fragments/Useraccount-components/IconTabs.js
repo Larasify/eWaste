@@ -7,6 +7,7 @@ import {GridActionsCellItem,} from '@mui/x-data-grid';
 import {useNavigate} from 'react-router-dom';
 import DataTable, {updateRecycleDevicesRow} from './DataTable';
 import {Notify} from "../Notify";
+import QRCode from "react-qr-code";
 
 export default function IconTabs() {
     let nextId=0;
@@ -57,6 +58,7 @@ export default function IconTabs() {
                     payment2_id: device.hasOwnProperty('payment2_id') ? device.payment2_id : '',
                     payment_id: device.payment_id,
                     verified:device.verified,
+                    qr_code:device.qr_code,
                 }));
                 setForm(newRows);
                 console.log(newRows)
@@ -160,10 +162,16 @@ export default function IconTabs() {
                 renderCell: (params) => {
                     // if the url contains 'https://', use the code commented
                     // return <a href={params.row.link} className={"underline "}>{params.row.link}</a>;
+
+
                     let link;
                     if(params.row.link !=='') link = "https://" + params.row.link;
                     else link = '';
-                    return <a href={'https://'+params.row.link} className={"underline "}>{link}</a>;
+                    // return <a href={'https://'+params.row.link} className={"underline "}>{link}</a>;
+                    return params.row.qr_code!==""?<QRCode
+                        value={params.row.qr_code}
+                        size={40}
+                    />:<label></label>
                 }
             },
             {

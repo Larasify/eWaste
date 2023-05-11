@@ -261,7 +261,7 @@ export default function EditDeviceForm(){
 
                     {/*brand*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Brand</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -285,7 +285,7 @@ export default function EditDeviceForm(){
 
                     {/*model name*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Model Name</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -312,7 +312,7 @@ export default function EditDeviceForm(){
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     {/*Identification*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Identification(New)</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -339,7 +339,7 @@ export default function EditDeviceForm(){
 
                     {/*operating system*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Operating System</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -365,7 +365,7 @@ export default function EditDeviceForm(){
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     {/*memory storage*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Memory Storage</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -392,7 +392,7 @@ export default function EditDeviceForm(){
 
                     {/*color*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}
                                htmlFor={"color"}>
                             * Color</label>
                         <FormControl fullWidth focused={false} size={"small"}>
@@ -410,7 +410,7 @@ export default function EditDeviceForm(){
 
                     {/*type*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Type</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -433,7 +433,7 @@ export default function EditDeviceForm(){
 
                     {/*value*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Expected Value</label>
                         {prices.length === 0 ? (
                                 <FormControl fullWidth focused={false} size={"small"}>
@@ -474,7 +474,7 @@ export default function EditDeviceForm(){
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     {/*status*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Status</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -499,7 +499,7 @@ export default function EditDeviceForm(){
 
                     {/*verified*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Verified</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -517,7 +517,7 @@ export default function EditDeviceForm(){
                 </div>
 
                 {/*description*/}
-                <label className={" text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}
+                <label className={" text-left block mb-2 text-xl font-medium text-gray-900 "}
                        htmlFor={"descriptionInput"}>*
                     Description (No more than 500 words)</label>
 
@@ -532,7 +532,7 @@ export default function EditDeviceForm(){
                                className="h-4 w-4 md:h-5 md:w-5" required checked={device.service === "wipe"}
                                onChange={handleChange}/>
                         <label htmlFor="wiping"
-                               className={"ml-2 text-left block text-xl font-medium text-gray-900 dark:text-white"}>Wipe
+                               className={"ml-2 text-left block text-xl font-medium text-gray-900 "}>Wipe
                             Data from Device</label>
                     </div>
                     <br className={"md:hidden"}/>
@@ -542,7 +542,7 @@ export default function EditDeviceForm(){
                                disabled={["thirty", 'seventy', 'ninety', 'new'].includes(device.identification)}
                                checked={device.service === "wipe and retrieve"} onChange={handleChange}/>
                         <label htmlFor="retrieval"
-                               className={"ml-2 text-left block text-xl font-medium text-gray-900 dark:text-white"}>Wipe
+                               className={"ml-2 text-left block text-xl font-medium text-gray-900 "}>Wipe
                             & Retrieve Data from Device</label>
                     </div>
                 </div>
