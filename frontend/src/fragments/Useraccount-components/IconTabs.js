@@ -55,21 +55,27 @@ export default function IconTabs() {
                     status: device.status,
                     service: device.service,
                     payment2_id: device.hasOwnProperty('payment2_id') ? device.payment2_id : '',
-                    payment_id: device.payment_id
+                    payment_id: device.payment_id,
+                    verified:device.verified,
                 }));
                 setForm(newRows);
+                console.log(newRows)
                 updateRecycleDevicesRow(newRows);
             })
     },[]);
 
 
-    const recycleDevice = (deviceId,status,service,payment_id) => {
+    const recycleDevice = (deviceId,status,identification,service,payment_id,verified) => {
+        console.log(verified)
         if(status !== 'Submitted for Review'){
             Notify.error("Sorry, you have already confirmed recycling!" )
         }
 
         else if((payment_id === null)&&(service !=='wipe')){
             Notify.error("Sorry, please pay for the service first!" )
+        }
+        else if(verified === false){
+            Notify.error("Sorry! This device needs to verify first!")
         }
         else{
             const updateRequest = new Request("/device/updatedevice",{
@@ -183,12 +189,14 @@ export default function IconTabs() {
               <GridActionsCellItem
                 icon={<FaRecycle />}
                 label="Confirm Recycling"
-                onClick={()=>{recycleDevice(params.row.deviceId,params.row.status,params.row.identification,params.row.service,params.row.payment_id)}}
+                onClick={()=>{
+                    recycleDevice(params.row.deviceId,params.row.status,params.row.identification,params.row.service,params.row.payment_id,params.row.verified)}}
               />,
               <GridActionsCellItem
                 icon={<AiOutlineCloudUpload />}
                 label="Retrieval Data from Device"
-                onClick={()=>{dataRetrieval(params.row.deviceId,params.row.service,params.row.identification,params.row.payment_id)}}
+                onClick={()=>{ console.log(params.row.verified)
+                    dataRetrieval(params.row.deviceId,params.row.service,params.row.identification,params.row.payment_id)}}
               />,
               <GridActionsCellItem
                 icon={<BsFillCloudArrowUpFill />}
