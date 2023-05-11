@@ -46,21 +46,23 @@ export default function IconTabs() {
                         return device
                 })
                 console.log(newData)
-                for(let i=0;i<newData.length;i++){
-                    device=newData[i];
-                    console.log(device.is_hidden)
-                    device.id = nextId++
-                    device.modelName = device.model
-                    device.price = price
-                    device.payment = device.hasOwnProperty('payment2_amount')
-                            ?(device.payment_amount+device.payment2_amount):device.payment_amount
-                    device.link = device.qr_code
-                    device.linkService = device.datalink
-                    device.deviceId = device._id
-                    device.payment2_id =device.hasOwnProperty('payment2_id')?device.payment2_id:''
-                }
+                setForm(newData.map((device)=>{
+                    return{
+                    id :nextId++,
+                    modelName : device.model,
+                    identification:device.identification,
+                    payment : device.hasOwnProperty('payment2_amount')
+                            ?(device.payment_amount+device.payment2_amount):device.payment_amount,
+                    link :device.qr_code,
+                    linkService : device.datalink,
+                    deviceId : device._id,
+                    status:device.status,
+                    service:device.service,
+                    payment2_id :device.hasOwnProperty('payment2_id')?device.payment2_id:'',
+                    payment_id:device.payment_id
+                }}))
 
-                setForm(newData);
+
             })
     },[]);
 
@@ -145,13 +147,7 @@ export default function IconTabs() {
         {
           field: 'status',
           headerName: 'Status',
-          flex: 1.2,
-        },
-        {
-          field: 'price',
-          headerName: 'Price',
-          type: 'number',
-          flex: 0.8
+          flex: 1,
         },
         {
           field: 'payment',
