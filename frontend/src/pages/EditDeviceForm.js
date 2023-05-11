@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 import {useLocation, useNavigate} from "react-router-dom";
 import {IoChevronBackCircle} from "react-icons/io5";
-import {FormControl, TextField} from '@mui/material';
+import {FormControl} from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import {Notify} from "../fragments/Notify";
@@ -27,15 +27,6 @@ export default function EditDeviceForm(){
     };
 
     const [device, setDevice] = React.useState(state);
-
-    const blockRetrieve = (e) => {
-        const identification = e.target.value
-        if (['30%','70%','90%'].includes(identification)) {
-            document.getElementById('retrieval').disabled = true;
-        } else {
-            document.getElementById('retrieval').disabled = false;
-        }
-    }
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -62,6 +53,13 @@ export default function EditDeviceForm(){
                         .filter(
                             (vendor) => vendor.brand === device.brand && vendor.model_name === value)
                         .map((vendor) => vendor.sale_price2))]);
+                break;
+            case "identification":
+                if (value === "thirty" || value === "seventy" || value === "ninety" || value === "new") {
+                    setDevice({...device, ["service"]: "wipe", ["identification"]: value});
+                } else {
+                    setDevice({ ...device, [name]: value });
+                }
                 break;
             default:
                 setDevice({ ...device, [name]: value });
@@ -108,13 +106,24 @@ export default function EditDeviceForm(){
         navigate('/view-device-report',{state:{deviceId}})
     }
 
-    const sendLink = () => {
+    const sendLinkOrQrCode = () => {
         const sendLinkSubmit = (id = device.id) => {
-            const myRequest = new Request("/device/generatedatalink", {
+            let url;
+            if (device.identification === "thirty"
+                || device.identification === "seventy"
+                || device.identification === "ninety"
+                || device.identification === "new"
+                || device.identification === "rare"
+            ) {
+                url = "/device/generateqr";
+            } else {
+                url = "/device/generatedatalink";
+            }
+            const myRequest = new Request(url, {
                 headers: new Headers({"Content-Type": "application/json"}),
                 method: "POST",
                 credentials: "include",
-                body: JSON.stringify({"id": id})
+                body: JSON.stringify({"id": device.id})
             });
             fetch(myRequest).then((response) => {
                 if (response.status === 200) {
@@ -124,6 +133,7 @@ export default function EditDeviceForm(){
                     throw `Generate data link (HTTP) failed: ${response.status}: ${response.statusText}`;
                 }
             }).then((data) => {
+                console.log(data)
                 if (data['response'] === "success") {
                     Notify.success("Data link is generated and sent to user");
                 } else {
@@ -164,7 +174,6 @@ export default function EditDeviceForm(){
     }
 
     useEffect(() => {
-              
         if(!authState.isLoggedIn || authState.privilege!='staff') navigate('/')
         const loadVendors = async () => {
             const myRequest = new Request("/vendor/getvendorlist", {
@@ -222,16 +231,22 @@ export default function EditDeviceForm(){
                             className={"text-base md:text-lg lg:text-xl text-[#494949] text-left "}>{device.brand}</span>
                         <br className={"md:hidden"}/>
                         <span
-                            className={"md:text-lg lg:text-xl text-white font-bold rounded-full text-left bg-[#4b72b2] p-2 m-2 lg:ml-40"}>{(device.identification || "UNKNOWN").charAt(0).toUpperCase() + (device.identification || "UNKNOWN").slice(1)}</span>
+                            className={"md:text-lg lg:text-xl text-white font-bold rounded-full text-left bg-[#4b72b2] p-2 m-2 lg:ml-40"}>{(
+                            {
+                                "ninety": "90%", "seventy": "70%", "thirty": "30%", "rare": "Rare", "unknown": "Unknown",
+                                "recycle": "Recycle", "new": "New"
+                            }[device.identification] || "UNKNOWN")}
+                        </span>
                         <br/>
                         <span
                             className={"text-base md:text-xl lg:text-2xl md:font-medium text-black text-left lg:leading-loose "}>Expected Value:</span>
                         <br/>
                         <span
                             className={"text-base md:text-xl lg:text-3xl md:font-medium text-[#4b72b2] text-left lg:leading-loose "}>£{device.worth || " UNKNOWN"}</span>
-                        {(state._op === "edit")?
-                            <button className={"underline text-base md:text-lg inline text-[#509E82] border-0 mx-2"} onClick={showReport}>(show report)
-                        </button>:undefined}
+                        {(state._op === "edit") ?
+                            <button className={"underline text-base md:text-lg inline text-[#509E82] border-0 mx-2"}
+                                    onClick={showReport}>(show report)
+                            </button> : undefined}
                         <br/>
                         <span
                             className={"w-full break-normal flex justify-center text-md md:font-medium text-gray-400 text-left lg:leading-loose "}>{device.description}</span>
@@ -246,7 +261,7 @@ export default function EditDeviceForm(){
 
                     {/*brand*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Brand</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -270,7 +285,7 @@ export default function EditDeviceForm(){
 
                     {/*model name*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Model Name</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -282,7 +297,7 @@ export default function EditDeviceForm(){
                                 className={"text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
                             >
                                 {models.length === 0 ?
-                                   <MenuItem value={null} selected disabled>Please select a brand first</MenuItem>
+                                    <MenuItem value={null} selected disabled>Please select a brand first</MenuItem>
                                     :
                                     models.map((model) => (<MenuItem value={model}>{model}</MenuItem>))
                                 }
@@ -297,7 +312,7 @@ export default function EditDeviceForm(){
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     {/*Identification*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Identification(New)</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -306,14 +321,14 @@ export default function EditDeviceForm(){
                                 value={device.identification}
                                 onChange={(e) => {
                                     handleChange(e)
-                                    blockRetrieve(e)
                                 }}
                                 name={"identification"}
                                 className={"text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
                             >
-                                <MenuItem value={"30%"}>Current (30%)</MenuItem>
-                                <MenuItem value={"70%"}>Current (70%)</MenuItem>
-                                <MenuItem value={"90%"}>Current (90%)</MenuItem>
+                                <MenuItem value={"new"}>Like New</MenuItem>
+                                <MenuItem value={"ninety"}>90%</MenuItem>
+                                <MenuItem value={"seventy"}>70%</MenuItem>
+                                <MenuItem value={"thirty"}>30%</MenuItem>
                                 <MenuItem value={"rare"}>Rare</MenuItem>
                                 <MenuItem value={"recycle"}>Recycle</MenuItem>
                                 <MenuItem value={"unknown"}>Unknown</MenuItem>
@@ -324,7 +339,7 @@ export default function EditDeviceForm(){
 
                     {/*operating system*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Operating System</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -339,7 +354,8 @@ export default function EditDeviceForm(){
                                 <MenuItem value={"android"}>Android</MenuItem>
                                 <MenuItem value={"ios"}>IOS</MenuItem>
                                 {device.operating_system && !(device.operating_system === "android" || device.operating_system === "ios") ?
-                                    <MenuItem value={device.operating_system}>{device.operating_system}</MenuItem> : undefined
+                                    <MenuItem
+                                        value={device.operating_system}>{device.operating_system}</MenuItem> : undefined
                                 }
                             </Select>
                         </FormControl>
@@ -349,7 +365,7 @@ export default function EditDeviceForm(){
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     {/*memory storage*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Memory Storage</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -366,7 +382,8 @@ export default function EditDeviceForm(){
                                     storages.map((storage) => (<MenuItem value={storage}>{storage}GB</MenuItem>))
                                 }
                                 {device.memory_storage && !(storages.includes(device.memory_storage) || storages.includes(Number(device.memory_storage))) ?
-                                    <MenuItem value={device.memory_storage}>{device.memory_storage}</MenuItem> : undefined
+                                    <MenuItem
+                                        value={device.memory_storage}>{device.memory_storage}</MenuItem> : undefined
                                 }
                             </Select>
                         </FormControl>
@@ -375,7 +392,8 @@ export default function EditDeviceForm(){
 
                     {/*color*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} htmlFor={"color"}>
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}
+                               htmlFor={"color"}>
                             * Color</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <input type="text"
@@ -392,7 +410,7 @@ export default function EditDeviceForm(){
 
                     {/*type*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Type</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -415,7 +433,8 @@ export default function EditDeviceForm(){
 
                     {/*value*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>* Expected Value</label>
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
+                            Expected Value</label>
                         {prices.length === 0 ? (
                                 <FormControl fullWidth focused={false} size={"small"}>
                                     <input type="text"
@@ -438,11 +457,13 @@ export default function EditDeviceForm(){
                                         className={"border border-[#4b72b2] border-2 focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}>
                                         <MenuItem value={prices[0] * 0.5} className={"flex"}>
                                             <label>Cex</label>
-                                            <label className={"absolute right-8 inline text-[#4b72b2] "}>£{prices[0] * 0.5}</label>
+                                            <label
+                                                className={"absolute right-8 inline text-[#4b72b2] "}>£{prices[0] * 0.5}</label>
                                         </MenuItem>
                                         <MenuItem value={prices[1] * 0.5} className={"flex"}>
                                             <label>Argos</label>
-                                            <label className={"absolute right-8 inline text-[#4b72b2] "}>£{prices[1] * 0.5}</label>
+                                            <label
+                                                className={"absolute right-8 inline text-[#4b72b2] "}>£{prices[1] * 0.5}</label>
                                         </MenuItem>
                                     </Select>
                                 </FormControl>
@@ -453,7 +474,7 @@ export default function EditDeviceForm(){
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     {/*status*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Status</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -478,7 +499,7 @@ export default function EditDeviceForm(){
 
                     {/*verified*/}
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Verified</label>
                         <FormControl fullWidth focused={false} size={"small"}>
                             <Select
@@ -496,7 +517,7 @@ export default function EditDeviceForm(){
                 </div>
 
                 {/*description*/}
-                <label className={" text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}
+                <label className={" text-left block mb-2 text-xl font-medium text-gray-900 "}
                        htmlFor={"descriptionInput"}>*
                     Description (No more than 500 words)</label>
 
@@ -508,17 +529,20 @@ export default function EditDeviceForm(){
                 <div className="inline mt-4 md:grid md:grid-cols-2">
                     <div className={"flex items-center "}>
                         <input type="radio" id="wiping" name="service" value="wipe"
-                               className="h-4 w-4 md:h-5 md:w-5" required checked={device.service === "wipe"} onChange={handleChange}/>
+                               className="h-4 w-4 md:h-5 md:w-5" required checked={device.service === "wipe"}
+                               onChange={handleChange}/>
                         <label htmlFor="wiping"
-                               className={"ml-2 text-left block text-xl font-medium text-gray-900 dark:text-white"}>Wipe
+                               className={"ml-2 text-left block text-xl font-medium text-gray-900 "}>Wipe
                             Data from Device</label>
                     </div>
                     <br className={"md:hidden"}/>
                     <div className={"flex items-center "}>
                         <input type="radio" id="retrieval" name="service" value="wipe and retrieve"
-                               className="h-4 w-4 md:h-5 md:w-5" required checked={device.service === "wipe and retrieve"} onChange={handleChange}/>
+                               className="h-4 w-4 md:h-5 md:w-5" required
+                               disabled={["thirty", 'seventy', 'ninety', 'new'].includes(device.identification)}
+                               checked={device.service === "wipe and retrieve"} onChange={handleChange}/>
                         <label htmlFor="retrieval"
-                               className={"ml-2 text-left block text-xl font-medium text-gray-900 dark:text-white"}>Wipe
+                               className={"ml-2 text-left block text-xl font-medium text-gray-900 "}>Wipe
                             & Retrieve Data from Device</label>
                     </div>
                 </div>
@@ -528,15 +552,19 @@ export default function EditDeviceForm(){
                 <label
                     className={"flex text-lg text-[#4b72b2] underline justify-center md:justify-end mr-5 mt-4 md:mt-2"}>{draftMessage}</label>
                 <div className={"flex flex-col md:flex-row justify-end"}>
-                    {device.service === ("wipe and retrieve"||"wipe and further retrieve") ?
-                        <button onClick={sendLink}
-                                className={"w-full md:w-2/5 h-full mt-2 p-2 px-auto md:p-3 md:mr-10 cursor-pointer bg-[#4b72b2] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
-                            Send Link
-                        </button> : undefined
-                    }
+                    <button onClick={sendLinkOrQrCode}
+                            className={"w-full md:w-2/5 h-full mt-2 p-2 px-auto md:p-3 md:mr-10 cursor-pointer bg-[#4b72b2] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
+                        {(device.identification === "thirty"
+                            || device.identification === "seventy"
+                            || device.identification === "ninety"
+                            || device.identification === "new"
+                            || device.identification === "rare"
+                        ) ? "Send QR Code" : "Send Link"
+                        }
+                    </button>
                     <br className={"md:hidden"}/>
                     <button onClick={submitForm}
-                        className={"w-full md:w-1/5 h-full md:mt-2 p-2 px-auto md:p-3 cursor-pointer bg-[#4b72b2] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
+                            className={"w-full md:w-1/5 h-full md:mt-2 p-2 px-auto md:p-3 cursor-pointer bg-[#4b72b2] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>
                         Apply
                     </button>
                 </div>

@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import {useEffect, useState} from "react";
 import {Notify} from "../fragments/Notify";
+import QRCode from "react-qr-code";
 
 
 
@@ -28,12 +29,10 @@ export default function ViewDeviceReport(){
         }
     };
 
-    console.log(deviceId)
     const [device, setDevice] = React.useState({});
 
 
   useEffect(() => {
-      console.log(deviceId)
       const myRequest = new Request("/device/getdevice", {
                 headers: new Headers({"Content-Type": "application/json"}),
                 method: "POST",
@@ -63,6 +62,7 @@ export default function ViewDeviceReport(){
         });
 
 
+
       const loadVendors = async () => {
             const myRequest = new Request("/vendor/getvendorlist", {
                 headers: new Headers({"Content-Type": "application/json"}),
@@ -80,7 +80,14 @@ export default function ViewDeviceReport(){
     }, [])
 
 
-  console.log(device);
+      const generateQR = () => {
+      console.log(device.qr_code)
+           if(device.qr_code===""||!device.hasOwnProperty("qr_code")){
+               return <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] "}>{device.qr_code}</label>}
+           else{
+               return <QRCode value={device.qr_code} size={40}/>
+           }
+    }
 
     return (
         <div className={"flex flex-col md:flex-row relative my-4 w-5/6 mx-auto h-5/6 rounded-3xl "}>
@@ -110,32 +117,30 @@ export default function ViewDeviceReport(){
                         <span className={" text-base md:text-lg text-gray-400 text-left "}>Type: {device.type}</span><br/>
                         <span className={" text-base md:text-lg text-gray-400 text-left"}>Memory Storage: {device.memory_storage}GB</span><br/>
                         <span className={"md:w-full break-normal flex justify-center text-md md:font-medium text-gray-400 text-left lg:leading-loose "}>{device.description}</span>
-
-
                          </p>
                 </div>
             </div>
             <div className={"flex flex-col border-0 md:rounded-r-lg w-full md:w-4/5 h-full bg-white md:bg-auto overflow-auto p-4 md:p-16"}>
                 <div className={"flex flex-col space-y-5 mt-6 md:mb-4 w-2/3 h-full"}>
                     <div className={"lg:grid lg:grid-cols-3"}>
-                        <label className={"text-left font-bold  mb-2 text-2xl text-gray-900 dark:text-white"}>Payment:</label>
-                        <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] dark:text-white"}>{device.hasOwnProperty('payment2_id')?(device.payment_amount+device.payment2_amount):device.payment_amount}</label>
+                        <label className={"text-left font-bold  mb-2 text-2xl text-gray-900 "}>Payment:</label>
+                        <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] "}>{device.hasOwnProperty('payment2_id')?(device.payment_amount+device.payment2_amount):device.payment_amount}</label>
                     </div>
                     <div className={"lg:grid lg:grid-cols-3"}>
-                       <label className={"text-left font-bold mb-2 text-2xl text-gray-900 dark:text-white"}>Status:</label>
-                       <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] dark:text-white"}>{device.status}</label>
+                       <label className={"text-left font-bold mb-2 text-2xl text-gray-900 "}>Status:</label>
+                       <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] "}>{device.status}</label>
                     </div>
                     <div className= {"lg:grid lg:grid-cols-3"}>
-                       <label className={"text-left font-bold mb-2 text-2xl text-gray-900 dark:text-white"}>Service:</label>
-                       <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] dark:text-white"}>{device.service}</label>
+                       <label className={"text-left font-bold mb-2 text-2xl text-gray-900 "}>Service:</label>
+                       <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] "}>{device.service}</label>
                     </div>
                     <div className= {"lg:grid lg:grid-cols-2"}>
-                       <label className={"text-left font-bold mb-2 text-2xl text-gray-900 dark:text-white"}>QR Code Link:</label>
-                         <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] dark:text-white"}>{device.qr_code}</label>
+                       <label className={"text-left font-bold mb-2 text-2xl text-gray-900 "}>QR Code Link:</label>
+                        {generateQR()}
                     </div>
                     <div className= {"lg:grid lg:grid-cols-2"}>
-                       <label className={"text-left font-bold mb-2 text-2xl text-gray-900 dark:text-white"}>Service Link:</label>
-                         <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] dark:text-white"}>{device.datalink}</label>
+                       <label className={"text-left font-bold mb-2 text-2xl text-gray-900 "}>Service Link:</label>
+                         <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] "}>{device.datalink}</label>
                     </div>
                 {/*    <div className={"flex flex-col md:flex-row justify-end"}>*/}
                 {/*    <button className={"w-full md:w-2/5 h-full mt-12 p-2 px-auto md:p-3 md:mr-10 cursor-pointer bg-[#509E82] text-white rounded-full justify-center text-lg md:text-xl lg:text-2xl font-bold md:mb-6"}>*/}

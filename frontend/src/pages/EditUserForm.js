@@ -97,14 +97,14 @@ export default function EditUserForm() {
                 if (response.status === 200) {
                     return response.json();
                 } else {
-                    alert(`Update user info (HTTP) failed: ${response.status}: ${response.statusText}`);
+                    Notify.error(`Update user info (HTTP) failed: ${response.status}: ${response.statusText}`);
                 }
             }).then((data) => {
                 // Check update response message
                 if (data['response'] === "success") {
                     navigate(-1);
                 } else {
-                    alert(`Update user info failed: ${data['message']}`)
+                    Notify.error(`Update user info failed: ${data['message']}`)
                 }
             });
         } else if (location.state._op === 'add') {
@@ -153,7 +153,7 @@ export default function EditUserForm() {
         if(!authState.isLoggedIn || authState.privilege!='admin') navigate('/')
       
         if (!location.state) {
-            alert("invalid location.state")
+            Notify.error("invalid location.state")
         }
         const state = location.state;
         formData.firstName = state['first_name'];
@@ -177,7 +177,7 @@ export default function EditUserForm() {
             <div className={"flex flex-col border-0 md:rounded-r-lg w-full md:w-4/5 h-full bg-white md:bg-auto overflow-auto p-4 md:p-16"}>
                 <div className={"md:grid md:grid-cols-2 gap-x-10 mt-6 md:mb-2 "}>
                     <div>
-                        <label htmlFor="firstNameInput" className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label htmlFor="firstNameInput" className={"text-left block mb-4 text-xl font-medium text-gray-900 "}>*
                             First Name</label>
                         <input
                             className={"block w-full p-2 md:p-3 text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#4b72b2] focus:border-[#4b72b2]"}
@@ -185,7 +185,7 @@ export default function EditUserForm() {
                     </div>
                     <br className={"block md:hidden"}/>
                     <div>
-                        <label htmlFor="lastNameInput" className={" text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label htmlFor="lastNameInput" className={" text-left block mb-4 text-xl font-medium text-gray-900 "}>*
                             Last Name</label>
                         <input
                             className={" block w-full p-2 md:p-3 text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#4b72b2] focus:border-[#4b72b2]"}
@@ -194,7 +194,7 @@ export default function EditUserForm() {
                 </div>
                 <div className={"md:grid md:grid-cols-2 gap-x-10 mt-6 md:mb-2 "}>
                     <div>
-                        <label htmlFor="emailInput" className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label htmlFor="emailInput" className={"text-left block mb-4 text-xl font-medium text-gray-900 "}>*
                             Email</label>
                         <input
                             className={"block w-full p-2 md:p-3 text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#4b72b2] focus:border-[#4b72b2]"}
@@ -202,7 +202,7 @@ export default function EditUserForm() {
                     </div>
                     <br className={"block md:hidden"}/>
                     <div>
-                        <label htmlFor="phoneInput" className={" text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label htmlFor="phoneInput" className={" text-left block mb-4 text-xl font-medium text-gray-900 "}>*
                             Phone Number</label>
                         <input
                             className={" block w-full p-2 md:p-3 text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#4b72b2] focus:border-[#4b72b2]"}
@@ -212,7 +212,7 @@ export default function EditUserForm() {
 
                 <div className={"md:grid md:grid-cols-2 gap-x-10 mt-6 md:mb-6 "}>
                     <div>
-                        <label htmlFor="passwordInput" className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label htmlFor="passwordInput" className={"text-left block mb-4 text-xl font-medium text-gray-900 "}>*
                             Password</label>
                         <input
                             className={"block w-full p-2 md:p-3 text-gray-900 border border-[#4b72b2] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#4b72b2] focus:border-[#4b72b2]"}
@@ -224,14 +224,14 @@ export default function EditUserForm() {
                         <input id="staffRadio" className="h-4 w-4 md:h-6 md:w-6 border border-[#4b72b2] mr-4 border-2
                         focus:outline-0 focus:ring-[#4b72b2] focus:border-[#4b72b2]" onChange={handleFormChange}
                                type="radio" value={"staff"} name={"privilege"} />
-                        <label htmlFor={"staffRadio"} className={"text-left block text-xl font-medium text-gray-900 dark:text-white"}>Staff</label>
+                        <label htmlFor={"staffRadio"} className={"text-left block text-xl font-medium text-gray-900 "}>Staff</label>
                     </div>
                     <br className={"md:hidden"}/>
                     <div className={"flex my-auto items-center"}>
                         <input id="userRadio" className="h-4 w-4 md:h-6 md:w-6  border border-[#4b72b2] border-2 mr-4
                         focus:outline-0 focus:ring-[#4b72b2] focus:border-[#4b72b2]" onChange={handleFormChange}
                                type="radio" value={"user"} name={"privilege"} />
-                        <label htmlFor={"userRadio"} className={"text-left block text-xl font-medium text-gray-900 dark:text-white"}>User</label>
+                        <label htmlFor={"userRadio"} className={"text-left block text-xl font-medium text-gray-900 "}>User</label>
                     </div>
                 </div>
 

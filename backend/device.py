@@ -256,7 +256,7 @@ def verifyDeviceById():
     device_id = data.get("id")
     verified = data.get("verified")
     query = {"_id":device_id}
-    update_dict = {"verified":verified}
+    update_dict = {"verified":verified, "identification":"recycle"}
     # update the device
     result = db.Devices.update_one(query, {"$set": update_dict})
 

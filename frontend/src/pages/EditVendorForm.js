@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 import {AuthContext} from "../App";
 import {IoChevronBackCircle} from "react-icons/io5";
+import {Notify} from "../fragments/Notify";
 
 
 
@@ -62,11 +63,11 @@ export default function EditVendorForm(){
             if (response.status === 200) {
                 return response.json();
             } else {
-                alert(`Update vendor (HTTP) failed: ${response.status}: ${response.statusText}`);
+                Notify.error(`Update vendor (HTTP) failed: ${response.status}: ${response.statusText}`);
             }
         }).then((data) => {
             if (data['response'] !== "success") {
-                alert("Update vendor failed: " + data['message']);
+                Notify.error("Update vendor failed: " + data['message']);
                 return;
             }
             navigate(-1);
@@ -109,14 +110,14 @@ export default function EditVendorForm(){
                 className={"flex flex-col border-0 md:rounded-r-lg w-full md:w-4/5 h-full bg-white md:bg-auto overflow-auto p-4 md:px-16"}>
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-6 md:mb-4 "}>
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Brand</label>
                         <input type="text" id={"brandInput"} onChange={handleChange} name={"brand"}
                                className={"block w-full p-2  text-gray-900 border border-[#4b72b2] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
                     </div>
                     <br className={"block md:hidden"}/>
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Model Name</label>
                         <input type="text" id={"modelInput"} onChange={handleChange} name={"model_name"}
                                className={"block w-full p-2  text-gray-900 border border-[#4b72b2] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
@@ -125,14 +126,14 @@ export default function EditVendorForm(){
                 </div>
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Sale Price</label>
                         <input type="text" id={"priceInput"} onChange={handleChange} name={"sale_price"}
                                className={"block w-full p-2  text-gray-900 border border-[#4b72b2] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
                     </div>
                     <br className={"block md:hidden"}/>
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Size</label>
                         <input type="text" id={"sizeInput"} onChange={handleChange} name={"size"}
                                className={"block w-full p-2  text-gray-900 border border-[#4b72b2] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
@@ -141,7 +142,7 @@ export default function EditVendorForm(){
                 </div>
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     <div>
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Memory Storage</label>
                         <input type="text" id={"storageInput"} onChange={handleChange} name={"storage"}
                                className={"block w-full p-2 text-gray-900 border border-[#4b72b2] border-2 rounded-md bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>

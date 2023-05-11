@@ -54,14 +54,18 @@ export default function DataTable({
     }
 
     const addRow = () => {
-        const state = {}
-        cols.map(col => state[col.field] = '')
-        navigate(redirect_urls.modify, {
-            state: {
-                ...state,
-                _op: 'add'
-            }
-        })
+        if(title==='Transaction') {
+            Notify.error('Operation not permitted')
+        } else {
+            const state = {}
+            cols.map(col => state[col.field] = '')
+            navigate(redirect_urls.modify, {
+                state: {
+                    ...state,
+                    _op: 'add'
+                }
+            })
+        }
     }
 
     const editRow = () => {

@@ -1,14 +1,8 @@
-import React, {useEffect} from 'react'
-import {AiOutlinePlusCircle} from 'react-icons/ai';
-import {AiOutlineDelete} from 'react-icons/ai';
-import {AiOutlineEdit} from 'react-icons/ai';
-import {MdOutlineHourglassDisabled} from 'react-icons/md';
+import React from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import { BsSearch } from 'react-icons/bs';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import {useNavigate} from "react-router-dom";
 
+export let updateRecycleDevicesRow;
 
 export default function DataTable({
     rows,
@@ -21,6 +15,8 @@ export default function DataTable({
 
     const [searchedRows,setSearchedRows] = React.useState(rows);
     const [keyword,setKeyword] = React.useState([]);
+
+    updateRecycleDevicesRow = setSearchedRows;
 
     const handleSearch = () =>{
         if(rows.length === 0){

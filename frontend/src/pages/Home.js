@@ -256,7 +256,7 @@ export default function Home() {
                         </div>
                         <div className={"flex flex-col w-full md:w-1/5 items-center text-3xl text-[#509E82] mb-4 md:mb-0"}>
                             <FaRegCreditCard/>
-                            <span className={"text-base mt-4 text-black mx-4 md:mx-0 text-center md:text-left font-bold md:font-normal"}>Get your money sent to you!</span>
+                            <span className={"text-base mt-4 text-black mx-4 md:mx-0 text-center md:text-left font-bold md:font-normal"}>Complete Payment and retrieve your data!</span>
                         </div>
                     </div>
                 </div>

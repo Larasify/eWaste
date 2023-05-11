@@ -42,7 +42,7 @@ def login():
     session_id = generate_random_session_id()
     session_ids[session_id] = user.get("_id")
     response = current_app.make_response({"response":"success"})
-    response.set_cookie('session-id', session_id, max_age=60*60*24*365*2, httponly=True)
+    response.set_cookie('session-id', session_id, max_age=60*60*24*365*2)
     #if a user has a Last Successful Login notification, delete it
     db.Users.update_one({"_id":user.get("_id")}, {"$pull":{"notifications":{"title":"Last Successful Login"}}})
     #add a new Last Successful Login notification
