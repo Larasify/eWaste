@@ -1,30 +1,49 @@
+/**
+ * Custom Device page
+ * Invoked when device is not in vendor list
+ * @version 1
+ * @author [Samar Musthafa](https://git.shefcompsci.org.uk/act22sm)
+ * 
+ */
+
+/* Module Imports
+React library Components */
 import React from 'react'
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowBack } from 'react-icons/io';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import CircularProgress from '@mui/material/CircularProgress';
 
+/* Local Imports */
 import {AuthContext} from "../App";
 import { Notify } from '../fragments/Notify';
 
-export default function Device(props) {
+export default function Device() {
 
+    /* Location data passed from parent */
     const {state} = useLocation()
+    /* Estimation passed from parent */
     const [estimatedValue, setEstimation] = React.useState('Please provide more details');
 
     const authState = React.useContext(AuthContext)
     let navigate = useNavigate();
 
+    /* Preload data if available 
+    Leave empty otherwise 
+    Generic method*/
     const preloadIfValid = (key, id) => {
-        console.log(key, state[key], id)
+        /* 
+        * @param {key} object key from the state sent by parent
+        * @param {id} node-id in the document for the state-key value
+        */
         if(state[key] &&
         !['Please Select a Brand', 'Please Select a Brand First', 'Please Select a Model First'].includes(state[key])) {
             document.getElementById(id).value = state[key]
         }
     }
 
+    /* Preload every key in the page */
     const preFetch = () => {
         console.log(state)
         try {
@@ -44,10 +63,12 @@ export default function Device(props) {
         }
     }
 
+    /* On load, prefetch everything available */
     React.useEffect(() => {
         preFetch();
     }, [])
 
+    /* Predict device value based on price and condition */
     const predict = () => {
         const price = document.getElementById('cost-purchase-id').value
         const condition = document.getElementById('device-condition').value
@@ -74,11 +95,13 @@ export default function Device(props) {
         }
     }
 
+    /* Submit new device to the backend */
     const submitDevice = (e) => {
+        /* 
+        * @param {e} event information to prevent form submission
+        */
         e.preventDefault();
         const color = document.getElementById('color-id').value;
-        const purchaseCost = document.getElementById('cost-purchase-id').value;
-        const purchaseYear = document.getElementById('year-purchase-id').value;
         const os = document.getElementById('os-id').value;
         const deviceCondition = document.getElementById('device-condition').value;
         const description = document.getElementById('description').value;
@@ -120,14 +143,17 @@ export default function Device(props) {
         })
     }
 
+    /* Go back */
     const navigateBack = () => {
         if (window.confirm("Are you sure you want to backward? Your update will be lost. ")) {
             navigate(-1);
         }
     };
 
+    /* Main Renderer */
     return (
         <div className="mt-8 mx-4 lg:mx-24 flex justify-center h-full flex-col">
+            {/* Title bar */}
             <div className="mt-4 ml-4 flex flex-row border-b-2 border-b-[#509E82]">
                 <div className="flex w-12 lg:w-8 h-8 rounded-3xl bg-[#509E82] text-[#ffffff] text-xl justify-center items-center cursor-pointer" onClick={navigateBack}><IoIosArrowBack /></div>
                 <div className="ml-4 lg:ml-8 flex text-[#509E82] flex-col pb-4">
@@ -135,6 +161,7 @@ export default function Device(props) {
                     <span className="text-lg">Enter your device details to get a quote!</span>
                 </div>
             </div>
+            {/* Device information representation */}
             <div className="mx-8 lg:mx-20 flex flex-col lg:flex-row justify-center">
                 <div className="mt-4 flex flex-col justify-center items-center w-full lg:w-1/3 text-4xl text-[#509E82] font-semibold">
                     <span>Details</span>
@@ -153,6 +180,7 @@ export default function Device(props) {
                     </div>
                     <span id='price-estimate' className='text-base'>{estimatedValue || ' 70'}</span>
                 </div>
+                {/* Device details input form */}
                 <div className="mt-4 w-full lg:w-2/3 flex flex-col">
                     <form name="new-device-form" onSubmit={submitDevice.bind(null)}>
                         <div className="flex-col lg:flex-row flex mt-4 w-full gap-8">

@@ -81,7 +81,7 @@ export default function Header(props) {
         }
     }
 
-    const handleNotificationClick = (event: React.MouseEvent<HTMLElement>) => {
+    const handleNotificationClick = (event) => {
         if (authState.isLoggedIn) {
             setAnchorNotification(event.currentTarget);
             setOpenNotification((previousOpen) => !previousOpen)

@@ -1,7 +1,19 @@
+/**
+ * Notifier service
+ * @version 1
+ * @author [Samar Musthafa](https://git.shefcompsci.org.uk/act22sm)
+ * 
+ */
+/* Module imports */
 import toast from 'react-hot-toast';
 
+/* Notifier */
 export const Notify = {
+    /* On success */
     success: (message) => {
+        /* 
+        * @param {message} message to show
+        */
         toast.success(message, {
             style: {
               border: '1px solid #449646',
@@ -16,7 +28,11 @@ export const Notify = {
             },
         });
     },
+    /* on Failures */
     error: (message) => {
+        /* 
+        * @param {message} message to show
+        */
         toast.error(message, {
             style: {
               border: '1px solid #e54444',

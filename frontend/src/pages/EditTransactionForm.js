@@ -1,26 +1,38 @@
-import React from 'react';
+/**
+ * Transactions page
+ * @version 1
+ * @author [Samar Musthafa](https://git.shefcompsci.org.uk/act22sm)
+ * 
+ */
 
+/* Module Imports
+React library Components */
+import React from 'react';
 import {useNavigate, useLocation} from "react-router-dom";
 import {IoChevronBackCircle} from "react-icons/io5";
 import QRCode from "react-qr-code";
+
+/* Local imports */
 import {AuthContext} from "../App";
 import { Notify } from '../fragments/Notify';
 
 export default function EditTransactionForm(){
+    /* Auth state and nav */
     const authState = React.useContext(AuthContext)
     let navigate = useNavigate();
+    /* Data from parent */
     const {state} = useLocation()
+    /* QR code generator and saver */
     let [qr, setQR] = React.useState('works');
 
+    /* Go back */
     const askBackward = () => {
         if (window.confirm("Are you sure you want to backward? Your update will be lost. ")) {
             navigate(-1);
         }
     };
 
-
-    const [transaction, setTransaction] = React.useState({});
-
+    /* Prefetch transaction details */
     const prefetch = () => {
         if(state) {
             document.getElementById('amount').value = state.payment_amount;
@@ -32,22 +44,25 @@ export default function EditTransactionForm(){
         }
     }
 
+    /* Kick user from page if not valid permissions */
     React.useEffect(() => {
         if(!authState.isLoggedIn || authState.privilege!='staff') navigate('/')
         prefetch()
     }, [])
 
-    
+    /* Generate QR code with random coupon string */
     const generateQR = () => {
         setQR(Math.random().toString(36).slice(2))
     }
 
+    /* Submit device information to backend */
   const handleSubmit = () => {
     const amount = document.getElementById('amount').value
     const status = document.getElementById('status').value
     const verified = document.getElementById('verified').value
     const paymentStatus = document.getElementById('payment-status').value
     const paymentID = document.getElementById('transaction-id').value
+    /* Error if empty */
     if(amount=='' || status ==''|| verified == '' || paymentID == '' || paymentStatus == '') {
         Notify.error('Please fill all fields')
     } else {
@@ -75,11 +90,13 @@ export default function EditTransactionForm(){
 
     return (
         <div className={"flex h-full flex-col relative my-4 w-5/6 mx-auto h-5/6 rounded-3xl"}>
+            {/* Transaction details */}
             <div className={"flex h-8 w-full text-2xl md:text-4xl p-4 md:p-8 bg-[#4b72b2] items-center text-white rounded-lg"}
                     onClick={askBackward}>
                 <IoChevronBackCircle className={"mx-2"}/>
                 <span className='ml-2 text-2xl'>Transaction Details</span>
             </div>
+            {/* Input information */}
             <div className='flex flex-row mx-8 h-full mt-8'>
                 <div className='flex flex-col w-1/2 gap-4'>
                     <div className='flex flex-col'>
@@ -107,6 +124,7 @@ export default function EditTransactionForm(){
                         </select>
                     </div>
                 </div>
+                {/* Display generated QR code */}
                 <div className='flex w-1/2 h-full justify-center items-center mt-24 flex-col'>
                     <QRCode 
                         value={qr}
@@ -116,6 +134,7 @@ export default function EditTransactionForm(){
                     <span className='text-lg font-bold'>{qr}</span>
                 </div>
             </div>
+            {/* Controls */}
             <div class='flex w-full gap-16 mt-16 justify-end'>
                 <span 
                 onClick={generateQR}

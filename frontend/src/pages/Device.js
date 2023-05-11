@@ -1,3 +1,13 @@
+/**
+ * Device page
+ * Displays vendor data
+ * @version 1
+ * @author [Samar Musthafa](https://git.shefcompsci.org.uk/act22sm)
+ * 
+ */
+
+/* Module Imports
+React library Components */
 import React from 'react'
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowBack } from 'react-icons/io';
@@ -6,28 +16,39 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import CircularProgress from '@mui/material/CircularProgress';
 
+/* Local Imports */
 import {AuthContext} from "../App";
 import { Notify } from '../fragments/Notify';
 
-export default function Device(props) {
+export default function Device() {
 
+    /* Data passed from parent */
     const {state} = useLocation()
+    /* Estimated device value */
     const [estimatedValue, setEstimation] = React.useState('Please provide more details');
-
+    /* Loader for vendors */
     const [loading, setLoading] = React.useState(true)
+    /* Vendor list data */
     const [data, setData] = React.useState([])
+    /* Brand data */
     const [brands, setBrands] = React.useState([])
+    /* Model data */
     const [models, setModels] = React.useState([])
+    /* Storage Data */
     const [storage, setStorage] = React.useState([])
+    /* Auth and nav */
     const authState = React.useContext(AuthContext)
     let navigate = useNavigate();
 
+    /* If provided data, prefetch and populate */
     const preFetch = () => {
         try {
+            /* Valid data exists */
             if(state.data) {
                 setData(state.data)
                 setBrands([... new Set(state.data.map(v => v.brand))])
             }
+            /* Valid brand. */
             if (state.brand && state.brand != 'Please Select a Brand') {
                 document.getElementById('brand-id').value = state.brand
                 const filteredData = data.filter(v => {
@@ -35,10 +56,12 @@ export default function Device(props) {
                 }) 
                 setModels([... new Set(filteredData.map(d => d.model_name))])
             }
+            /* Valid Model */
             if (state.model && state.model != 'Please Select a Brand First' ) {
                 document.getElementById('model-id').value = state.model
                 document.getElementById('model-id').click();
             }
+            /* Storage and color */
             if (state.storage && state.storage != 'Please Select a Model First' ) document.getElementById('device-storage').value = state.storage
             if (state.color) document.getElementById('color-id').value = state.color
                 
@@ -47,10 +70,12 @@ export default function Device(props) {
         }
     }
 
+    /* Fetch data to display vendors */
     React.useEffect(() => {
         fetchData();
     }, [loading])
 
+    /* Method to obtain vendor data */
     const fetchData = () => {
         fetch('/vendor/getvendorlist')
             .then(vendorRequest => (vendorRequest).json())
@@ -62,6 +87,8 @@ export default function Device(props) {
             });
     }
 
+    /* Predict device value based on 
+    condition and release sale_price */
     const predict = () => {
         const brand = document.getElementById('brand-id').value;
         const model = document.getElementById('model-id').value;
@@ -95,12 +122,13 @@ export default function Device(props) {
         }
     }
 
-
+    /* Submit device to Backend */
     const submitDevice = (e) => {
+        /* 
+        * @param {e} event information to prevent form submission
+        */
         e.preventDefault();
         const color = document.getElementById('color-id').value;
-        const purchaseCost = document.getElementById('cost-purchase-id').value;
-        const purchaseYear = document.getElementById('year-purchase-id').value;
         const os = document.getElementById('os-id').value;
         const deviceCondition = document.getElementById('device-condition').value;
         const description = document.getElementById('description').value;
@@ -108,6 +136,7 @@ export default function Device(props) {
         const brand = document.getElementById('brand-id').value;
         const model = document.getElementById('model-id').value;
         const deviceStorage = document.getElementById('device-storage').value;
+        /* Find selected device */
         const vendor = data.filter(v => {
             return v.brand == brand && 
                     v.model_name == model &&
@@ -149,7 +178,11 @@ export default function Device(props) {
         }
     }
 
+    /* Populate data into subsequent selects */
     const fetchOptions = (column) => {
+        /* 
+        * @param {column} column for which data is to be populated
+        */
         if(column === 'model') {
             const filteredData = data.filter(v => {
                 return v.brand === document.getElementById('brand-id').value
@@ -164,12 +197,14 @@ export default function Device(props) {
         }
     }
 
+    /* Go back */
     const navigateBack = () => {
         if (window.confirm("Are you sure you want to backward? Your update will be lost.")) {
             navigate(-1);
         }
     };
-
+    
+    /* Go to custom page since vendor data is not valid */
     const navigateToCustom = () => {
         const color = document.getElementById('color-id').value;
         const purchaseCost = document.getElementById('cost-purchase-id').value;
@@ -195,8 +230,10 @@ export default function Device(props) {
         })
     }
 
+    /* Render loader until data is fetched */
     const renderForm = () => {
         if (loading) {
+            /* Data fetching. Loader */
             return <div className='w-full h-full justify-center items-center flex flex-col mt-8'>
                 <CircularProgress sx={{
                     color: '#509E82'
@@ -204,6 +241,7 @@ export default function Device(props) {
                 <label className='mt-4 lg:mt-8 text-grey'>Fetching Vendor Details. Please wait</label>
             </div>
         } else {
+            /* Form with select lists */
             return <form name="new-device-form" onSubmit={submitDevice.bind(null)}>
                 <div className="flex-col lg:flex-row flex mt-4 w-full gap-8">
                     <div className='flex flex-col w-full'>
@@ -300,6 +338,7 @@ export default function Device(props) {
 
     return (
         <div className="mt-8 mx-4 lg:mx-24 flex justify-center h-full flex-col">
+            {/* Title bar */}
             <div className="mt-4 ml-4 flex flex-row border-b-2 border-b-[#509E82]">
                 <div className="flex w-12 lg:w-8 h-8 rounded-3xl bg-[#509E82] text-[#ffffff] text-xl justify-center items-center cursor-pointer" onClick={navigateBack}><IoIosArrowBack /></div>
                 <div className="ml-4 lg:ml-8 flex text-[#509E82] flex-col pb-4">
@@ -308,6 +347,7 @@ export default function Device(props) {
                 </div>
             </div>
             <div className="mx-8 lg:mx-20 flex flex-col lg:flex-row justify-center">
+                {/* Device information */}
                 <div className="mt-4 flex flex-col justify-center items-center w-full lg:w-1/3 text-4xl text-[#509E82] font-semibold">
                     <span>Details</span>
                     <div className="p-8 mt-4 w-60 border-2 border-[#509E82] h-80 rounded-3xl flex justify-center items-center">
@@ -325,6 +365,7 @@ export default function Device(props) {
                     </div>
                     <span id='price-estimate' className='text-base'>{estimatedValue || ' 70'}</span>
                 </div>
+                {/* Details form */}
                 <div className="mt-4 w-full lg:w-2/3 flex flex-col">
                     {renderForm()}
                 </div>
