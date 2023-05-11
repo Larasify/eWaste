@@ -1,12 +1,10 @@
 import React,{useEffect} from 'react';
-import {BsFillArrowLeftCircleFill, BsPaypal} from "react-icons/bs";
-import {FaCcStripe} from "react-icons/fa";
 import './UserRecycle.css';
 import IconTabs from '../fragments/Useraccount-components/IconTabs';
 import {IoChevronBackCircle} from "react-icons/io5";
 import {useNavigate} from "react-router-dom";
 import {Notify} from "../fragments/Notify";
-import {addPayment, updateService} from "./Stripe";
+import {openLoginWindow} from "../fragments/Layout";
 
 export default function UserRecycle(){
     let navigate = useNavigate();
@@ -38,7 +36,7 @@ export default function UserRecycle(){
             }
         }).then((data) => {
             if (data['message'] === "not_logged_in") {
-                //TODO jump to login page
+                openLoginWindow();
             } else if (data['response'] === "success") {
                 const user_info = data['user_info']
                 setUserInfo({

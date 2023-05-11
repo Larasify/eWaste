@@ -8,11 +8,14 @@ import {Modal} from "@mui/material";
 import Login from "./Login";
 import Box from "@mui/material/Box";
 
+export let openLoginWindow;
+
 export default function Layout() {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    openLoginWindow = handleOpen;
     return (
         <AuthContextProvider>
             <Toaster 
