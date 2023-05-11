@@ -1,11 +1,23 @@
+/**
+ * User Recycle Page
+ * @version 1
+ * @author [Hongyu Pan](https://git.shefcompsci.org.uk/acr21hp)
+ *
+ */
+
+/* Module Imports
+React library Components */
 import React,{useEffect} from 'react';
-import './UserRecycle.css';
-import IconTabs from '../fragments/Useraccount-components/IconTabs';
 import {IoChevronBackCircle} from "react-icons/io5";
 import {useNavigate} from "react-router-dom";
+
+/* Local imports */
+import IconTabs from '../fragments/Useraccount-components/IconTabs';
 import {Notify} from "../fragments/Notify";
 import {openLoginWindow} from "../fragments/Layout";
+import './UserRecycle.css';
 
+/* Main component renderer */
 export default function UserRecycle(){
     let navigate = useNavigate();
 
@@ -15,6 +27,7 @@ export default function UserRecycle(){
         }
     };
 
+    /* Set default information */
     const [userInfo, setUserInfo] = React.useState({
         firstName: 'Harper',
         lastName: 'Perez',
@@ -23,6 +36,7 @@ export default function UserRecycle(){
     })
 
 
+    /* Get the user and set the list */
     useEffect(() =>{
         const getUserRequest = new Request({
             headers: new Headers({"Content-Type": "application/json"}),
@@ -72,7 +86,7 @@ export default function UserRecycle(){
                 </div>
             </div>
 
-            {/*list*/}
+            {/*IconTabs of User Recycle*/}
             <div className={"flex flex-col border-0 md:rounded-r-lg w-full  h-full bg-white md:bg-white overflow-auto p-2 max-h-max"}>
                 <IconTabs/>
             </div>

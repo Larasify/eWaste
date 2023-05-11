@@ -1,3 +1,10 @@
+/**
+ * Icontabs fragment Component for dashboard
+ * @version 1
+ * @author [Samar Musthafa](https://git.shefcompsci.org.uk/act22sm)
+ * 
+ */
+/* Module imports */
 import React, {useContext} from 'react'
 import {HiOutlineDeviceTablet} from 'react-icons/hi';
 import {BsReceipt} from 'react-icons/bs';
@@ -12,6 +19,7 @@ import Tab from '@mui/material/Tab';
 import Switch from '@mui/material/Switch';
 import { styled } from '@mui/material/styles';
 
+/* Local imports */
 import './IconTabs.css';
 import TabPanel from './TabPanel.js';
 import {AuthContext} from "../../App";
@@ -21,24 +29,28 @@ import { Notify } from '../Notify';
 
 export default function IconTabs() {
 
+    /* Context and nav */
     const authState = useContext(AuthContext)
     const navigate = useNavigate();
 
+    /* Value setter for changes in tab */
     const [value, setValue] = React.useState(0);
+    /* Render table loading on requests */
     const [loading, setLoading] = React.useState(true)
+    /* device panel data */
     const [deviceData, setDeviceData] = React.useState({cols: [], rows: []})
+    /* transaction panel data */
     const [transactionData, setTransactionData] = React.useState({cols: [], rows: []})
+    /* vendor panel data */
     const [vendorData, setVendorData] = React.useState({cols: [], rows: []})
 
+    /* on load, get data */
     React.useEffect(() => {
         fetchData();
     }, [loading])
 
-    const onCLick = () => {
-        console.log(deviceData.rows[0]);
-    }
-    
-    const Android12Switch = styled(Switch)(({ theme }) => ({
+    /* Themed switch for one-click verify */    
+    const Android12Switch = styled(Switch)(({  }) => ({
         padding: 8,
         '& .MuiSwitch-track': {
             backgroundColor: 'grey',
@@ -68,7 +80,9 @@ export default function IconTabs() {
     }));
   
 
+    /* Get data */
     const fetchData = () => {
+        /* get device list information and make rows and cols */
         fetch('/device/getdevicelist')
         .then(deviceRequest => (deviceRequest).json())
         .then(devices => {
@@ -78,6 +92,7 @@ export default function IconTabs() {
                 u.payment_status = u.payment_id ? 'Done' : 'Pending';
 
             })
+            /* set device list information and make rows and cols */
             setDeviceData({
                 cols: [
                     {field: 'model', headerName: 'Model Name', flex: 2},
@@ -125,6 +140,7 @@ export default function IconTabs() {
                 ],
                 rows: deviceList
             });
+            /* set transaction list information and make rows and cols */
             setTransactionData({
                 cols: [
                     {field: 'id', headerName: 'Device ID', flex: 2},
@@ -140,6 +156,7 @@ export default function IconTabs() {
                 rows: deviceList
             });
         });
+        /* get vendor list information and make rows and cols */
         fetch('/vendor/getvendorlist')
         .then(vendorRequest => (vendorRequest).json())
         .then(vendors => {
@@ -159,13 +176,21 @@ export default function IconTabs() {
         });
     }
 
+    /* On tab switch */
     const handleChange = (event, newValue) => {
         fetchData();
         setValue(newValue);
     };
 
+    /* generic table renderer */
     const renderTable = (data, title, urls) => {
+        /* 
+        * @param {data} rows and columns
+        * @param {title} Table title
+        * @param {urls} operation urls in datatable
+        */
         if (loading) {
+            /* Load on fetch */
             return <div className='w-full h-full justify-center items-center flex flex-col mt-8'>
                 <CircularProgress sx={{
                     color: '#bb92d7'
@@ -173,6 +198,7 @@ export default function IconTabs() {
                 <label className='mt-4 lg:mt-8 text-grey'>Fetching Details. Please wait</label>
             </div>
         } else {
+            /* Render table */
             return <DataTable 
                 rows={data.rows}
                 cols={data.cols}
@@ -188,6 +214,7 @@ export default function IconTabs() {
         }
     }
 
+    /* On logout handler */
     const logout = () => {
         logoutSubmit().then(_ => {});
         authState.onLogout();
@@ -195,10 +222,13 @@ export default function IconTabs() {
         navigate("/")
     }
 
+    /* Main renderer */
     return (
         <div className={'flex w-full h-screen flex-row'}>
             <div className={"flex flex-col w-16 h-full items-center sdb-controls"} style={{backgroundColor: '#ebebeb'}}>
+                {/* Left Panel */}
                 <div className='flex flex-col h-full mt-12'>
+                    {/* Tabs */}
                     <Tabs value={value} onChange={handleChange} aria-label="staff-dashboard" orientation='vertical'>
                         <Tab icon={
                             <div className="text-2xl flex justify-center cursor-pointer mb-8 sdb-tab">
@@ -223,6 +253,7 @@ export default function IconTabs() {
                         } aria-label="users"/>
                     </Tabs>
                 </div>
+                {/* Logout */}
                 <div className='flex flex-col h-1/6 items-end'>
                     <div className="text-2xl mb-8 flex justify-self-end cursor-pointer">
                         <Tooltip title="Logout" placement='right' arrow onClick={logout}>
@@ -233,6 +264,7 @@ export default function IconTabs() {
                     </div>
                 </div>
             </div>
+            {/* Tab Panels */}
             <div className='flex flex-col w-full h-full'>
                 <div className="h-full">
                     <TabPanel className="h-full max-h-fit" value={value} index={0}>

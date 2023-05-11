@@ -1,11 +1,21 @@
+/**
+ * Stripe Page
+ * @version 1
+ * @author [Hongyu Pan](https://git.shefcompsci.org.uk/acr21hp)
+ *
+ */
+
+/* Module Imports
+React library Components */
 import React, {useEffect, useId, useRef, useState} from 'react'
 import {useLocation, useNavigate} from "react-router-dom";
 import {FaCcStripe} from "react-icons/fa";
-import {Notify} from "../fragments/Notify";
+
 import {Elements,CardElement,useStripe} from "@stripe/react-stripe-js"
 import {loadStripe} from "@stripe/stripe-js"
+import {Notify} from "../fragments/Notify";
 
-import { v4 as uuidv4 } from 'uuid';
+
 
 export  default  function Stripe(){
 
@@ -14,11 +24,12 @@ export  default  function Stripe(){
     let newPaymentId;
     let deviceId,newService,amount,description,payment_id;
 
+
     const stripePromise=loadStripe('pk_test_51N5FUWEPDlosnaW6Sbqw3RdjPn5oKWU6VfJNiAMC4z7BzgYBtVHOOf' +
         'CCuMFZOT7fh9IQ9YSQR4ewu6oKNR9O4ybr00xX9MIfUn')
 
 
-    // This one is for adding,payment_id is used to check if there's already a payment
+    /* Update Device Payment after Paying */
     const [message, setMessage] = useState("");
 
         function updateService(){
@@ -92,6 +103,7 @@ export  default  function Stripe(){
 
             }
 
+        /* Get the User Payment Information */
         useEffect(() => {
             if(location.state !== null){
                 deviceId = location.state.deviceId;
@@ -112,7 +124,7 @@ export  default  function Stripe(){
                 console.log(payment_id)
                 console.log(paymentInfo)
             }
-            // Check to see if this is a redirect back from Checkout
+            /* Check to see if this is a redirect back from Checkout */
             const query = new URLSearchParams(window.location.search);
             console.log(query)
 
@@ -129,6 +141,7 @@ export  default  function Stripe(){
         }, []);
 
 
+        /* Handle the Checkout Information */
         const handleCheckout = async ()=>{
             console.log(newService)
             console.log(payment_id)
@@ -146,6 +159,7 @@ export  default  function Stripe(){
         }
                 )
             }
+            /* Store the local state and navigate to checkout */
             await fetch('/device/create-checkout-session', requestOptions).
                 then(response => response.json())
                 .then(data => {

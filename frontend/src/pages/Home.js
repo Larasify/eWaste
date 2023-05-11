@@ -1,39 +1,65 @@
+/**
+ * Landing page
+ * @version 1
+ * @author [Samar Musthafa](https://git.shefcompsci.org.uk/act22sm)
+ * 
+ */
+
+/* Module Imports
+React library Components */
 import React, {
-    // useState
 } from 'react'
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Listing from '../fragments/Listing.js';
+/* Icons */
 import { FiMapPin } from 'react-icons/fi';
 import { FaRegCreditCard } from 'react-icons/fa';
 import { 
-    // AiFillStar, AiOutlineStar, 
     AiOutlineEdit, AiOutlineArrowRight } from 'react-icons/ai';
 import { BsSearch } from 'react-icons/bs';
+/* UI Components */
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import TabPanel from '../fragments/Dashboard-components/TabPanel.js';
 import CircularProgress from '@mui/material/CircularProgress';
 
+/* Local Imports */
+import TabPanel from '../fragments/Dashboard-components/TabPanel.js';
 import {AuthContext} from "../App";
 import './Home.css'
+import Listing from '../fragments/Listing.js';
 import Comment from '../fragments/Comment';
-import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
+    /* Use states for storing data 
+    loader when data is being fetched for the vendor list */
     const [loading, setLoading] = React.useState(true)
+    /* loader when data if being fetched for the recent/common device list */
     const [deviceLoading, setDeviceLoading] = React.useState(true)
+    /* vendor data */
     const [data, setData] = React.useState([])
+    /* brand data */
     const [brands, setBrands] = React.useState([])
+    /* model data */
     const [models, setModels] = React.useState([])
+    /* storage data */
     const [storage, setStorage] = React.useState([])
+    /* recent Device data */
     const [recentDevices, setRecentDevices] = React.useState([])
+    /* common device data */
     const [commonDevices, setCommonDevices] = React.useState([])
+    /* Tab value checker. To swtich tabs */
+    const [value, setValue] = React.useState(0);
+    /* navigator */ 
     let navigate = useNavigate();
     
+    /* on page load, fetch data. depends on loading  */
     React.useEffect(() => {
         fetchData();
     }, [loading])
 
+    /* Method to fetch data 
+        gets vendors, devices that most common and recent
+    */
     const fetchData = () => {
         fetch('/vendor/getvendorlist')
             .then(vendorRequest => (vendorRequest).json())
@@ -56,7 +82,11 @@ export default function Home() {
             })
     }
 
+    /* Handle a change in the select list to populate the next subsequent list */
     const fetchOptions = (column) => {
+        /* 
+        * @param {column} column for which data is to be populated
+        */
         if(column === 'model') {
             const filteredData = data.filter(v => {
                 return v.brand === document.getElementById('h-brand-id').value
@@ -71,6 +101,7 @@ export default function Home() {
         }
     }
 
+    /* Form submit action */
     const submitDevice = () => {
         navigate('/device', {
             state: {
@@ -83,25 +114,40 @@ export default function Home() {
         })
     }
 
-    const [value, setValue] = React.useState(0);
+    /* Handle changed tab */
     const handleChange = (event, newValue) => {
+        /* 
+        * @param {event} event triggered
+        * @param {newValue} tab to switch to
+        */
         setValue(newValue);
     };
 
+    /* Helper function for tab panel */
     function a11yProps(index) {
+        /* 
+        * @param {index} new index obtained by switch
+        */
         return {
             id: `tab-${index}`,
             'aria-controls': `tabpanel-${index}`
         };
     }
 
+    /* Tab Panel defaults */
     TabPanel.propTypes = {
         children: PropTypes.node,
         index: PropTypes.number.isRequired,
         value: PropTypes.number.isRequired,
     };
 
+    /* 
+    Helper function that displays loader until
+    The device information is fetched. Then it renders 
+    The recent and common device list
+     */
     const renderDevices = () => {
+        /* Loader */
         if (deviceLoading) {
             return  <div className='w-full h-full justify-center items-center flex flex-col mt-8'>
                 <CircularProgress sx={{
@@ -111,6 +157,7 @@ export default function Home() {
             </div>
         } else {
             return <>
+            {/* Tabs for Recent and common devices */}
                 <div className={"home-tabs"}>
                     <Tabs value={value} onChange={handleChange} aria-label="device-suggestions">
                         <Tab className={"mr-8"} label="Recently Recycled" {...a11yProps(0)}/>
@@ -145,8 +192,14 @@ export default function Home() {
         }
     }
 
+    /* 
+    Helper function that displays loader until
+    The vendor information is fetched. Then it renders 
+    The vendor list and listens for changes
+     */
     const renderForm = () => {
         if (loading) {
+            /* Loader */
             return  <div className='w-full h-full justify-center items-center flex flex-col mt-8'>
                 <CircularProgress sx={{
                     color: '#509E82'
@@ -155,9 +208,11 @@ export default function Home() {
             </div>
         } else {
             return <>
+            {/* Loader */}
                 <div>
                 <span className={"color-[#509E82] mb-4 font-bold text-lg"}>Enter your device details and get a quote as early as 2 hours!</span>
                 </div>
+                {/* Brand Handler */}
                 <div className={"flex flex-col mt-4 w-full device-form-input"}>
                     <label>Brand</label>
                     <select 
@@ -170,6 +225,7 @@ export default function Home() {
                             ))}
                     </select>
                 </div>
+                {/* Model Handler */}
                 <div className={"flex flex-col mt-4 w-full device-form-input"}>
                     <label>Model</label>
                     <select 
@@ -182,6 +238,7 @@ export default function Home() {
                         ))}
                     </select>
                 </div>
+                {/* Storage Handler */}
                 <div className={"flex flex-col mt-4 w-full device-form-input"}>
                     <label>Storage</label>
                     <select required id="h-device-storage" className='h-8 pl-8 text-base rounded-lg border-2 border-[#509E82] w-full bg-white'>
@@ -191,10 +248,12 @@ export default function Home() {
                         ))}
                     </select>
                 </div>
+                {/* Color */}
                 <div className={"flex flex-col mt-4 w-full device-form-input"}>
                     <label>Color</label>
                     <input id='h-color-id' type="text"></input>
                 </div>
+                {/* Submit button */}
                 <div className={"flex mt-8 w-auto px-8 w-max-lg bg-[#509E82] text-white h-8 justify-center items-center font-semibold rounded-2xl cursor-pointer mb-4"} onClick={submitDevice}>
                     <span>Get Quote!</span>
                 </div>
@@ -202,14 +261,18 @@ export default function Home() {
         }
     }
 
+    /* Main div */
     return (
         <div className={"flex flex-col w-full"} style={{height: 'calc(100vh - 6rem)', fontFamily: 'pf'}}>
+            {/* Top Panel */}
             <div className={"flex flex-col lg:flex-row w-full bg-color-red h-auto lg:h-full bg-gradient-to-r from-[#ebfff3] to-[#c7efd7]"}>            
+                {/* User Device Form */}
                 <div className={"flex flex-col w-full lg:w-2/5 px-12 pb-4 mr-8 my-1/2 lg:my-16 justify-center items-center"}>
                     <div className={'flex flex-col justify-center lg:max-w-md w-full mx-12 p-4 lg:px-16 lg:py-8 mt-8 items-center rounded-xl bg-[#ECF4F1] drop-shadow-lg'}>
                         {renderForm()}
                     </div>
                 </div>
+                {/* Banner and Slogan */}
                 <div className={"flex flex-col w-full lg:w-3/5 px-4 lg:px-16 mt-4 lg:my-16 gap-y-1 md:gap-y-4"}> 
                     <div className={"flex flex-col"}>
                         <span className={"text-2xl md:text-4xl"}>
@@ -227,6 +290,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
+            {/* Process breakdown */}
             <div className={"flex w-full h-auto flex-col"}>
                 <div className={"flex flex-col w-full h-1/2 mt-16 px-16"}>
                     <div className={"flex w-fit mb-4 border-b-4 border-b-solid border-b-[#509E82]"}> 
@@ -260,17 +324,20 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
+                {/* Popular reviews we recieved */}
                 <div className={"flex flex-col w-full h-1/2 my-16 px-16"}>
                     <div className={"flex w-fit mb-4 border-b-4 border-b-solid border-b-[#509E82]"}> 
                         <span className={"pb-2 text-2xl"}>User <b>Comments</b></span> 
                     </div>
                     <div className={"flex mt-4 justify-center gap-16 comments"}>
+                        {/* Comment component */}
                         <Comment name="Pan" ts="March 20, 2023" comment="I really appreciate the eWaste Hub! They can help me wipe the data!" rating={4}/>
                         <Comment className={"hidden lg:flex"} name="Buuuu" ts="March 21, 2023" comment="Good Website! They have really good service and even have data retrieval ! Highly recommend!" rating={5}/>
                         <Comment className={"hidden lg:flex"} name="Majiin Buu" ts="March 22, 2023" comment="I really appreciate the eWaste Hub! They have really good service and can help you wipe your data! Highly recommend!" rating={5}/>
                     </div>
                 </div>
             </div>
+            {/* Sections displaying our process and goal */}
             <div className={"flex w-full h-full px-8 md:px-16 py-32 bg-[#ECF4F1]"}> 
                 <div className={"hidden md:flex w-1/2 justify-center"}>
                     <img className={"object-contain"} src="../images/1 1.png"/>
@@ -298,6 +365,7 @@ export default function Home() {
                     <span className={"text-xl text-[#828282]"}>Unlike other recycling sites, our hub will identify the type of recycling depending on your model, which means you may be able to get a good amount of payment for your application. We also offer long term cloud storage of your data if your device will be recycled rather than passed on to a third party. For rare phones, we are better able to identify their value and make better offers than other sites. So please don’t hesitate to choose us!</span>
                 </div>
             </div>
+            {/* Copyright */}
             <div className={"flex justify-center items-center py-8"}>
                 <span>© Copyright eWaste 2023 . All Rights Reserved.</span>
             </div>

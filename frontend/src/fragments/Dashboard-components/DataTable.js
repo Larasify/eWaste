@@ -1,3 +1,10 @@
+/**
+ * Reusable DataTable fragment Component
+ * @version 1
+ * @author [Samar Musthafa](https://git.shefcompsci.org.uk/act22sm)
+ * 
+ */
+/* Module imports */
 import React, {useContext} from 'react'
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { AiOutlineDelete } from 'react-icons/ai';
@@ -10,6 +17,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { useNavigate } from 'react-router-dom';
 import {RiLogoutBoxLine} from 'react-icons/ri';
 
+/* File imports */
 import { Notify } from '../Notify';
 import {AuthContext} from "../../App";
 import {logoutSubmit} from "../Login.js";
@@ -25,15 +33,31 @@ export default function DataTable({
     redirect_urls,
     logout=false
 }) {
+    /*
+    * @param {rows} table rows 
+    * @param {cols} table columns 
+    * @param {ops} table options like page size, etc 
+    * @param {fns} table permitted functions 
+    * @param {title} table title 
+    * @Deprecated @param {count} table row count 
+    * @param {redirect_urls} An object with redirects for edit and add operations 
+    * @param {logout} render table provided logout?
+    */
+    /* Context and navigate */
     const authState = useContext(AuthContext)
     const navigate = useNavigate();
 
+    /* Table rows */
     const [tableRows, setRows] = React.useState(rows);
+    /* Per row selector */
     const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
+    /* Search for rows */
     const [searchedRows,setSearchedRows] = React.useState(rows);
+    /* Keyword searched */
     const [keyword,setKeyword] = React.useState([]);
 
 
+    /* Handle search clicked */
     const handleSearch = () =>{
         const searchedRows = rows.filter((row) => Object.values(row).some(
             (value) =>   typeof value === "string" && value.toLowerCase().includes(keyword)
@@ -41,6 +65,9 @@ export default function DataTable({
         if(keyword === '') setSearchedRows(rows);
         setSearchedRows(searchedRows);
     };
+
+    /* Table operations trigger. 
+    Enable on clicking row */
     const tableOps = () => {
         if(rowSelectionModel) {
             document.getElementById('delete-record').style.color = '#4b72b2';  
@@ -53,6 +80,8 @@ export default function DataTable({
         }
     }
 
+    /* Generic add row Method
+    navigates to passed url */
     const addRow = () => {
         if(title==='Transaction') {
             Notify.error('Operation not permitted')
@@ -68,6 +97,8 @@ export default function DataTable({
         }
     }
 
+    /* Generic edit row Method
+    navigates to passed url */
     const editRow = () => {
         if(rowSelectionModel.length) {
             const row = rows.find(e => e.id === rowSelectionModel[0])
@@ -82,6 +113,8 @@ export default function DataTable({
         }
     }
 
+    /* Generic delete row Method
+    navigates to passed url */
     const deleteRow = () => {
         if(redirect_urls.delete === null) {
             Notify.error('deletion not permitted')
@@ -110,6 +143,8 @@ export default function DataTable({
         }
     }
 
+    /* hide row Method
+    Hides selected device */
     const hideRow = () => {
         if(redirect_urls.hidden === null) {
             Notify.error('operation not permitted')
@@ -145,6 +180,7 @@ export default function DataTable({
         }
     }
 
+    /* Logout action */
     const logoutUser = () => {
         logoutSubmit().then(_ => {});
         authState.onLogout();
@@ -152,6 +188,7 @@ export default function DataTable({
         navigate("/")
     }
 
+    /* Logout button render on table */
     const renderLogout = () => {
         if(logout) {
             return <div class="sdb-top-control ml-8 rounded-lg bg-[#4b72b2] px-4" onClick={logoutUser}>
@@ -167,18 +204,23 @@ export default function DataTable({
         }
     }
 
+    /* Main renderer */
     return (
         <div className='flex w-full h-full flex-col'>
             <div className={"flex w-full pt-4 justify-between"}>
+                {/* Header */}
                 <div className="flex ml-12 w-5/6 font-medium flex-col">
+                    {/* Title */}
                     <span className={"text-lg"}>{title} List</span>
                     <span className={"text-sm text-slate-400"}>{tableRows.length} {`${title.toLowerCase()}s`}</span>
                 </div>
                 <div className={"flex justify-end w-1/6 mr-8"}>
+                    {/* Search */}
                     <div className="flex border-2 border-[#4b72b2] rounded-xl w-60 text-4b72b2 text-[#4b72b2] h-9 mr-8">
                         <input className="ml-4 w-40" type="text" placeholder='Search' onChange={(e) =>setKeyword(e.target.value)}></input>
                         <span className="flex justify-center mr-4 mt-2" onClick={handleSearch}><BsSearch /></span>
                     </div>
+                    {/* Operations */}
                     <div class="sdb-top-control" onClick={addRow}>
                         <Tooltip title={fns[0]}>
                             <IconButton>
@@ -211,6 +253,7 @@ export default function DataTable({
                 </div>
             </div>
             <div className="sdb-main-content mt-4 w-full h-full ">
+                {/* render table */}
                 <DataGrid
                     sx={{
                         height: 'calc(100vh - 8rem)'

@@ -1,3 +1,9 @@
+/**
+ * UserTable
+ * @version 1
+ * @author [Hongyu Pan](https://git.shefcompsci.org.uk/acr21hp)
+ *
+ */
 import React from 'react'
 import {AiOutlinePlusCircle} from 'react-icons/ai';
 import {AiOutlineDelete} from 'react-icons/ai';

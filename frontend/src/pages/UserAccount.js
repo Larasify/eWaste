@@ -1,6 +1,17 @@
+/**
+ * User Account Page
+ * @version 1
+ * @author [Kaijian Xie] (https://git.shefcompsci.org.uk/acp22kx)
+ *
+ */
+
+/* Module Imports
+React library Components */
 import './UserAccount.css';
 import {useNavigate} from "react-router-dom";
 import {IoChevronBackCircle} from "react-icons/io5";
+
+/* Local imports */
 import { Notify } from '../fragments/Notify';
 
 export default function UserAccount(){
@@ -11,6 +22,7 @@ export default function UserAccount(){
         }
     };
 
+    /* Set default information */
     const userInfo = {
         userId: "",
         firstName: "",
@@ -25,11 +37,13 @@ export default function UserAccount(){
         phoneNoChanged: false
     }
 
+    /* Get Input */
     const handleFormChange = (e) => {
         userInfo[e.target.name] = e.target.value
         userInfo[e.target.name + 'Changed'] = true;
     }
 
+    /* Get User Infomation */
     const loadUserInfo = () => {
         const myRequest = new Request("/user/getuser", {
             headers: new Headers({"Content-Type": "application/json"}),
@@ -61,6 +75,7 @@ export default function UserAccount(){
         })
     }
 
+    /* Pass this to backend */
     const submitForm = () => {
         if (document.getElementById("passwordInput").value !== document.getElementById("confirmPasswordInput").value) {
             Notify.error("Your confirm password does not match the password above it.");

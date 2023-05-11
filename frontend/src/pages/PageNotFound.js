@@ -1,3 +1,12 @@
+/**
+ * 404 Page
+ * @version 1
+ * @author [Hongyu Pan](https://git.shefcompsci.org.uk/acr21hp)
+ *
+ */
+
+/* Module Imports
+React library Components */
 import React, {useEffect, useRef, useState} from 'react'
 import {useLocation, useNavigate} from "react-router-dom";
 import {BsFillCheckCircleFill, BsPaypal} from "react-icons/bs";
@@ -7,7 +16,6 @@ export  default  function PageNotFound() {
     let navigate = useNavigate();
     const location = useLocation();
 
-    // This one is for adding,payment_id is used to check if there's already a payment
     let paymentId;
 
     function handleClick() {

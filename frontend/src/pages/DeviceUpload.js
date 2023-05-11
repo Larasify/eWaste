@@ -1,3 +1,5 @@
+
+
 import React from 'react';
 
 import {FaCcStripe} from "react-icons/fa";
@@ -38,6 +40,7 @@ export default function DeviceUpload(){
     // };
     const [device, setDevice] = React.useState({});
 
+    /* Get the value and set them to left side of the page */
   const handleChange = (event) => {
     const { name, value } = event.target;
     setDevice({ ...device, [name]: value });

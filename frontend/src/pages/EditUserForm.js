@@ -1,16 +1,29 @@
-import './EditUserForm.css';
+/**
+ * User Edit Page
+ * @version 1
+ * @author [Kaijian Xie] (https://git.shefcompsci.org.uk/acp22kx)
+ *
+ */
+
+
+/* Module Imports
+React library Components */
+
 import React, {useEffect} from "react";
 import { IoChevronBackCircle } from "react-icons/io5";
 import {useLocation, useNavigate} from "react-router-dom";
+
+/* Local imports */
 import { Notify } from '../fragments/Notify';
 import {AuthContext} from "../App";
+import './EditUserForm.css';
 
 export default function EditUserForm() {
     let navigate = useNavigate();
     const location = useLocation();
     const authState = React.useContext(AuthContext)
-    
-    // object for saving form data temporary
+
+    /* Object for saving form data temporary */
     let formData = {
         "firstName": location.state.first_name,
         "firstNameChanged": false,
@@ -26,13 +39,14 @@ export default function EditUserForm() {
         "privilegeChanged": false
     }
 
-    // form changing handler to reflect all changes into the variable formData
+
+    /* Form changing handler to reflect all changes into the variable formData */
     const handleFormChange = (e) => {
         formData[e.target.name] = e.target.value
         formData[e.target.name + 'Changed'] = true;
     }
 
-    // inject and rerender the form by data saved in the variable formData
+    /* Inject and rerender the form by data saved in the variable formData */
     const injectDataIntoForm = () => {
         document.getElementById("firstNameInput").value = formData.firstName;
         document.getElementById("lastNameInput").value = formData.lastName;
@@ -45,7 +59,7 @@ export default function EditUserForm() {
         }
     }
 
-    // ask before performing backwards before submitting
+    /* Ask before performing backwards before submitting */
     const askBackward = () => {
         if (window.confirm("Are you sure you want to backward? Your update will be lost. ")) {
             navigate(-1);
@@ -54,13 +68,13 @@ export default function EditUserForm() {
 
     const submitForm = () => {
         if(location.state._op === 'edit') {
-            // request body here
+            /* Request body here */
             const updateUserBody = {
                 "id": location.state['id'],
                 fields: {},
             };
 
-            // track any changed data
+            /* Track any changed data */
             if (formData.firstNameChanged) {
                 updateUserBody.fields['first_name'] = formData.firstName
             }
@@ -83,7 +97,7 @@ export default function EditUserForm() {
                 navigate(-1);
                 return;
             }
-            // Put changed fields into a bloody array. Idk why backend takes fields in an array.
+            /* Put changed fields into a bloody array.  */
             updateUserBody.fields = [updateUserBody.fields]
             const myRequest = new Request("/user/updateuser", {
                 headers: new Headers({'Content-Type': 'application/json'}),
@@ -91,16 +105,16 @@ export default function EditUserForm() {
                 body: JSON.stringify(updateUserBody),
                 credentials: "include"
             });
-            // Submit the request
+             /* Submit the request  */
             fetch(myRequest).then((response) => {
-                // Check HTTP status
+                 /* Check HTTP status */
                 if (response.status === 200) {
                     return response.json();
                 } else {
                     Notify.error(`Update user info (HTTP) failed: ${response.status}: ${response.statusText}`);
                 }
             }).then((data) => {
-                // Check update response message
+                /* Check update response message */
                 if (data['response'] === "success") {
                     navigate(-1);
                 } else {
@@ -147,7 +161,8 @@ export default function EditUserForm() {
         
     };
 
-    // pull the originals and inject them into the form for editing.
+
+    /* Pull the originals and inject them into the form for editing  */
     useEffect(() => {
           
         if(!authState.isLoggedIn || authState.privilege!='admin') navigate('/')

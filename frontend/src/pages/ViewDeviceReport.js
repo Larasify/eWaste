@@ -1,3 +1,12 @@
+/**
+ * Report Page
+ * @version 1
+ * @author [Hongyu Pan](https://git.shefcompsci.org.uk/acr21hp)
+ *
+ */
+
+/* Module Imports
+React library Components */
 import React from 'react';
 
 import {FaCcStripe} from "react-icons/fa";
@@ -7,9 +16,12 @@ import { FormControl } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import {useEffect, useState} from "react";
-import {Notify} from "../fragments/Notify";
 import QRCode from "react-qr-code";
+import {useEffect, useState} from "react";
+
+/* Local imports */
+import {Notify} from "../fragments/Notify";
+
 
 
 
@@ -31,8 +43,8 @@ export default function ViewDeviceReport(){
 
     const [device, setDevice] = React.useState({});
 
-
-  useEffect(() => {
+    /* Render the device information */
+    useEffect(() => {
       const myRequest = new Request("/device/getdevice", {
                 headers: new Headers({"Content-Type": "application/json"}),
                 method: "POST",
@@ -41,6 +53,7 @@ export default function ViewDeviceReport(){
                     id:deviceId,
                 })
             })
+
       fetch(myRequest)
             .then((response) => {
                 console.log(response)
@@ -62,7 +75,7 @@ export default function ViewDeviceReport(){
         });
 
 
-
+      /* Got QR_code and datalink */
       const loadVendors = async () => {
             const myRequest = new Request("/vendor/getvendorlist", {
                 headers: new Headers({"Content-Type": "application/json"}),
@@ -80,6 +93,7 @@ export default function ViewDeviceReport(){
     }, [])
 
 
+      /* Generate the QR code using id */
       const generateQR = () => {
       console.log(device.qr_code)
            if(device.qr_code===""||!device.hasOwnProperty("qr_code")){

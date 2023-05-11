@@ -1,3 +1,12 @@
+/**
+ * Paypal Page
+ * @version 1
+ * @author [Hongyu Pan](https://git.shefcompsci.org.uk/acr21hp)
+ *
+ */
+
+/* Module Imports
+React library Components */
 import React, {useEffect, useRef, useState} from 'react'
 import {useLocation, useNavigate} from "react-router-dom";
 import {BsFillCheckCircleFill, BsPaypal} from "react-icons/bs";
@@ -9,9 +18,10 @@ export  default  function Paypal() {
     const {deviceId,newService,amount,description,payment_id} = location.state;
     const paypal = useRef()
 
-    // This one is for adding,payment_id is used to check if there's already a payment
+
     let paymentId;
 
+    /* Update Service after paying */
     function updateService(){
         fetch('/device/updatedevice', {
                 method: 'POST',
@@ -33,6 +43,7 @@ export  default  function Paypal() {
             })
     }
 
+    /* Add Payments in Database */
     function addPayment() {
         if(newService==="wipe and further retrieve" && payment_id!==null){
             fetch('/device/addpayment', {
@@ -82,6 +93,7 @@ export  default  function Paypal() {
 
     }
 
+    /* Add Payments in Database */
     useEffect(()=>{
         console.log(window.paypal.Buttons)
         window.paypal
@@ -108,7 +120,8 @@ export  default  function Paypal() {
                     Notify.error("Sorry,something went wrong! Please try again!")
                 }
             }).render(paypal.current)
-        // May render for many times so remove extra components
+
+        /* Remove extra components */
         let children = paypal.current.getElementsByTagName("div")
         paypal.current.firstElementChild.removeChild(paypal.current.firstElementChild.lastElementChild)
         paypal.current.firstElementChild.removeChild(paypal.current.firstElementChild.lastElementChild)

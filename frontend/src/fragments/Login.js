@@ -1,14 +1,23 @@
+/**
+ * Login Modal
+ * @version 1
+ * @author [Kaijian Xie] (https://git.shefcompsci.org.uk/acp22kx)
+ *
+ */
+
+/* Module Imports
+React library Components */
 import {FcGoogle} from "react-icons/fc";
 import React, {useContext} from 'react'
 import { useNavigate } from "react-router-dom";
 
-
+/* Local imports */
 import './Login.css'
 import {AuthContext} from "../App";
 import {fetchUserData} from "./Header";
 import { Notify } from "./Notify";
 
-
+/* Log in */
 export const loginSubmit = (email, password)=>{
     const myRequest = new Request("/auth/login", {
         headers: new Headers({'Content-Type': 'application/json'}),
@@ -21,6 +30,7 @@ export const loginSubmit = (email, password)=>{
     });
     return fetch(myRequest).then((response) => response.json())
 }
+/* Log out */
 export const logoutSubmit = () => {
     const myRequest = new Request("/auth/logout", {
         headers: new Headers({'Content-Type': 'application/json'}),
@@ -30,6 +40,7 @@ export const logoutSubmit = () => {
     return fetch(myRequest)
 }
 
+/* Button for register and login logic */
 export default function Login(props) {
     const authState = useContext(AuthContext)
     let navigate = useNavigate();
