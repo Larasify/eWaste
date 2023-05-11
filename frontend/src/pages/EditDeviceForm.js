@@ -113,6 +113,7 @@ export default function EditDeviceForm(){
                 || device.identification === "seventy"
                 || device.identification === "ninety"
                 || device.identification === "new"
+                || device.identification === "rare"
             ) {
                 url = "/device/generateqr";
             } else {
@@ -122,7 +123,7 @@ export default function EditDeviceForm(){
                 headers: new Headers({"Content-Type": "application/json"}),
                 method: "POST",
                 credentials: "include",
-                body: JSON.stringify({"id": id})
+                body: JSON.stringify({"id": device.id})
             });
             fetch(myRequest).then((response) => {
                 if (response.status === 200) {
@@ -132,6 +133,7 @@ export default function EditDeviceForm(){
                     throw `Generate data link (HTTP) failed: ${response.status}: ${response.statusText}`;
                 }
             }).then((data) => {
+                console.log(data)
                 if (data['response'] === "success") {
                     Notify.success("Data link is generated and sent to user");
                 } else {
@@ -556,7 +558,8 @@ export default function EditDeviceForm(){
                             || device.identification === "seventy"
                             || device.identification === "ninety"
                             || device.identification === "new"
-                        ) ? "Send Link" : "Send QR Code"
+                            || device.identification === "rare"
+                        ) ? "Send QR Code" : "Send Link"
                         }
                     </button>
                     <br className={"md:hidden"}/>
