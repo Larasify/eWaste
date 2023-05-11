@@ -62,7 +62,7 @@ export default function DeviceUpload(){
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-6 md:mb-4 "}>
 
                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Brand</label>
                         <FormControl fullWidth focused={false}>
                           <Select
@@ -80,7 +80,7 @@ export default function DeviceUpload(){
                     </div>
                     <br className={"block md:hidden"}/>
                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Model Name</label>
                         <FormControl fullWidth focused={false}>
                           <Select
@@ -101,7 +101,7 @@ export default function DeviceUpload(){
                 </div>
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Color</label>
                         <FormControl fullWidth focused={false}>
                           <Select
@@ -120,7 +120,7 @@ export default function DeviceUpload(){
                     </div>
                     <br className={"block md:hidden"}/>
                      <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Operating System</label>
                         <FormControl fullWidth focused={false}>
                           <Select
@@ -140,7 +140,7 @@ export default function DeviceUpload(){
                 </div>
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Memory Storage</label>
                         <FormControl fullWidth focused={false}>
                           <Select
@@ -158,7 +158,7 @@ export default function DeviceUpload(){
                     </div>
                     <br className={"block md:hidden"}/>
                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} >*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "} >*
                             New</label>
                         <FormControl fullWidth focused={false}>
                           <Select
@@ -178,7 +178,7 @@ export default function DeviceUpload(){
                 </div>
                 <div className={"md:grid md:grid-cols-2 gap-x-6 mt-2 md:mb-4 "}>
                     <div >
-                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                             Type</label>
                         <FormControl fullWidth focused={false}>
                           <Select
@@ -197,7 +197,7 @@ export default function DeviceUpload(){
                     </div>
 
                 </div>
-                <label className={" text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"} htmlFor={"descriptionInput"}>*
+                <label className={" text-left block mb-2 text-xl font-medium text-gray-900 "} htmlFor={"descriptionInput"}>*
                             Description (No more than 500 words)</label>
 
                 <textarea rows={"3"} className={" block w-full p-2 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}
@@ -207,12 +207,12 @@ export default function DeviceUpload(){
                 <div className={"inline mt-4 md:grid md:grid-cols-2"}>
                     <div className={"flex items-center gap-x-4"}>
                         <input id="wipeCheckbox" className="h-4 w-4 md:h-6 md:w-6 border border-[#509E82] border-2 focus:ring-indigo-600" type="checkbox" value={"wipe"}></input>
-                        <label htmlFor={"wipeCheckbox"} className={" text-left block text-xl font-medium text-gray-900 dark:text-white"}>Data Wipe Service</label>
+                        <label htmlFor={"wipeCheckbox"} className={" text-left block text-xl font-medium text-gray-900 "}>Data Wipe Service</label>
                     </div>
                     <br className={"md:hidden"}/>
                     <div className={"flex items-center "}>
                         <input id="retrievalCheckbox" className="h-4 w-4  md:h-6 md:w-6  border border-[#509E82] border-2 mr-4 focus:ring-indigo-600" type="checkbox" value={"retrieval"}></input>
-                        <label htmlFor={"retrievalCheckbox"} className={" text-left block  text-xl font-medium text-gray-900 dark:text-white"}>Data Retrival service</label>
+                        <label htmlFor={"retrievalCheckbox"} className={" text-left block  text-xl font-medium text-gray-900 "}>Data Retrival service</label>
 
                     </div>
                 </div>

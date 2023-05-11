@@ -60,7 +60,7 @@ export default function Register() {
                     <form onSubmit={registerOnclick}>
                         <div className={"md:grid md:grid-cols-2 gap-x-4 mt-6 mb-3"}>
                             <div>
-                                <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                                <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                                     First Name</label>
                                 <input
                                     className={"block w-full p-2 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0"}
@@ -72,7 +72,7 @@ export default function Register() {
                             <br className={"block md:hidden"}/>
                             <div>
                                 <label
-                                    className={" text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                                    className={" text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                                     Last Name</label>
                                 <input
                                     className={" block w-full p-2 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0"}
@@ -83,7 +83,7 @@ export default function Register() {
                             </div>
                         </div>
                         <div className={"flex flex-col mt-3 w-full"}>
-                            <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                            <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                                 Password</label>
                             <input
                                 className={"block w-full p-2 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0"}
@@ -92,7 +92,7 @@ export default function Register() {
                                 id={"passwordInput"}></input>
                         </div>
                         <div className={"flex flex-col mt-3 w-full"}>
-                            <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                            <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                                 Confirm Password</label>
                             <input
                                 className={"block w-full p-2 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0"}
@@ -101,7 +101,7 @@ export default function Register() {
                                 id={"confirmPasswordInput"}></input>
                         </div>
                         <div className={"flex flex-col mt-3 w-full"}>
-                            <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                            <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                                 Email</label>
                             <input
                                 className={"block w-full p-2 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0"}
@@ -110,7 +110,7 @@ export default function Register() {
                                 id={"emailInput"}></input>
                         </div>
                         <div className={"flex flex-col mt-3 w-full"}>
-                            <label className={"text-left block mb-2 text-xl font-medium text-gray-900 dark:text-white"}>*
+                            <label className={"text-left block mb-2 text-xl font-medium text-gray-900 "}>*
                                 Phone Number</label>
                             <input
                                 className={"block w-full p-2 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0"}

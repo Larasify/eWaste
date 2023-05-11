@@ -16,6 +16,8 @@ import {Modal} from "@mui/material";
 import Login from "./Login";
 import Box from "@mui/material/Box";
 
+export let openLoginWindow;
+
 export default function Layout() {
     /* if login modal open */
     const [open, setOpen] = React.useState(false);
@@ -24,6 +26,7 @@ export default function Layout() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    openLoginWindow = handleOpen;
     return (
         /* Modal on Layout */
         <AuthContextProvider>

@@ -137,39 +137,39 @@ export default function UserAccount(){
                 className={"flex flex-col border-0 md:rounded-r-lg w-full md:w-4/5 h-full bg-white md:bg-auto overflow-auto p-4 md:p-16"}>
                 <div className={"md:grid md:grid-cols-2 gap-x-4 mt-6"}>
                     <div>
-                        <label className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={"text-left block mb-4 text-xl font-medium text-gray-900 "}>*
                             First Name</label>
                         <input type="text" id={"firstNameInput"} name={'firstName'} onChange={handleFormChange}
                                className={"block w-full p-2 md:p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
                     </div>
                     <br className={"block md:hidden"}/>
                     <div>
-                        <label className={" text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
+                        <label className={" text-left block mb-4 text-xl font-medium text-gray-900 "}>*
                             Last Name</label>
                         <input type="text" id={"lastNameInput"} name={"lastName"} onChange={handleFormChange}
                                className={" block w-full p-2 md:p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
                     </div>
                 </div>
                 <div className={"flex flex-col mt-4 w-full"}>
-                    <label className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
+                    <label className={"text-left block mb-4 text-xl font-medium text-gray-900 "}>*
                         Password</label>
                     <input type="password" id={"passwordInput"} name={"password"} onChange={handleFormChange}
                            className={"block w-full p-2 md:p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
                 </div>
                 <div className={"flex flex-col mt-4 w-full"}>
-                    <label className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
+                    <label className={"text-left block mb-4 text-xl font-medium text-gray-900 "}>*
                         Confirm Password</label>
                     <input type="password" id={"confirmPasswordInput"}
                            className={"block w-full p-2 md:p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
                 </div>
                 <div className={"flex flex-col mt-4 w-full"}>
-                    <label className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>*
+                    <label className={"text-left block mb-4 text-xl font-medium text-gray-900 "}>*
                         Email</label>
                     <input type="text" id={"emailInput"} name={"emailAddr"} onChange={handleFormChange}
                            className={"block w-full p-2 md:p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>
                 </div>
                 <div className={"flex flex-col mt-4 w-full"}>
-                    <label className={"text-left block mb-4 text-xl font-medium text-gray-900 dark:text-white"}>* Phone
+                    <label className={"text-left block mb-4 text-xl font-medium text-gray-900 "}>* Phone
                         Number</label>
                     <input type="text" id={"phoneNoInput"} name={'phoneNo'} onChange={handleFormChange}
                            className={"block w-full p-2 md:p-3 text-gray-900 border border-[#509E82] border-2 rounded-lg bg-gray-50 sm:text-md focus:outline-0 focus:ring-[#3fb78c] focus:border-[#3fb78c]"}/>

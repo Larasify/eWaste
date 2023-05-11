@@ -151,6 +151,63 @@ Add Payment to a Device
 - Response:
 Success: {"response":"success"}
 Error: {"message":"device does not exist", "response":"error"}
+
+Generate Data Link
+- URL: /generatedatalink
+- Method: POST
+- Description: Generates a new data link for a device.
+- Response:
+Success: {"response": "success"}
+Error: {"message": "device does not exist", "response":"error"}
+
+Generate QR Code
+- URL: /generateqr
+- Method: POST
+- Description: Generates a new QR code for a device.
+- Response:
+Success: {"response": "success"}
+Error: {"message": "device does not exist", "response":"error"}
+
+Delete a Device
+- URL: /deletedevice
+- Method: POST
+- Description: Marks a device as deleted in the database.
+- Response:
+Success: {"response": "success"}
+Error: {"message": "device does not exist", "response":"error"}
+
+Update a Device
+- URL: /updatedevice
+- Method: POST
+- Description: Updates the specified fields for a device in the database.
+- Response:
+Success: {"response": "success"}
+Error: {"message": "Device does not exist", "response":"error"}
+
+Verify Device by ID
+- URL: /verifydevicebyid
+- Method: POST
+- Description: Verifies a device by its ID.
+- Response:
+Success: {"response": "success"}
+Error: {"message": "Device does not exist", "response":"error"}
+
+Create Checkout Session
+- URL: /create-checkout-session
+- Method: POST
+- Description: Creates a new Stripe checkout session.
+- Response:
+Success: {"response": "success", "checkout_session": ""}
+Error: {"message": "error message"}
+
+Upload Image
+- URL: /uploadimg
+- Method: POST
+- Description: Uploads an image for a device and saves the path in the database.
+- Response:
+Success: {"response": "success"}
+Error: {"message": "device does not exist", "response":"error"}
+
 ### payment
 - GET one
 - GET all

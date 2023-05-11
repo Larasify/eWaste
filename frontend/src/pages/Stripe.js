@@ -139,7 +139,7 @@ export  default  function Stripe(){
                 headers: new Headers({"Content-Type": "application/json"}),
                 body: JSON.stringify({
                     line_items:[{
-                            price: (newService==="wipe and further retrieve"&& payment_id===null)?"price_1N5FyREPDlosnaW6qIK0oW8c":
+                            price: (newService==="wipe and further retrieve"&& amount===23)?"price_1N5FyREPDlosnaW6qIK0oW8c":
                                 (newService==="wipe and further retrieve"?"price_1N5FxtEPDlosnaW6BcD4trmZ":"price_1N5FwoEPDlosnaW63COtFbf4"),
                             quantity:1,
         }],
