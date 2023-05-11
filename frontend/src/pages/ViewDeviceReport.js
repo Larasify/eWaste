@@ -29,12 +29,10 @@ export default function ViewDeviceReport(){
         }
     };
 
-    console.log(deviceId)
     const [device, setDevice] = React.useState({});
 
 
   useEffect(() => {
-      console.log(deviceId)
       const myRequest = new Request("/device/getdevice", {
                 headers: new Headers({"Content-Type": "application/json"}),
                 method: "POST",
@@ -64,6 +62,7 @@ export default function ViewDeviceReport(){
         });
 
 
+
       const loadVendors = async () => {
             const myRequest = new Request("/vendor/getvendorlist", {
                 headers: new Headers({"Content-Type": "application/json"}),
@@ -81,6 +80,14 @@ export default function ViewDeviceReport(){
     }, [])
 
 
+      const generateQR = () => {
+      console.log(device.qr_code)
+           if(device.qr_code===""||!device.hasOwnProperty("qr_code")){
+               return <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] "}>{device.qr_code}</label>}
+           else{
+               return <QRCode value={device.qr_code} size={40}/>
+           }
+    }
 
     return (
         <div className={"flex flex-col md:flex-row relative my-4 w-5/6 mx-auto h-5/6 rounded-3xl "}>
@@ -110,8 +117,6 @@ export default function ViewDeviceReport(){
                         <span className={" text-base md:text-lg text-gray-400 text-left "}>Type: {device.type}</span><br/>
                         <span className={" text-base md:text-lg text-gray-400 text-left"}>Memory Storage: {device.memory_storage}GB</span><br/>
                         <span className={"md:w-full break-normal flex justify-center text-md md:font-medium text-gray-400 text-left lg:leading-loose "}>{device.description}</span>
-
-
                          </p>
                 </div>
             </div>
@@ -131,10 +136,7 @@ export default function ViewDeviceReport(){
                     </div>
                     <div className= {"lg:grid lg:grid-cols-2"}>
                        <label className={"text-left font-bold mb-2 text-2xl text-gray-900 "}>QR Code Link:</label>
-                        {!device.hasOwnProperty("qr_code")?
-                         <label className={"inline ml-2 mb-2 text-2xl font-medium text-[#509E82] "}>{device.qr_code}</label>:
-                        <QRCode value={device.qr_code} size={40}/>
-                        }
+                        {generateQR()}
                     </div>
                     <div className= {"lg:grid lg:grid-cols-2"}>
                        <label className={"text-left font-bold mb-2 text-2xl text-gray-900 "}>Service Link:</label>
