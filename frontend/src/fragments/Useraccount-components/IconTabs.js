@@ -186,25 +186,22 @@ export default function IconTabs() {
             headerName: 'Action',
             type: "actions",
             width: 80,
-            flex:1,
+            flex:2,
             getActions: (params) => [
               <GridActionsCellItem
                 icon={<FaRecycle />}
                 label="Confirm Recycling"
                 onClick={()=>{recycleDevice(params.row.deviceId,params.row.status,params.row.identification,params.row.service,params.row.payment_id)}}
-                showInMenu
               />,
               <GridActionsCellItem
                 icon={<AiOutlineCloudUpload />}
                 label="Retrieval Data from Device"
                 onClick={()=>{dataRetrieval(params.row.deviceId,params.row.service,params.row.identification,params.row.payment_id)}}
-                showInMenu
               />,
               <GridActionsCellItem
                 icon={<BsFillCloudArrowUpFill />}
                 label="Extend the Retrieval"
                 onClick={()=>{extendRetrieval(params.row.deviceId,params.row.service,params.row.identification,params.row.payment_id)}}
-                showInMenu
               />
             ]
       }]
