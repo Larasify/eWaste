@@ -1,3 +1,11 @@
+/**
+ * DataTable for rendering
+ * @version 1
+ * @author [Hongyu Pan](https://git.shefcompsci.org.uk/acr21hp)
+ *
+ */
+/* Module Imports
+React library Components */
 import React from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import { BsSearch } from 'react-icons/bs';
@@ -18,6 +26,7 @@ export default function DataTable({
 
     updateRecycleDevicesRow = setSearchedRows;
 
+    /* Search function */
     const handleSearch = () =>{
         if(rows.length === 0){
             setSearchedRows(rows)

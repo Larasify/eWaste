@@ -1,19 +1,31 @@
+/**
+ * Header
+ * @version 1
+ * @author [Kaijian Xie] (https://git.shefcompsci.org.uk/acp22kx)
+ * @author [Hongyu Pan](https://git.shefcompsci.org.uk/acr21hp)
+ *
+ */
+
+/* Module Imports
+React library Components */
 import React, {useContext, useEffect, useState} from 'react';
-import './Header.css'
 import {RiSearchLine, RiUser5Fill} from 'react-icons/ri';
 import { RiNotification3Line } from 'react-icons/ri';
-import logo from "../images/logo.png";
 import {Menu, MenuItem, Popper} from "@mui/material";
 import {AuthContext} from "../App";
 import {useNavigate} from "react-router-dom";
-import {loginSubmit, logoutSubmit} from "./Login";
-import { Notify } from './Notify';
 import { Button, List, ListItem, ListItemText } from '@mui/material';
 import Badge from '@mui/material/Badge';
 import { Cookies } from 'react-cookie';
 
+/* Local imports */
+import './Header.css'
+import { Notify } from './Notify';
+import {loginSubmit, logoutSubmit} from "./Login";
+import logo from "../images/logo.png";
 
 
+/* Get user information */
 export const fetchUserData = () => {
     const myRequest = new Request("/user/getuser", {
         headers: new Headers({'Content-Type': 'application/json'}),
@@ -53,6 +65,7 @@ export default function Header(props) {
     const [userInfo, setUserInfo] = useState(null);
     const open = Boolean(anchorEl);
     const [openNotification, setOpenNotification] = useState(false);
+    /* Handle the login button and dropdown */
     const handleLoginDropdownClose = (event) => {
         setAnchorEl(null);
         switch (event.target.getAttribute("value")){
@@ -73,6 +86,8 @@ export default function Header(props) {
                 return
         }
     };
+
+    /* Check if already logged in */
     const handleLoginClick = (event) => {
         if (authState.isLoggedIn) {
             setAnchorEl(event.currentTarget);
@@ -81,6 +96,7 @@ export default function Header(props) {
         }
     }
 
+    /* Check if already logged in for notification button */
     const handleNotificationClick = (event) => {
         if (authState.isLoggedIn) {
             setAnchorNotification(event.currentTarget);
@@ -90,10 +106,12 @@ export default function Header(props) {
         }
     }
 
+    /* Set anchor */
     const handleNotificationDropdownClose = (event) => {
         setAnchorNotification(null);
     };
 
+    /* Handle single notification */
     const handleItem = async(id)=> {
         const myRequest = new Request('/user/notificationisseen',{
         credentials: "include",
@@ -120,6 +138,7 @@ export default function Header(props) {
         if (userInfo['privilege'] === 'user') navigate('/user-recycle')
     }
 
+    /* Read all message and empty the mailbox */
     const readAll = async(notification) => {
         notification.map((notify) => (
             fetch(new Request('/user/notificationisseen',{
@@ -151,6 +170,7 @@ export default function Header(props) {
     const canBeOpenNotification = openNotification && Boolean(anchorNotification);
     const id = canBeOpenNotification ? 'transition-popper' : undefined;
 
+    /* Render the header */
     useEffect(() => {
         if (cookie.get("session-id")) {
             if (!authState.isLoggedIn) {

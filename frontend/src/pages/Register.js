@@ -1,13 +1,24 @@
+/**
+ * Register Page
+ * @version 1
+ * @author [Kaijian Xie] (https://git.shefcompsci.org.uk/acp22kx)
+ *
+ */
+
+/* Module Imports
+React library Components */
 import React from 'react';
 import {FcGoogle} from "react-icons/fc";
 
+/* Local imports */
 import './Register.css';
 import {loginSubmit} from "../fragments/Login";
 import { Notify } from '../fragments/Notify';
 
 const registerOnclick = (event) => {
     event.preventDefault();
-    //TODO not blank check here before submitting any forms
+
+    /* Check if input valid */
     if (document.getElementById("firstNameInput").value === "") {
         Notify.error("First name can not be empty");
         return;
@@ -28,6 +39,7 @@ const registerOnclick = (event) => {
             phone_no:document.getElementById("phoneNumberInput").value,
         })
     });
+    /* Send data to backend */
     fetch(myRequest).then((response) => {
         if (response.status === 200) {
             Notify.success('Registration successful!')

@@ -1,3 +1,13 @@
+/**
+ * Device Edit Page
+ * @version 1
+ * @author [Kaijian Xie] (https://git.shefcompsci.org.uk/acp22kx)
+ *
+ */
+
+
+/* Module Imports
+React library Components */
 import React, {useEffect, useState} from 'react';
 
 import {useLocation, useNavigate} from "react-router-dom";
@@ -5,6 +15,8 @@ import {IoChevronBackCircle} from "react-icons/io5";
 import {FormControl} from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+
+/* Local imports */
 import {Notify} from "../fragments/Notify";
 import {AuthContext} from "../App";
 
@@ -28,6 +40,7 @@ export default function EditDeviceForm(){
 
     const [device, setDevice] = React.useState(state);
 
+    /* Get values input and set them to left side */
     const handleChange = (event) => {
         const { name, value } = event.target;
         switch (name) {
@@ -66,6 +79,7 @@ export default function EditDeviceForm(){
         }
     };
 
+    /* Submit the form and store in database */
     const submitForm = () => {
         let myRequest;
         if (state._op === "edit") {

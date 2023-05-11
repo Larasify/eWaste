@@ -1,10 +1,22 @@
+/**
+ * Vendor Edit Page
+ * @version 1
+ * @author [Kaijian Xie] (https://git.shefcompsci.org.uk/acp22kx)
+ *
+ */
+
+/* Module Imports
+React library Components */
+
 import React, {useEffect, useState} from 'react';
 
 import {useLocation, useNavigate} from "react-router-dom";
-import {AuthContext} from "../App";
-import {IoChevronBackCircle} from "react-icons/io5";
-import {Notify} from "../fragments/Notify";
 
+import {IoChevronBackCircle} from "react-icons/io5";
+
+/* Local imports */
+import {Notify} from "../fragments/Notify";
+import {AuthContext} from "../App";
 
 
 export default function EditVendorForm(){
@@ -14,7 +26,8 @@ export default function EditVendorForm(){
     const [draftMessage, setDraftMessage] = useState("");
     const authState = React.useContext(AuthContext)
     let vendor = {}
-      
+
+    /* Render the edit vendor form */
     React.useEffect(() => {
         if(!authState.isLoggedIn || authState.privilege!='staff') navigate('/')
     }, [])
@@ -52,6 +65,7 @@ export default function EditVendorForm(){
         }
     }
 
+    /* Submit form and pass them to backend */
     const submitForm = () => {
         const myRequest = new Request(location.state._op === 'edit' ? "/vendor/updatevendor" : "/vendor/postvendor", {
             headers: new Headers({"Content-Type": "application/json"}),
@@ -80,6 +94,7 @@ export default function EditVendorForm(){
         }
     };
 
+    /* Get values input  */
     const handleChange = (event) => {
         const { name, value } = event.target;
         vendor[name] = value

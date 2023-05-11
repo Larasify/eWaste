@@ -1,3 +1,12 @@
+/**
+ * IconTabs for User-Recycle Page
+ * @version 1
+ * @author [Hongyu Pan](https://git.shefcompsci.org.uk/acr21hp)
+ *
+ */
+
+/* Module Imports
+React library Components */
 import React from 'react'
 
 import {FaRecycle} from 'react-icons/fa';
@@ -5,9 +14,12 @@ import {AiOutlineCloudUpload} from 'react-icons/ai';
 import {BsFillCloudArrowUpFill} from 'react-icons/bs';
 import {GridActionsCellItem,} from '@mui/x-data-grid';
 import {useNavigate} from 'react-router-dom';
+import QRCode from "react-qr-code";
+
+/* Local imports */
 import DataTable, {updateRecycleDevicesRow} from './DataTable';
 import {Notify} from "../Notify";
-import QRCode from "react-qr-code";
+
 
 export default function IconTabs() {
     let nextId=0;
@@ -17,13 +29,14 @@ export default function IconTabs() {
     let furtherFee = 10;
     const [form, setForm] = React.useState([]);
 
-
+    /* Get all devices of a user */
     const myRequest = new Request("account/getuserlistings", {
         headers: new Headers({'Content-Type': 'application/json'}),
         method: "POST",
         credentials: "include",
     });
 
+    /* Render the table */
     React.useEffect (() => {
         fetch(myRequest)
             .then((response) => {
@@ -66,7 +79,7 @@ export default function IconTabs() {
             })
     },[]);
 
-
+    /* Confirm recycling logic*/
     const recycleDevice = (deviceId,status,identification,service,payment_id,verified) => {
         console.log(verified)
         if(status !== 'Submitted for Review'){
@@ -105,7 +118,7 @@ export default function IconTabs() {
         }
     };
 
-
+    /* Add retrieval logic */
     const dataRetrieval = (deviceId,service,identification,payment_id) => {
 
         if(identification !== 'recycle'){
@@ -120,6 +133,7 @@ export default function IconTabs() {
         }
     };
 
+    /* Extend a retrieval */
     const extendRetrieval = (deviceId,service,identification,payment_id) => {
         if(identification !== 'recycle'){
             Notify.error("Sorry, This type cannot add a retrieval!" )
@@ -134,8 +148,9 @@ export default function IconTabs() {
         }
     };
 
+    /* Get information */
     const getUserTable = () => {
-        //fetch data for this table
+        /* Fetch data */
         const cols =  [
             { field: 'modelName', headerName: 'Model Name', flex: 1.5},
             { field: 'identification', headerName: 'New', flex: 1,},

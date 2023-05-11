@@ -159,6 +159,7 @@ export  default  function Stripe(){
         }
                 )
             }
+            /* Store the local state and navigate to checkout */
             await fetch('/device/create-checkout-session', requestOptions).
                 then(response => response.json())
                 .then(data => {

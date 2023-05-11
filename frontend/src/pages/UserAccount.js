@@ -1,7 +1,7 @@
 /**
  * User Account Page
  * @version 1
- * @author [Kaijian Xie]
+ * @author [Kaijian Xie] (https://git.shefcompsci.org.uk/acp22kx)
  *
  */
 

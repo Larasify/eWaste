@@ -1,15 +1,25 @@
+/**
+ * Payment Page
+ * @version 1
+ * @author [Hongyu Pan](https://git.shefcompsci.org.uk/acr21hp)
+ *
+ */
+/* Module Imports
+React library Components */
 import React from 'react';
 import {BsFillCheckCircleFill, BsPaypal} from "react-icons/bs";
 import {FaCcStripe} from "react-icons/fa";
-import './Payment.css';
 import {useNavigate,useLocation} from "react-router-dom";
+
+/* Local imports */
+import './Payment.css';
 import {Notify} from "../fragments/Notify";
 
 
 export default function Payment(){
     let navigate = useNavigate();
 
-
+    /* Handle the Payment login and navigate to different pages */
     const handlePay = () =>{
         if(document.getElementById("paypalRadio").checked){
             navigate('/payment-paypal',{state:{deviceId,newService,amount,description}})
@@ -20,6 +30,7 @@ export default function Payment(){
         else Notify.error('Please choose a payment method!')
     }
 
+    /* Justify the service type */
     let serviceName = '';
     let description = '';
     const location = useLocation();

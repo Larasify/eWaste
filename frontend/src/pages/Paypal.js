@@ -121,7 +121,7 @@ export  default  function Paypal() {
                 }
             }).render(paypal.current)
 
-        /* May render for many times so remove extra components */
+        /* Remove extra components */
         let children = paypal.current.getElementsByTagName("div")
         paypal.current.firstElementChild.removeChild(paypal.current.firstElementChild.lastElementChild)
         paypal.current.firstElementChild.removeChild(paypal.current.firstElementChild.lastElementChild)
