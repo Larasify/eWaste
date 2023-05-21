@@ -1,5 +1,7 @@
 # ewaste
 
+https://youtu.be/k33pd5UVS1g
+
 Most people have eWaste - electronic waste - sitting in drawers at home, including old smartphones,
 laptops, tablets, consoles, televisions, etc.
 
