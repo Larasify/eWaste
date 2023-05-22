@@ -25,8 +25,6 @@ services:
     command: npm start
     ports:
       - "3000:3000"
-    volumes:
-      - ./frontend:/app
     links:
       - backend
   nginx:
@@ -38,3 +36,6 @@ services:
     links:
       - frontend
     restart: always
+    depends_on:
+      - frontend
+      - backend
