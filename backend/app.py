@@ -2,7 +2,8 @@ from flask import Flask, send_from_directory, request
 from flask_cors import CORS
 import uuid
 from pymongo import MongoClient
-myclient = MongoClient("mongodb://localhost:27017/")
+#myclient = MongoClient("mongodb://localhost:27017/")
+myclient = MongoClient(host='test_mongodb', port=27017, username='admin', password='password')
 db = myclient["ewaste_db"]
 session_ids = dict()
 from user import user_api, account_api
